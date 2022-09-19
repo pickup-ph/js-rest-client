@@ -2,20 +2,30 @@
   "name": "@pickup/rest-client",
   "version": "1.0.0",
   "description": "OpenAPI client for @pickup/rest-client",
-  "author": "OpenAPI-Generator",
+  "author": "OpenAPI-Generator Contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID.git"
   },
+  "keywords": [
+    "axios",
+    "typescript",
+    "openapi-client",
+    "openapi-generator",
+    "@pickup/rest-client"
+  ],
+  "license": "Unlicense",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
-  "module": "./dist/esm/index.js",
-  "sideEffects": false,
   "scripts": {
-    "build": "tsc && tsc -p tsconfig.esm.json",
+    "build": "tsc --outDir dist/",
     "prepare": "npm run build"
   },
+  "dependencies": {
+    "axios": "^0.26.1"
+  },
   "devDependencies": {
+    "@types/node": "^12.11.5",
     "typescript": "^4.0"
   }
 }
