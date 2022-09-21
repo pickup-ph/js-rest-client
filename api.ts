@@ -352,6 +352,12 @@ export interface ItemClass {
      */
     'store_id'?: string;
     /**
+     * Store name which this item belongs to
+     * @type {string}
+     * @memberof ItemClass
+     */
+    'store_name'?: string;
+    /**
      * The name of the item
      * @type {string}
      * @memberof ItemClass
@@ -479,6 +485,12 @@ export interface ItemPartialClass {
      * @memberof ItemPartialClass
      */
     'store_id'?: string;
+    /**
+     * Store name which this item belongs to
+     * @type {string}
+     * @memberof ItemPartialClass
+     */
+    'store_name'?: string;
     /**
      * The name of the item
      * @type {string}
@@ -741,6 +753,12 @@ export interface MenuClassItem {
      * @memberof MenuClassItem
      */
     'store_id'?: string;
+    /**
+     * Store name which this item belongs to
+     * @type {string}
+     * @memberof MenuClassItem
+     */
+    'store_name'?: string;
     /**
      * The name of the item
      * @type {string}
