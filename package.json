@@ -1,18 +1,18 @@
 {
-  "name": "@pickup/rest-client",
-  "version": "1.0.0",
-  "description": "OpenAPI client for @pickup/rest-client",
+  "name": "@pickupph/rest-client",
+  "version": "1.0.1",
+  "description": "OpenAPI client for @pickupph/rest-client",
   "author": "OpenAPI-Generator Contributors",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID.git"
+    "url": "https://github.com/pickup-ph/js-rest-client"
   },
   "keywords": [
     "axios",
     "typescript",
     "openapi-client",
     "openapi-generator",
-    "@pickup/rest-client"
+    "@pickupph/rest-client"
   ],
   "license": "Unlicense",
   "main": "./dist/index.js",
