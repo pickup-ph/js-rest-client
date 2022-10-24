@@ -983,11 +983,23 @@ export interface StoreClass {
      */
     'store_description': string;
     /**
-     * Store reverse geocoded address string used in delivery order type
+     * Store address string used in delivery order type
      * @type {string}
      * @memberof StoreClass
      */
-    'geocode_address_string'?: string;
+    'location'?: string;
+    /**
+     * Store JSON geocoded address
+     * @type {string}
+     * @memberof StoreClass
+     */
+    'geocode_location'?: string;
+    /**
+     * Store tags
+     * @type {Array<string>}
+     * @memberof StoreClass
+     */
+    'store_tags'?: Array<string>;
     /**
      * Merchant displayed contact number
      * @type {string}
@@ -1081,11 +1093,23 @@ export interface StorePartialClass {
      */
     'store_description': string;
     /**
-     * Store reverse geocoded address string used in delivery order type
+     * Store address string used in delivery order type
      * @type {string}
      * @memberof StorePartialClass
      */
-    'geocode_address_string'?: string;
+    'location'?: string;
+    /**
+     * Store JSON geocoded address
+     * @type {string}
+     * @memberof StorePartialClass
+     */
+    'geocode_location'?: string;
+    /**
+     * Store tags
+     * @type {Array<string>}
+     * @memberof StorePartialClass
+     */
+    'store_tags'?: Array<string>;
     /**
      * Merchant displayed contact number
      * @type {string}
@@ -1735,12 +1759,13 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
          * @param {Array<string>} [tags] Store tags filter comma separated
          * @param {number} [maxDistance] Maximum store distance from the customer in kilometers
          * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in'} [orderType] Store supported fulfillment service
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFind: async (orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        storeControllerFind: async (orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in', limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/store`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1778,6 +1803,10 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
 
             if (openOnly !== undefined) {
                 localVarQueryParameter['open_only'] = openOnly;
+            }
+
+            if (orderType !== undefined) {
+                localVarQueryParameter['order_type'] = orderType;
             }
 
             if (limit !== undefined) {
@@ -1855,13 +1884,14 @@ export const StoreApiFp = function(configuration?: Configuration) {
          * @param {Array<string>} [tags] Store tags filter comma separated
          * @param {number} [maxDistance] Maximum store distance from the customer in kilometers
          * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in'} [orderType] Store supported fulfillment service
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async storeControllerFind(orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoresEntity>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFind(orderDate, orderTime, name, tags, maxDistance, openOnly, limit, offset, options);
+        async storeControllerFind(orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in', limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoresEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFind(orderDate, orderTime, name, tags, maxDistance, openOnly, orderType, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1894,13 +1924,14 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
          * @param {Array<string>} [tags] Store tags filter comma separated
          * @param {number} [maxDistance] Maximum store distance from the customer in kilometers
          * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in'} [orderType] Store supported fulfillment service
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFind(orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, limit?: number, offset?: number, options?: any): AxiosPromise<StoresEntity> {
-            return localVarFp.storeControllerFind(orderDate, orderTime, name, tags, maxDistance, openOnly, limit, offset, options).then((request) => request(axios, basePath));
+        storeControllerFind(orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in', limit?: number, offset?: number, options?: any): AxiosPromise<StoresEntity> {
+            return localVarFp.storeControllerFind(orderDate, orderTime, name, tags, maxDistance, openOnly, orderType, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1964,6 +1995,13 @@ export interface StoreApiStoreControllerFindRequest {
     readonly openOnly?: boolean
 
     /**
+     * Store supported fulfillment service
+     * @type {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in'}
+     * @memberof StoreApiStoreControllerFind
+     */
+    readonly orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in'
+
+    /**
      * The number of record to return, 0 means all will be returned
      * @type {number}
      * @memberof StoreApiStoreControllerFind
@@ -2008,7 +2046,7 @@ export class StoreApi extends BaseAPI {
      * @memberof StoreApi
      */
     public storeControllerFind(requestParameters: StoreApiStoreControllerFindRequest = {}, options?: AxiosRequestConfig) {
-        return StoreApiFp(this.configuration).storeControllerFind(requestParameters.orderDate, requestParameters.orderTime, requestParameters.name, requestParameters.tags, requestParameters.maxDistance, requestParameters.openOnly, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+        return StoreApiFp(this.configuration).storeControllerFind(requestParameters.orderDate, requestParameters.orderTime, requestParameters.name, requestParameters.tags, requestParameters.maxDistance, requestParameters.openOnly, requestParameters.orderType, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

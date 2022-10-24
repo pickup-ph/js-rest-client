@@ -23,3 +23,5 @@
 #!docs/README.md
 
 tsconfig.json
+.gitignore
+package.json
