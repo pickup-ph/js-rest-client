@@ -76,6 +76,12 @@ export type CartDTOOrderTypeEnum = typeof CartDTOOrderTypeEnum[keyof typeof Cart
 export interface CartDTOCustomer {
     /**
      * 
+     * @type {CustomerAddressDTO}
+     * @memberof CartDTOCustomer
+     */
+    'address'?: CustomerAddressDTO;
+    /**
+     * 
      * @type {string}
      * @memberof CartDTOCustomer
      */
@@ -98,6 +104,12 @@ export interface CartDTOCustomer {
      * @memberof CartDTOCustomer
      */
     'email'?: string;
+    /**
+     * A unique identifier for this customer
+     * @type {string}
+     * @memberof CartDTOCustomer
+     */
+    'id'?: string;
 }
 /**
  * 
@@ -183,9 +195,34 @@ export interface CategoryClass {
 /**
  * 
  * @export
+ * @interface CustomerAddressDTO
+ */
+export interface CustomerAddressDTO {
+    /**
+     * 
+     * @type {number}
+     * @memberof CustomerAddressDTO
+     */
+    'lng': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CustomerAddressDTO
+     */
+    'lat': number;
+}
+/**
+ * 
+ * @export
  * @interface CustomerDetailDTO
  */
 export interface CustomerDetailDTO {
+    /**
+     * 
+     * @type {CustomerAddressDTO}
+     * @memberof CustomerDetailDTO
+     */
+    'address'?: CustomerAddressDTO;
     /**
      * 
      * @type {string}
@@ -210,6 +247,12 @@ export interface CustomerDetailDTO {
      * @memberof CustomerDetailDTO
      */
     'email'?: string;
+    /**
+     * A unique identifier for this customer
+     * @type {string}
+     * @memberof CustomerDetailDTO
+     */
+    'id'?: string;
 }
 /**
  * 
@@ -855,6 +898,355 @@ export interface MenuClassItem {
      * @memberof MenuClassItem
      */
     'visible'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface OrderDetailsClass
+ */
+export interface OrderDetailsClass {
+    /**
+     * Item order quantity
+     * @type {number}
+     * @memberof OrderDetailsClass
+     */
+    'quantity': number;
+    /**
+     * 
+     * @type {OrderDetailsClassItem}
+     * @memberof OrderDetailsClass
+     */
+    'item'?: OrderDetailsClassItem;
+    /**
+     * 
+     * @type {Array<OrderExtraClass>}
+     * @memberof OrderDetailsClass
+     */
+    'extras': Array<OrderExtraClass>;
+}
+/**
+ * Item information
+ * @export
+ * @interface OrderDetailsClassItem
+ */
+export interface OrderDetailsClassItem {
+    /**
+     * Store name which this item belongs to
+     * @type {string}
+     * @memberof OrderDetailsClassItem
+     */
+    'store_name'?: string;
+    /**
+     * The name of the item
+     * @type {string}
+     * @memberof OrderDetailsClassItem
+     */
+    'name': string;
+    /**
+     * The description of the item
+     * @type {string}
+     * @memberof OrderDetailsClassItem
+     */
+    'description': string;
+    /**
+     * The nominated item display image in url form
+     * @type {string}
+     * @memberof OrderDetailsClassItem
+     */
+    'image_url': string;
+    /**
+     * The item discount description
+     * @type {string}
+     * @memberof OrderDetailsClassItem
+     */
+    'discount_description'?: string;
+    /**
+     * The peso value of the current active item discount. If discount_type is rawDiscount, this is equal to the discount_value. If percentDiscount, this is equal to the regular_price multiplied to the discount_value/100.
+     * @type {string}
+     * @memberof OrderDetailsClassItem
+     */
+    'active_discount'?: string;
+    /**
+     * The active price of the item, if there is an active discount, this should be equal to the discounted_price, if there is no active discount, this should be equal to the regular price
+     * @type {string}
+     * @memberof OrderDetailsClassItem
+     */
+    'price': string;
+    /**
+     * The type of discount applied (\"noDiscount\", \"rawDiscount\", \"percentDiscount\")
+     * @type {string}
+     * @memberof OrderDetailsClassItem
+     */
+    'discount_type'?: string;
+    /**
+     * The value of the discount applied. For example if discount_value is \"20\", if discount_type is percentDiscount, this means 20% off. If discount_type is rawDiscount, this means P20.00 off.
+     * @type {string}
+     * @memberof OrderDetailsClassItem
+     */
+    'discount_value'?: string;
+    /**
+     * The peso value of the item, applying the active_discount to the regular_price.
+     * @type {string}
+     * @memberof OrderDetailsClassItem
+     */
+    'discounted_price': string;
+    /**
+     * The peso value of the item without any discounts.
+     * @type {string}
+     * @memberof OrderDetailsClassItem
+     */
+    'regular_price': string;
+}
+/**
+ * 
+ * @export
+ * @interface OrderEntity
+ */
+export interface OrderEntity {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrderEntity
+     */
+    'has_next_page': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrderEntity
+     */
+    'has_prev_page': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderEntity
+     */
+    'total_pages': number;
+    /**
+     * 
+     * @type {Array<OrderPartialClass>}
+     * @memberof OrderEntity
+     */
+    'result': Array<OrderPartialClass>;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderEntity
+     */
+    'page': number;
+}
+/**
+ * 
+ * @export
+ * @interface OrderExtraClass
+ */
+export interface OrderExtraClass {
+    /**
+     * Unique extra code
+     * @type {string}
+     * @memberof OrderExtraClass
+     */
+    'code': string;
+    /**
+     * Name of the extra
+     * @type {string}
+     * @memberof OrderExtraClass
+     */
+    'name': string;
+    /**
+     * Pertains to the regular price of the extra
+     * @type {string}
+     * @memberof OrderExtraClass
+     */
+    'price': string;
+}
+/**
+ * 
+ * @export
+ * @interface OrderItemClass
+ */
+export interface OrderItemClass {
+    /**
+     * Store name which this item belongs to
+     * @type {string}
+     * @memberof OrderItemClass
+     */
+    'store_name'?: string;
+    /**
+     * The name of the item
+     * @type {string}
+     * @memberof OrderItemClass
+     */
+    'name': string;
+    /**
+     * The description of the item
+     * @type {string}
+     * @memberof OrderItemClass
+     */
+    'description': string;
+    /**
+     * The nominated item display image in url form
+     * @type {string}
+     * @memberof OrderItemClass
+     */
+    'image_url': string;
+    /**
+     * The item discount description
+     * @type {string}
+     * @memberof OrderItemClass
+     */
+    'discount_description'?: string;
+    /**
+     * The peso value of the current active item discount. If discount_type is rawDiscount, this is equal to the discount_value. If percentDiscount, this is equal to the regular_price multiplied to the discount_value/100.
+     * @type {string}
+     * @memberof OrderItemClass
+     */
+    'active_discount'?: string;
+    /**
+     * The active price of the item, if there is an active discount, this should be equal to the discounted_price, if there is no active discount, this should be equal to the regular price
+     * @type {string}
+     * @memberof OrderItemClass
+     */
+    'price': string;
+    /**
+     * The type of discount applied (\"noDiscount\", \"rawDiscount\", \"percentDiscount\")
+     * @type {string}
+     * @memberof OrderItemClass
+     */
+    'discount_type'?: string;
+    /**
+     * The value of the discount applied. For example if discount_value is \"20\", if discount_type is percentDiscount, this means 20% off. If discount_type is rawDiscount, this means P20.00 off.
+     * @type {string}
+     * @memberof OrderItemClass
+     */
+    'discount_value'?: string;
+    /**
+     * The peso value of the item, applying the active_discount to the regular_price.
+     * @type {string}
+     * @memberof OrderItemClass
+     */
+    'discounted_price': string;
+    /**
+     * The peso value of the item without any discounts.
+     * @type {string}
+     * @memberof OrderItemClass
+     */
+    'regular_price': string;
+}
+/**
+ * 
+ * @export
+ * @interface OrderPartialClass
+ */
+export interface OrderPartialClass {
+    /**
+     * 
+     * @type {OrderPartialClassOrderDetails}
+     * @memberof OrderPartialClass
+     */
+    'order_details': OrderPartialClassOrderDetails;
+    /**
+     * Total order amount
+     * @type {number}
+     * @memberof OrderPartialClass
+     */
+    'total_amount'?: number;
+    /**
+     * Delivery fee charged if order type is delivery
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'charged_delivery_fee': string;
+    /**
+     * Order type
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'order_type': OrderPartialClassOrderTypeEnum;
+    /**
+     * ISO8601 compliant order date string
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'order_date': string;
+    /**
+     * Order time filter in HH:MM format
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'order_time': string;
+    /**
+     * Order delivery address, empty if order type is pickup or curbside pickup
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'delivery_address': string;
+    /**
+     * Order status
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'status'?: OrderPartialClassStatusEnum;
+    /**
+     * Transaction number, this serves as pickup\'s order number
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'transaction_number': string;
+    /**
+     * Payment method used
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'payment_method'?: string;
+    /**
+     * Refunded amount, can be partial or full
+     * @type {number}
+     * @memberof OrderPartialClass
+     */
+    'refunded_amount': number;
+}
+
+export const OrderPartialClassOrderTypeEnum = {
+    Delivery: 'delivery',
+    Pickup: 'pickup',
+    ThirdPartyPickup: 'third_party_pickup',
+    CurbsidePickup: 'curbside_pickup'
+} as const;
+
+export type OrderPartialClassOrderTypeEnum = typeof OrderPartialClassOrderTypeEnum[keyof typeof OrderPartialClassOrderTypeEnum];
+export const OrderPartialClassStatusEnum = {
+    New: 'new',
+    Cancelled: 'cancelled',
+    Completed: 'completed',
+    Refunded: 'refunded'
+} as const;
+
+export type OrderPartialClassStatusEnum = typeof OrderPartialClassStatusEnum[keyof typeof OrderPartialClassStatusEnum];
+
+/**
+ * Order Details
+ * @export
+ * @interface OrderPartialClassOrderDetails
+ */
+export interface OrderPartialClassOrderDetails {
+    /**
+     * Item order quantity
+     * @type {number}
+     * @memberof OrderPartialClassOrderDetails
+     */
+    'quantity': number;
+    /**
+     * 
+     * @type {OrderDetailsClassItem}
+     * @memberof OrderPartialClassOrderDetails
+     */
+    'item'?: OrderDetailsClassItem;
+    /**
+     * 
+     * @type {Array<OrderExtraClass>}
+     * @memberof OrderPartialClassOrderDetails
+     */
+    'extras': Array<OrderExtraClass>;
 }
 /**
  * 
@@ -1745,6 +2137,215 @@ export class ItemApi extends BaseAPI {
 
 
 /**
+ * OrdersApi - axios parameter creator
+ * @export
+ */
+export const OrdersApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Get customer order history
+         * @param {string} id Customer ID that you passed to us
+         * @param {string} [maxOrderDate] ISO8601 compliant order date string
+         * @param {string} [minOrderDate] ISO8601 compliant order date string
+         * @param {'new' | 'cancelled' | 'completed' | 'refunded'} [status] Order status filter
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersControllerFind: async (id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('ordersControllerFind', 'id', id)
+            const localVarPath = `/v1/orders`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+            if (maxOrderDate !== undefined) {
+                localVarQueryParameter['max_order_date'] = maxOrderDate;
+            }
+
+            if (minOrderDate !== undefined) {
+                localVarQueryParameter['min_order_date'] = minOrderDate;
+            }
+
+            if (id !== undefined) {
+                localVarQueryParameter['id'] = id;
+            }
+
+            if (status !== undefined) {
+                localVarQueryParameter['status'] = status;
+            }
+
+            if (orderType !== undefined) {
+                localVarQueryParameter['order_type'] = orderType;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * OrdersApi - functional programming interface
+ * @export
+ */
+export const OrdersApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = OrdersApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Get customer order history
+         * @param {string} id Customer ID that you passed to us
+         * @param {string} [maxOrderDate] ISO8601 compliant order date string
+         * @param {string} [minOrderDate] ISO8601 compliant order date string
+         * @param {'new' | 'cancelled' | 'completed' | 'refunded'} [status] Order status filter
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, limit, offset, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * OrdersApi - factory interface
+ * @export
+ */
+export const OrdersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = OrdersApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Get customer order history
+         * @param {string} id Customer ID that you passed to us
+         * @param {string} [maxOrderDate] ISO8601 compliant order date string
+         * @param {string} [minOrderDate] ISO8601 compliant order date string
+         * @param {'new' | 'cancelled' | 'completed' | 'refunded'} [status] Order status filter
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options?: any): AxiosPromise<OrderEntity> {
+            return localVarFp.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, limit, offset, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for ordersControllerFind operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersControllerFindRequest
+ */
+export interface OrdersApiOrdersControllerFindRequest {
+    /**
+     * Customer ID that you passed to us
+     * @type {string}
+     * @memberof OrdersApiOrdersControllerFind
+     */
+    readonly id: string
+
+    /**
+     * ISO8601 compliant order date string
+     * @type {string}
+     * @memberof OrdersApiOrdersControllerFind
+     */
+    readonly maxOrderDate?: string
+
+    /**
+     * ISO8601 compliant order date string
+     * @type {string}
+     * @memberof OrdersApiOrdersControllerFind
+     */
+    readonly minOrderDate?: string
+
+    /**
+     * Order status filter
+     * @type {'new' | 'cancelled' | 'completed' | 'refunded'}
+     * @memberof OrdersApiOrdersControllerFind
+     */
+    readonly status?: 'new' | 'cancelled' | 'completed' | 'refunded'
+
+    /**
+     * Order type
+     * @type {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'}
+     * @memberof OrdersApiOrdersControllerFind
+     */
+    readonly orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'
+
+    /**
+     * The number of record to return, 0 means all will be returned
+     * @type {number}
+     * @memberof OrdersApiOrdersControllerFind
+     */
+    readonly limit?: number
+
+    /**
+     * The number of records to skip
+     * @type {number}
+     * @memberof OrdersApiOrdersControllerFind
+     */
+    readonly offset?: number
+}
+
+/**
+ * OrdersApi - object-oriented interface
+ * @export
+ * @class OrdersApi
+ * @extends {BaseAPI}
+ */
+export class OrdersApi extends BaseAPI {
+    /**
+     * 
+     * @summary Get customer order history
+     * @param {OrdersApiOrdersControllerFindRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersControllerFind(requestParameters: OrdersApiOrdersControllerFindRequest, options?: AxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersControllerFind(requestParameters.id, requestParameters.maxOrderDate, requestParameters.minOrderDate, requestParameters.status, requestParameters.orderType, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
  * StoreApi - axios parameter creator
  * @export
  */
@@ -1757,15 +2358,17 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
          * @param {string} [orderTime] Pre-order time filter in HH:MM format, void (omitting it) means stores that accepts ASAP order will be returned
          * @param {string} [name] Part or full name of the store
          * @param {Array<string>} [tags] Store tags filter comma separated
-         * @param {number} [maxDistance] Maximum store distance from the customer in kilometers
+         * @param {number} [maxDistance] Maximum store delivery distance in kilometers
          * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
-         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in'} [orderType] Store supported fulfillment service
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Store supported fulfillment service
+         * @param {Array<string>} [ids] Filter store via id
+         * @param {'popular_day'} [funnel] Store supported fulfillment service
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFind: async (orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in', limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        storeControllerFind: async (orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', ids?: Array<string>, funnel?: 'popular_day', limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/store`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1807,6 +2410,14 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
 
             if (orderType !== undefined) {
                 localVarQueryParameter['order_type'] = orderType;
+            }
+
+            if (ids) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+            if (funnel !== undefined) {
+                localVarQueryParameter['funnel'] = funnel;
             }
 
             if (limit !== undefined) {
@@ -1882,16 +2493,18 @@ export const StoreApiFp = function(configuration?: Configuration) {
          * @param {string} [orderTime] Pre-order time filter in HH:MM format, void (omitting it) means stores that accepts ASAP order will be returned
          * @param {string} [name] Part or full name of the store
          * @param {Array<string>} [tags] Store tags filter comma separated
-         * @param {number} [maxDistance] Maximum store distance from the customer in kilometers
+         * @param {number} [maxDistance] Maximum store delivery distance in kilometers
          * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
-         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in'} [orderType] Store supported fulfillment service
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Store supported fulfillment service
+         * @param {Array<string>} [ids] Filter store via id
+         * @param {'popular_day'} [funnel] Store supported fulfillment service
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async storeControllerFind(orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in', limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoresEntity>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFind(orderDate, orderTime, name, tags, maxDistance, openOnly, orderType, limit, offset, options);
+        async storeControllerFind(orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', ids?: Array<string>, funnel?: 'popular_day', limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoresEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFind(orderDate, orderTime, name, tags, maxDistance, openOnly, orderType, ids, funnel, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1922,16 +2535,18 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
          * @param {string} [orderTime] Pre-order time filter in HH:MM format, void (omitting it) means stores that accepts ASAP order will be returned
          * @param {string} [name] Part or full name of the store
          * @param {Array<string>} [tags] Store tags filter comma separated
-         * @param {number} [maxDistance] Maximum store distance from the customer in kilometers
+         * @param {number} [maxDistance] Maximum store delivery distance in kilometers
          * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
-         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in'} [orderType] Store supported fulfillment service
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Store supported fulfillment service
+         * @param {Array<string>} [ids] Filter store via id
+         * @param {'popular_day'} [funnel] Store supported fulfillment service
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFind(orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in', limit?: number, offset?: number, options?: any): AxiosPromise<StoresEntity> {
-            return localVarFp.storeControllerFind(orderDate, orderTime, name, tags, maxDistance, openOnly, orderType, limit, offset, options).then((request) => request(axios, basePath));
+        storeControllerFind(orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', ids?: Array<string>, funnel?: 'popular_day', limit?: number, offset?: number, options?: any): AxiosPromise<StoresEntity> {
+            return localVarFp.storeControllerFind(orderDate, orderTime, name, tags, maxDistance, openOnly, orderType, ids, funnel, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1981,7 +2596,7 @@ export interface StoreApiStoreControllerFindRequest {
     readonly tags?: Array<string>
 
     /**
-     * Maximum store distance from the customer in kilometers
+     * Maximum store delivery distance in kilometers
      * @type {number}
      * @memberof StoreApiStoreControllerFind
      */
@@ -1996,10 +2611,24 @@ export interface StoreApiStoreControllerFindRequest {
 
     /**
      * Store supported fulfillment service
-     * @type {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in'}
+     * @type {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'}
      * @memberof StoreApiStoreControllerFind
      */
-    readonly orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'dine_in'
+    readonly orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'
+
+    /**
+     * Filter store via id
+     * @type {Array<string>}
+     * @memberof StoreApiStoreControllerFind
+     */
+    readonly ids?: Array<string>
+
+    /**
+     * Store supported fulfillment service
+     * @type {'popular_day'}
+     * @memberof StoreApiStoreControllerFind
+     */
+    readonly funnel?: 'popular_day'
 
     /**
      * The number of record to return, 0 means all will be returned
@@ -2046,7 +2675,7 @@ export class StoreApi extends BaseAPI {
      * @memberof StoreApi
      */
     public storeControllerFind(requestParameters: StoreApiStoreControllerFindRequest = {}, options?: AxiosRequestConfig) {
-        return StoreApiFp(this.configuration).storeControllerFind(requestParameters.orderDate, requestParameters.orderTime, requestParameters.name, requestParameters.tags, requestParameters.maxDistance, requestParameters.openOnly, requestParameters.orderType, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+        return StoreApiFp(this.configuration).storeControllerFind(requestParameters.orderDate, requestParameters.orderTime, requestParameters.name, requestParameters.tags, requestParameters.maxDistance, requestParameters.openOnly, requestParameters.orderType, requestParameters.ids, requestParameters.funnel, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
