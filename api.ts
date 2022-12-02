@@ -918,6 +918,12 @@ export interface OrderDetailsClass {
      */
     'item'?: OrderDetailsClassItem;
     /**
+     * Item ID
+     * @type {string}
+     * @memberof OrderDetailsClass
+     */
+    'id': string;
+    /**
      * 
      * @type {Array<OrderExtraClass>}
      * @memberof OrderDetailsClass
@@ -1139,11 +1145,23 @@ export interface OrderItemClass {
  */
 export interface OrderPartialClass {
     /**
-     * 
-     * @type {OrderPartialClassOrderDetails}
+     * Order ID that will be used to search
+     * @type {string}
      * @memberof OrderPartialClass
      */
-    'order_details': OrderPartialClassOrderDetails;
+    'id': string;
+    /**
+     * 
+     * @type {OrderPartialClassStoreDetails}
+     * @memberof OrderPartialClass
+     */
+    'store_details': OrderPartialClassStoreDetails;
+    /**
+     * Guest customer information
+     * @type {object}
+     * @memberof OrderPartialClass
+     */
+    'customer': object;
     /**
      * Total order amount
      * @type {number}
@@ -1187,6 +1205,18 @@ export interface OrderPartialClass {
      */
     'status'?: OrderPartialClassStatusEnum;
     /**
+     * Order Details
+     * @type {Array<OrderDetailsClass>}
+     * @memberof OrderPartialClass
+     */
+    'order_details': Array<OrderDetailsClass>;
+    /**
+     * Status update timestamps
+     * @type {object}
+     * @memberof OrderPartialClass
+     */
+    'change_timestamp': object;
+    /**
      * Transaction number, this serves as pickup\'s order number
      * @type {string}
      * @memberof OrderPartialClass
@@ -1204,6 +1234,12 @@ export interface OrderPartialClass {
      * @memberof OrderPartialClass
      */
     'refunded_amount': number;
+    /**
+     * Third party pickup information
+     * @type {object}
+     * @memberof OrderPartialClass
+     */
+    'pickup_details': object;
 }
 
 export const OrderPartialClassOrderTypeEnum = {
@@ -1224,29 +1260,29 @@ export const OrderPartialClassStatusEnum = {
 export type OrderPartialClassStatusEnum = typeof OrderPartialClassStatusEnum[keyof typeof OrderPartialClassStatusEnum];
 
 /**
- * Order Details
+ * Store Details
  * @export
- * @interface OrderPartialClassOrderDetails
+ * @interface OrderPartialClassStoreDetails
  */
-export interface OrderPartialClassOrderDetails {
+export interface OrderPartialClassStoreDetails {
     /**
-     * Item order quantity
-     * @type {number}
-     * @memberof OrderPartialClassOrderDetails
+     * Store ID where order was made
+     * @type {string}
+     * @memberof OrderPartialClassStoreDetails
      */
-    'quantity': number;
-    /**
-     * 
-     * @type {OrderDetailsClassItem}
-     * @memberof OrderPartialClassOrderDetails
-     */
-    'item'?: OrderDetailsClassItem;
+    'id': string;
     /**
      * 
-     * @type {Array<OrderExtraClass>}
-     * @memberof OrderPartialClassOrderDetails
+     * @type {string}
+     * @memberof OrderPartialClassStoreDetails
      */
-    'extras': Array<OrderExtraClass>;
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderPartialClassStoreDetails
+     */
+    'image': string;
 }
 /**
  * 
@@ -1393,6 +1429,12 @@ export interface StoreClass {
      */
     'store_tags'?: Array<string>;
     /**
+     * List of items related to name
+     * @type {Array<ItemPartialClass>}
+     * @memberof StoreClass
+     */
+    'searched_items'?: Array<ItemPartialClass>;
+    /**
      * Merchant displayed contact number
      * @type {string}
      * @memberof StoreClass
@@ -1404,6 +1446,31 @@ export interface StoreClass {
      * @memberof StoreClass
      */
     'is_store_open': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface StoreDetailsClass
+ */
+export interface StoreDetailsClass {
+    /**
+     * Store ID where order was made
+     * @type {string}
+     * @memberof StoreDetailsClass
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof StoreDetailsClass
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof StoreDetailsClass
+     */
+    'image': string;
 }
 /**
  * 
@@ -1502,6 +1569,12 @@ export interface StorePartialClass {
      * @memberof StorePartialClass
      */
     'store_tags'?: Array<string>;
+    /**
+     * List of items related to name
+     * @type {Array<ItemPartialClass>}
+     * @memberof StorePartialClass
+     */
+    'searched_items'?: Array<ItemPartialClass>;
     /**
      * Merchant displayed contact number
      * @type {string}
@@ -2356,13 +2429,13 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
          * @summary Find store
          * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
          * @param {string} [orderTime] Pre-order time filter in HH:MM format, void (omitting it) means stores that accepts ASAP order will be returned
-         * @param {string} [name] Part or full name of the store
+         * @param {string} [name] General search key name for \&quot;store name\&quot;,\&quot;item name\&quot;, \&quot;item description\&quot;
          * @param {Array<string>} [tags] Store tags filter comma separated
          * @param {number} [maxDistance] Maximum store delivery distance in kilometers
          * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Store supported fulfillment service
          * @param {Array<string>} [ids] Filter store via id
-         * @param {'popular_day'} [funnel] Store supported fulfillment service
+         * @param {'popular_day'} [funnel] Custom data-driven filters
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
@@ -2491,13 +2564,13 @@ export const StoreApiFp = function(configuration?: Configuration) {
          * @summary Find store
          * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
          * @param {string} [orderTime] Pre-order time filter in HH:MM format, void (omitting it) means stores that accepts ASAP order will be returned
-         * @param {string} [name] Part or full name of the store
+         * @param {string} [name] General search key name for \&quot;store name\&quot;,\&quot;item name\&quot;, \&quot;item description\&quot;
          * @param {Array<string>} [tags] Store tags filter comma separated
          * @param {number} [maxDistance] Maximum store delivery distance in kilometers
          * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Store supported fulfillment service
          * @param {Array<string>} [ids] Filter store via id
-         * @param {'popular_day'} [funnel] Store supported fulfillment service
+         * @param {'popular_day'} [funnel] Custom data-driven filters
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
@@ -2533,13 +2606,13 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
          * @summary Find store
          * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
          * @param {string} [orderTime] Pre-order time filter in HH:MM format, void (omitting it) means stores that accepts ASAP order will be returned
-         * @param {string} [name] Part or full name of the store
+         * @param {string} [name] General search key name for \&quot;store name\&quot;,\&quot;item name\&quot;, \&quot;item description\&quot;
          * @param {Array<string>} [tags] Store tags filter comma separated
          * @param {number} [maxDistance] Maximum store delivery distance in kilometers
          * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Store supported fulfillment service
          * @param {Array<string>} [ids] Filter store via id
-         * @param {'popular_day'} [funnel] Store supported fulfillment service
+         * @param {'popular_day'} [funnel] Custom data-driven filters
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
@@ -2582,7 +2655,7 @@ export interface StoreApiStoreControllerFindRequest {
     readonly orderTime?: string
 
     /**
-     * Part or full name of the store
+     * General search key name for \&quot;store name\&quot;,\&quot;item name\&quot;, \&quot;item description\&quot;
      * @type {string}
      * @memberof StoreApiStoreControllerFind
      */
@@ -2624,7 +2697,7 @@ export interface StoreApiStoreControllerFindRequest {
     readonly ids?: Array<string>
 
     /**
-     * Store supported fulfillment service
+     * Custom data-driven filters
      * @type {'popular_day'}
      * @memberof StoreApiStoreControllerFind
      */
