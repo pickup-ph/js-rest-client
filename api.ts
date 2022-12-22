@@ -123,6 +123,12 @@ export interface CartEntity {
      * @memberof CartEntity
      */
     'checkout_url': string;
+    /**
+     * Updates will be sent for this cart via webhook using this identifier
+     * @type {string}
+     * @memberof CartEntity
+     */
+    'id': string;
 }
 /**
  * 
@@ -1199,7 +1205,7 @@ export interface OrderPartialClass {
      */
     'delivery_address': string;
     /**
-     * Order status
+     * Order status, expired means the cart was abandoned
      * @type {string}
      * @memberof OrderPartialClass
      */
@@ -1240,6 +1246,12 @@ export interface OrderPartialClass {
      * @memberof OrderPartialClass
      */
     'pickup_details': object;
+    /**
+     * Tracking page for this particular order
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'tracking_page': string;
 }
 
 export const OrderPartialClassOrderTypeEnum = {
@@ -1254,7 +1266,9 @@ export const OrderPartialClassStatusEnum = {
     New: 'new',
     Cancelled: 'cancelled',
     Completed: 'completed',
-    Refunded: 'refunded'
+    Refunded: 'refunded',
+    Expired: 'expired',
+    PaymentFailed: 'payment_failed'
 } as const;
 
 export type OrderPartialClassStatusEnum = typeof OrderPartialClassStatusEnum[keyof typeof OrderPartialClassStatusEnum];
@@ -2221,14 +2235,14 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {string} id Customer ID that you passed to us
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
          * @param {string} [minOrderDate] ISO8601 compliant order date string
-         * @param {'new' | 'cancelled' | 'completed' | 'refunded'} [status] Order status filter
+         * @param {'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ordersControllerFind: async (id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        ordersControllerFind: async (id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('ordersControllerFind', 'id', id)
             const localVarPath = `/v1/orders`;
@@ -2301,14 +2315,14 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          * @param {string} id Customer ID that you passed to us
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
          * @param {string} [minOrderDate] ISO8601 compliant order date string
-         * @param {'new' | 'cancelled' | 'completed' | 'refunded'} [status] Order status filter
+         * @param {'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderEntity>> {
+        async ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderEntity>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -2328,14 +2342,14 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
          * @param {string} id Customer ID that you passed to us
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
          * @param {string} [minOrderDate] ISO8601 compliant order date string
-         * @param {'new' | 'cancelled' | 'completed' | 'refunded'} [status] Order status filter
+         * @param {'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options?: any): AxiosPromise<OrderEntity> {
+        ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options?: any): AxiosPromise<OrderEntity> {
             return localVarFp.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, limit, offset, options).then((request) => request(axios, basePath));
         },
     };
@@ -2370,10 +2384,10 @@ export interface OrdersApiOrdersControllerFindRequest {
 
     /**
      * Order status filter
-     * @type {'new' | 'cancelled' | 'completed' | 'refunded'}
+     * @type {'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'}
      * @memberof OrdersApiOrdersControllerFind
      */
-    readonly status?: 'new' | 'cancelled' | 'completed' | 'refunded'
+    readonly status?: 'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'
 
     /**
      * Order type
