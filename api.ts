@@ -1872,10 +1872,11 @@ export const ItemApiAxiosParamCreator = function (configuration?: Configuration)
          * 
          * @summary Get item data
          * @param {string} id ID of item
+         * @param {string} [storeId] ID of store
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        itemControllerAggregateId: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        itemControllerAggregateId: async (id: string, storeId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('itemControllerAggregateId', 'id', id)
             const localVarPath = `/v1/item/{id}`
@@ -1893,6 +1894,10 @@ export const ItemApiAxiosParamCreator = function (configuration?: Configuration)
 
             // authentication api-key required
             await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+            if (storeId !== undefined) {
+                localVarQueryParameter['store_id'] = storeId;
+            }
 
 
     
@@ -2019,11 +2024,12 @@ export const ItemApiFp = function(configuration?: Configuration) {
          * 
          * @summary Get item data
          * @param {string} id ID of item
+         * @param {string} [storeId] ID of store
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async itemControllerAggregateId(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ItemClass>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.itemControllerAggregateId(id, options);
+        async itemControllerAggregateId(id: string, storeId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ItemClass>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.itemControllerAggregateId(id, storeId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2067,11 +2073,12 @@ export const ItemApiFactory = function (configuration?: Configuration, basePath?
          * 
          * @summary Get item data
          * @param {string} id ID of item
+         * @param {string} [storeId] ID of store
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        itemControllerAggregateId(id: string, options?: any): AxiosPromise<ItemClass> {
-            return localVarFp.itemControllerAggregateId(id, options).then((request) => request(axios, basePath));
+        itemControllerAggregateId(id: string, storeId?: string, options?: any): AxiosPromise<ItemClass> {
+            return localVarFp.itemControllerAggregateId(id, storeId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2113,6 +2120,13 @@ export interface ItemApiItemControllerAggregateIdRequest {
      * @memberof ItemApiItemControllerAggregateId
      */
     readonly id: string
+
+    /**
+     * ID of store
+     * @type {string}
+     * @memberof ItemApiItemControllerAggregateId
+     */
+    readonly storeId?: string
 }
 
 /**
@@ -2194,7 +2208,7 @@ export class ItemApi extends BaseAPI {
      * @memberof ItemApi
      */
     public itemControllerAggregateId(requestParameters: ItemApiItemControllerAggregateIdRequest, options?: AxiosRequestConfig) {
-        return ItemApiFp(this.configuration).itemControllerAggregateId(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+        return ItemApiFp(this.configuration).itemControllerAggregateId(requestParameters.id, requestParameters.storeId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
