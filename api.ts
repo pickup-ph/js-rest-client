@@ -35,10 +35,16 @@ export interface CartDTO {
     'items': Array<CartItemDTO>;
     /**
      * 
-     * @type {CartDTOCustomer}
+     * @type {CartDTODeliveryOption}
      * @memberof CartDTO
      */
-    'customer'?: CartDTOCustomer;
+    'delivery_option'?: CartDTODeliveryOption;
+    /**
+     * 
+     * @type {CustomerDetailDTO}
+     * @memberof CartDTO
+     */
+    'customer'?: CustomerDetailDTO;
     /**
      * PickupPH supported order types
      * @type {string}
@@ -69,48 +75,38 @@ export const CartDTOOrderTypeEnum = {
 export type CartDTOOrderTypeEnum = typeof CartDTOOrderTypeEnum[keyof typeof CartDTOOrderTypeEnum];
 
 /**
- * Optional customer details, guest users can input their details on the checkout page
+ * Optional variable for delivery option
  * @export
- * @interface CartDTOCustomer
+ * @interface CartDTODeliveryOption
  */
-export interface CartDTOCustomer {
+export interface CartDTODeliveryOption {
     /**
-     * 
-     * @type {CustomerAddressDTO}
-     * @memberof CartDTOCustomer
-     */
-    'address'?: CustomerAddressDTO;
-    /**
-     * 
+     * Optional value for Delivery payment method type , [cash = customer pay to rider , non_cash = added to checkout] not applicable for Lalamove
      * @type {string}
-     * @memberof CartDTOCustomer
+     * @memberof CartDTODeliveryOption
      */
-    'first_name'?: string;
+    'delivery_payment_method'?: CartDTODeliveryOptionDeliveryPaymentMethodEnum;
     /**
-     * 
+     * Delivery Vehicle Type for the request
      * @type {string}
-     * @memberof CartDTOCustomer
+     * @memberof CartDTODeliveryOption
      */
-    'last_name'?: string;
-    /**
-     * The customer mobile number, does NOT support e164 format
-     * @type {string}
-     * @memberof CartDTOCustomer
-     */
-    'mobile_number'?: string;
-    /**
-     * A valid customer personal or work email
-     * @type {string}
-     * @memberof CartDTOCustomer
-     */
-    'email'?: string;
-    /**
-     * A unique identifier for this customer
-     * @type {string}
-     * @memberof CartDTOCustomer
-     */
-    'id'?: string;
+    'delivery_vehicle': CartDTODeliveryOptionDeliveryVehicleEnum;
 }
+
+export const CartDTODeliveryOptionDeliveryPaymentMethodEnum = {
+    NonCash: 'non_cash',
+    Cash: 'cash'
+} as const;
+
+export type CartDTODeliveryOptionDeliveryPaymentMethodEnum = typeof CartDTODeliveryOptionDeliveryPaymentMethodEnum[keyof typeof CartDTODeliveryOptionDeliveryPaymentMethodEnum];
+export const CartDTODeliveryOptionDeliveryVehicleEnum = {
+    Car: 'car',
+    Motorcycle: 'motorcycle'
+} as const;
+
+export type CartDTODeliveryOptionDeliveryVehicleEnum = typeof CartDTODeliveryOptionDeliveryVehicleEnum[keyof typeof CartDTODeliveryOptionDeliveryVehicleEnum];
+
 /**
  * 
  * @export
@@ -260,6 +256,82 @@ export interface CustomerDetailDTO {
      */
     'id'?: string;
 }
+/**
+ * 
+ * @export
+ * @interface CustomerQuoteDTO
+ */
+export interface CustomerQuoteDTO {
+    /**
+     * 
+     * @type {CustomerAddressDTO}
+     * @memberof CustomerQuoteDTO
+     */
+    'address': CustomerAddressDTO;
+    /**
+     * 
+     * @type {string}
+     * @memberof CustomerQuoteDTO
+     */
+    'first_name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CustomerQuoteDTO
+     */
+    'last_name': string;
+    /**
+     * The customer mobile number, does NOT support e164 format
+     * @type {string}
+     * @memberof CustomerQuoteDTO
+     */
+    'mobile_number': string;
+    /**
+     * A valid customer personal or work email
+     * @type {string}
+     * @memberof CustomerQuoteDTO
+     */
+    'email': string;
+    /**
+     * A unique identifier for this customer
+     * @type {string}
+     * @memberof CustomerQuoteDTO
+     */
+    'id': string;
+}
+/**
+ * 
+ * @export
+ * @interface DeliveryOptionDTO
+ */
+export interface DeliveryOptionDTO {
+    /**
+     * Optional value for Delivery payment method type , [cash = customer pay to rider , non_cash = added to checkout] not applicable for Lalamove
+     * @type {string}
+     * @memberof DeliveryOptionDTO
+     */
+    'delivery_payment_method'?: DeliveryOptionDTODeliveryPaymentMethodEnum;
+    /**
+     * Delivery Vehicle Type for the request
+     * @type {string}
+     * @memberof DeliveryOptionDTO
+     */
+    'delivery_vehicle': DeliveryOptionDTODeliveryVehicleEnum;
+}
+
+export const DeliveryOptionDTODeliveryPaymentMethodEnum = {
+    NonCash: 'non_cash',
+    Cash: 'cash'
+} as const;
+
+export type DeliveryOptionDTODeliveryPaymentMethodEnum = typeof DeliveryOptionDTODeliveryPaymentMethodEnum[keyof typeof DeliveryOptionDTODeliveryPaymentMethodEnum];
+export const DeliveryOptionDTODeliveryVehicleEnum = {
+    Car: 'car',
+    Motorcycle: 'motorcycle'
+} as const;
+
+export type DeliveryOptionDTODeliveryVehicleEnum = typeof DeliveryOptionDTODeliveryVehicleEnum[keyof typeof DeliveryOptionDTODeliveryVehicleEnum];
+
 /**
  * 
  * @export
@@ -1301,6 +1373,268 @@ export interface OrderPartialClassStoreDetails {
 /**
  * 
  * @export
+ * @interface PromoDTO
+ */
+export interface PromoDTO {
+    /**
+     * Promo code
+     * @type {string}
+     * @memberof PromoDTO
+     */
+    'promo_code': string;
+    /**
+     * Store ID where the promo needs to be validated against
+     * @type {string}
+     * @memberof PromoDTO
+     */
+    'store_id': string;
+    /**
+     * Total price of the items in cart
+     * @type {number}
+     * @memberof PromoDTO
+     */
+    'total_amount': number;
+    /**
+     * Intended order type for this promo
+     * @type {string}
+     * @memberof PromoDTO
+     */
+    'order_type': PromoDTOOrderTypeEnum;
+}
+
+export const PromoDTOOrderTypeEnum = {
+    Delivery: 'delivery',
+    Pickup: 'pickup',
+    ThirdPartyPickup: 'third_party_pickup',
+    CurbsidePickup: 'curbside_pickup'
+} as const;
+
+export type PromoDTOOrderTypeEnum = typeof PromoDTOOrderTypeEnum[keyof typeof PromoDTOOrderTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface PromoDiscountDetails
+ */
+export interface PromoDiscountDetails {
+    /**
+     * Total amount to be paid, used as base of calculation
+     * @type {number}
+     * @memberof PromoDiscountDetails
+     */
+    'original': number;
+    /**
+     * Total amount after promo is applied
+     * @type {number}
+     * @memberof PromoDiscountDetails
+     */
+    'applied': number;
+    /**
+     * Total promo value
+     * @type {number}
+     * @memberof PromoDiscountDetails
+     */
+    'total': number;
+}
+/**
+ * 
+ * @export
+ * @interface PromoEntity
+ */
+export interface PromoEntity {
+    /**
+     * Promo code
+     * @type {string}
+     * @memberof PromoEntity
+     */
+    'code': string;
+    /**
+     * Type of this promo
+     * @type {string}
+     * @memberof PromoEntity
+     */
+    'type': PromoEntityTypeEnum;
+    /**
+     * Identifies order types this promo belongs to
+     * @type {Array<string>}
+     * @memberof PromoEntity
+     */
+    'applies_to': Array<string>;
+    /**
+     * Promo discount as amount deductable
+     * @type {number}
+     * @memberof PromoEntity
+     */
+    'amount_off': number;
+    /**
+     * Promo discount as percentage
+     * @type {number}
+     * @memberof PromoEntity
+     */
+    'percentage_off': number;
+    /**
+     * Promo discount for delivery fee
+     * @type {number}
+     * @memberof PromoEntity
+     */
+    'subsidized_delivery_amount': number;
+    /**
+     * Minimum total amount for this promo to be valid
+     * @type {number}
+     * @memberof PromoEntity
+     */
+    'minimum_purchase': number;
+    /**
+     * Promo description
+     * @type {string}
+     * @memberof PromoEntity
+     */
+    'free_item_description'?: string;
+    /**
+     * Promo start date
+     * @type {string}
+     * @memberof PromoEntity
+     */
+    'start_date': string;
+    /**
+     * Promo end date
+     * @type {string}
+     * @memberof PromoEntity
+     */
+    'end_date': string;
+}
+
+export const PromoEntityTypeEnum = {
+    FreeItem: 'free_item',
+    AmountOff: 'amount_off',
+    PercentageOff: 'percentage_off',
+    FreeDelivery: 'free_delivery'
+} as const;
+
+export type PromoEntityTypeEnum = typeof PromoEntityTypeEnum[keyof typeof PromoEntityTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface PromoListResponse
+ */
+export interface PromoListResponse {
+    /**
+     * List of promos
+     * @type {Array<PromoEntity>}
+     * @memberof PromoListResponse
+     */
+    'promos': Array<PromoEntity>;
+}
+/**
+ * 
+ * @export
+ * @interface QuotationRequestDTO
+ */
+export interface QuotationRequestDTO {
+    /**
+     * 
+     * @type {QuotationRequestDTOCustomer}
+     * @memberof QuotationRequestDTO
+     */
+    'customer': QuotationRequestDTOCustomer;
+    /**
+     * The 24 character hexadecimal string id of the store to be search for delivery availability and details
+     * @type {string}
+     * @memberof QuotationRequestDTO
+     */
+    'id': string;
+    /**
+     * Optional value for Delivery payment method type , [cash = customer pay to rider , non_cash = added to checkout] not applicable for Lalamove
+     * @type {string}
+     * @memberof QuotationRequestDTO
+     */
+    'delivery_payment_method': QuotationRequestDTODeliveryPaymentMethodEnum;
+    /**
+     * Customer Delivery Address String
+     * @type {string}
+     * @memberof QuotationRequestDTO
+     */
+    'address_string': string;
+    /**
+     * Delivery Vehicle Type for the request , null will default to motorcycle
+     * @type {string}
+     * @memberof QuotationRequestDTO
+     */
+    'delivery_vehicle': QuotationRequestDTODeliveryVehicleEnum;
+    /**
+     * Delivery schedule time in HH:MM format , null will default to asap
+     * @type {string}
+     * @memberof QuotationRequestDTO
+     */
+    'order_time'?: string;
+    /**
+     * Delivery Date, null will default to asap ISO8601 compliant date string, defaults to current server date ,
+     * @type {string}
+     * @memberof QuotationRequestDTO
+     */
+    'order_date'?: string;
+}
+
+export const QuotationRequestDTODeliveryPaymentMethodEnum = {
+    NonCash: 'non_cash',
+    Cash: 'cash'
+} as const;
+
+export type QuotationRequestDTODeliveryPaymentMethodEnum = typeof QuotationRequestDTODeliveryPaymentMethodEnum[keyof typeof QuotationRequestDTODeliveryPaymentMethodEnum];
+export const QuotationRequestDTODeliveryVehicleEnum = {
+    Car: 'car',
+    Motorcycle: 'motorcycle'
+} as const;
+
+export type QuotationRequestDTODeliveryVehicleEnum = typeof QuotationRequestDTODeliveryVehicleEnum[keyof typeof QuotationRequestDTODeliveryVehicleEnum];
+
+/**
+ * Customer Details
+ * @export
+ * @interface QuotationRequestDTOCustomer
+ */
+export interface QuotationRequestDTOCustomer {
+    /**
+     * 
+     * @type {CustomerAddressDTO}
+     * @memberof QuotationRequestDTOCustomer
+     */
+    'address': CustomerAddressDTO;
+    /**
+     * 
+     * @type {string}
+     * @memberof QuotationRequestDTOCustomer
+     */
+    'first_name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QuotationRequestDTOCustomer
+     */
+    'last_name': string;
+    /**
+     * The customer mobile number, does NOT support e164 format
+     * @type {string}
+     * @memberof QuotationRequestDTOCustomer
+     */
+    'mobile_number': string;
+    /**
+     * A valid customer personal or work email
+     * @type {string}
+     * @memberof QuotationRequestDTOCustomer
+     */
+    'email': string;
+    /**
+     * A unique identifier for this customer
+     * @type {string}
+     * @memberof QuotationRequestDTOCustomer
+     */
+    'id': string;
+}
+/**
+ * 
+ * @export
  * @interface StoreClass
  */
 export interface StoreClass {
@@ -1639,6 +1973,84 @@ export interface StoresEntity {
      */
     'page': number;
 }
+/**
+ * 
+ * @export
+ * @interface ValidPromoEntity
+ */
+export interface ValidPromoEntity {
+    /**
+     * Type of this promo
+     * @type {string}
+     * @memberof ValidPromoEntity
+     */
+    'type': ValidPromoEntityTypeEnum;
+    /**
+     * Calculated discount for delivery fee
+     * @type {number}
+     * @memberof ValidPromoEntity
+     */
+    'delivery_discount': number;
+    /**
+     * Promo description
+     * @type {string}
+     * @memberof ValidPromoEntity
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {ValidPromoEntityDiscount}
+     * @memberof ValidPromoEntity
+     */
+    'discount'?: ValidPromoEntityDiscount;
+    /**
+     * Promo expiry
+     * @type {string}
+     * @memberof ValidPromoEntity
+     */
+    'end_date'?: string;
+    /**
+     * Minimum total amount for this promo to be valid
+     * @type {number}
+     * @memberof ValidPromoEntity
+     */
+    'minimum_purchase'?: number;
+}
+
+export const ValidPromoEntityTypeEnum = {
+    FreeItem: 'free_item',
+    AmountOff: 'amount_off',
+    PercentageOff: 'percentage_off',
+    FreeDelivery: 'free_delivery'
+} as const;
+
+export type ValidPromoEntityTypeEnum = typeof ValidPromoEntityTypeEnum[keyof typeof ValidPromoEntityTypeEnum];
+
+/**
+ * Calculated discount base on total amount
+ * @export
+ * @interface ValidPromoEntityDiscount
+ */
+export interface ValidPromoEntityDiscount {
+    /**
+     * Total amount to be paid, used as base of calculation
+     * @type {number}
+     * @memberof ValidPromoEntityDiscount
+     */
+    'original': number;
+    /**
+     * Total amount after promo is applied
+     * @type {number}
+     * @memberof ValidPromoEntityDiscount
+     */
+    'applied': number;
+    /**
+     * Total promo value
+     * @type {number}
+     * @memberof ValidPromoEntityDiscount
+     */
+    'total': number;
+}
 
 /**
  * CartApi - axios parameter creator
@@ -1858,6 +2270,130 @@ export class DefaultApi extends BaseAPI {
      */
     public appControllerGetServerInfo(options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).appControllerGetServerInfo(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * DeliveryApi - axios parameter creator
+ * @export
+ */
+export const DeliveryApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Get Quotation
+         * @param {QuotationRequestDTO} quotationRequestDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deliveryControllerGetQuotation: async (quotationRequestDTO: QuotationRequestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'quotationRequestDTO' is not null or undefined
+            assertParamExists('deliveryControllerGetQuotation', 'quotationRequestDTO', quotationRequestDTO)
+            const localVarPath = `/v1/delivery`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(quotationRequestDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * DeliveryApi - functional programming interface
+ * @export
+ */
+export const DeliveryApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = DeliveryApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Get Quotation
+         * @param {QuotationRequestDTO} quotationRequestDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deliveryControllerGetQuotation(quotationRequestDTO: QuotationRequestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deliveryControllerGetQuotation(quotationRequestDTO, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * DeliveryApi - factory interface
+ * @export
+ */
+export const DeliveryApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = DeliveryApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Get Quotation
+         * @param {QuotationRequestDTO} quotationRequestDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deliveryControllerGetQuotation(quotationRequestDTO: QuotationRequestDTO, options?: any): AxiosPromise<object> {
+            return localVarFp.deliveryControllerGetQuotation(quotationRequestDTO, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for deliveryControllerGetQuotation operation in DeliveryApi.
+ * @export
+ * @interface DeliveryApiDeliveryControllerGetQuotationRequest
+ */
+export interface DeliveryApiDeliveryControllerGetQuotationRequest {
+    /**
+     * 
+     * @type {QuotationRequestDTO}
+     * @memberof DeliveryApiDeliveryControllerGetQuotation
+     */
+    readonly quotationRequestDTO: QuotationRequestDTO
+}
+
+/**
+ * DeliveryApi - object-oriented interface
+ * @export
+ * @class DeliveryApi
+ * @extends {BaseAPI}
+ */
+export class DeliveryApi extends BaseAPI {
+    /**
+     * 
+     * @summary Get Quotation
+     * @param {DeliveryApiDeliveryControllerGetQuotationRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DeliveryApi
+     */
+    public deliveryControllerGetQuotation(requestParameters: DeliveryApiDeliveryControllerGetQuotationRequest, options?: AxiosRequestConfig) {
+        return DeliveryApiFp(this.configuration).deliveryControllerGetQuotation(requestParameters.quotationRequestDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2442,6 +2978,214 @@ export class OrdersApi extends BaseAPI {
      */
     public ordersControllerFind(requestParameters: OrdersApiOrdersControllerFindRequest, options?: AxiosRequestConfig) {
         return OrdersApiFp(this.configuration).ordersControllerFind(requestParameters.id, requestParameters.maxOrderDate, requestParameters.minOrderDate, requestParameters.status, requestParameters.orderType, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * PromoApi - axios parameter creator
+ * @export
+ */
+export const PromoApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Validate promo and get calculated result
+         * @param {string} storeId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        promoControllerGetPromosByStore: async (storeId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'storeId' is not null or undefined
+            assertParamExists('promoControllerGetPromosByStore', 'storeId', storeId)
+            const localVarPath = `/v1/promo/{store_id}`
+                .replace(`{${"store_id"}}`, encodeURIComponent(String(storeId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Validate promo and get calculated result
+         * @param {PromoDTO} promoDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        promoControllerValidatePromo: async (promoDTO: PromoDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'promoDTO' is not null or undefined
+            assertParamExists('promoControllerValidatePromo', 'promoDTO', promoDTO)
+            const localVarPath = `/v1/promo`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(promoDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * PromoApi - functional programming interface
+ * @export
+ */
+export const PromoApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = PromoApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Validate promo and get calculated result
+         * @param {string} storeId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async promoControllerGetPromosByStore(storeId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PromoListResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.promoControllerGetPromosByStore(storeId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Validate promo and get calculated result
+         * @param {PromoDTO} promoDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async promoControllerValidatePromo(promoDTO: PromoDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ValidPromoEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.promoControllerValidatePromo(promoDTO, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * PromoApi - factory interface
+ * @export
+ */
+export const PromoApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = PromoApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Validate promo and get calculated result
+         * @param {string} storeId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        promoControllerGetPromosByStore(storeId: string, options?: any): AxiosPromise<PromoListResponse> {
+            return localVarFp.promoControllerGetPromosByStore(storeId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Validate promo and get calculated result
+         * @param {PromoDTO} promoDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        promoControllerValidatePromo(promoDTO: PromoDTO, options?: any): AxiosPromise<ValidPromoEntity> {
+            return localVarFp.promoControllerValidatePromo(promoDTO, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for promoControllerGetPromosByStore operation in PromoApi.
+ * @export
+ * @interface PromoApiPromoControllerGetPromosByStoreRequest
+ */
+export interface PromoApiPromoControllerGetPromosByStoreRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PromoApiPromoControllerGetPromosByStore
+     */
+    readonly storeId: string
+}
+
+/**
+ * Request parameters for promoControllerValidatePromo operation in PromoApi.
+ * @export
+ * @interface PromoApiPromoControllerValidatePromoRequest
+ */
+export interface PromoApiPromoControllerValidatePromoRequest {
+    /**
+     * 
+     * @type {PromoDTO}
+     * @memberof PromoApiPromoControllerValidatePromo
+     */
+    readonly promoDTO: PromoDTO
+}
+
+/**
+ * PromoApi - object-oriented interface
+ * @export
+ * @class PromoApi
+ * @extends {BaseAPI}
+ */
+export class PromoApi extends BaseAPI {
+    /**
+     * 
+     * @summary Validate promo and get calculated result
+     * @param {PromoApiPromoControllerGetPromosByStoreRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PromoApi
+     */
+    public promoControllerGetPromosByStore(requestParameters: PromoApiPromoControllerGetPromosByStoreRequest, options?: AxiosRequestConfig) {
+        return PromoApiFp(this.configuration).promoControllerGetPromosByStore(requestParameters.storeId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Validate promo and get calculated result
+     * @param {PromoApiPromoControllerValidatePromoRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PromoApi
+     */
+    public promoControllerValidatePromo(requestParameters: PromoApiPromoControllerValidatePromoRequest, options?: AxiosRequestConfig) {
+        return PromoApiFp(this.configuration).promoControllerValidatePromo(requestParameters.promoDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

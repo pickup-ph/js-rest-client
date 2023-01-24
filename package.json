@@ -1,6 +1,6 @@
 {
   "name": "@pickupph/rest-client",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "OpenAPI client for @pickupph/rest-client",
   "author": "OpenAPI-Generator Contributors",
   "repository": {
