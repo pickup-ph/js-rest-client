@@ -335,6 +335,56 @@ export type DeliveryOptionDTODeliveryVehicleEnum = typeof DeliveryOptionDTODeliv
 /**
  * 
  * @export
+ * @interface DeliveryQuotationEntity
+ */
+export interface DeliveryQuotationEntity {
+    /**
+     * Quoted Delivery Fee from respective partner
+     * @type {number}
+     * @memberof DeliveryQuotationEntity
+     */
+    'delivery_fee': number;
+    /**
+     * Delivery Partner quotation source
+     * @type {string}
+     * @memberof DeliveryQuotationEntity
+     */
+    'partner': string;
+    /**
+     * Indicator for the success quotation
+     * @type {boolean}
+     * @memberof DeliveryQuotationEntity
+     */
+    'is_success': boolean;
+    /**
+     * Indicator for the success quotation
+     * @type {Array<string>}
+     * @memberof DeliveryQuotationEntity
+     */
+    'message'?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface DeliveryQuotationResultEntity
+ */
+export interface DeliveryQuotationResultEntity {
+    /**
+     * 
+     * @type {DeliveryQuotationEntity}
+     * @memberof DeliveryQuotationResultEntity
+     */
+    'selected': DeliveryQuotationEntity;
+    /**
+     * List of active delivery partners from quotation , for quotation reference on multihailing stores
+     * @type {Array<DeliveryQuotationEntity>}
+     * @memberof DeliveryQuotationResultEntity
+     */
+    'delivery_partner_quotations'?: Array<DeliveryQuotationEntity>;
+}
+/**
+ * 
+ * @export
  * @interface ExtraGroupClass
  */
 export interface ExtraGroupClass {
@@ -1253,6 +1303,12 @@ export interface OrderPartialClass {
      */
     'charged_delivery_fee': string;
     /**
+     * Indicates delivery fee was paid via cash
+     * @type {boolean}
+     * @memberof OrderPartialClass
+     */
+    'delivery_paid_by_cash': boolean;
+    /**
      * Order type
      * @type {string}
      * @memberof OrderPartialClass
@@ -1723,6 +1779,12 @@ export interface StoreClass {
      */
     'menu': Array<MenuClass>;
     /**
+     * Available delivery payment method
+     * @type {Array<object>}
+     * @memberof StoreClass
+     */
+    'delivery_payment_methods': Array<object>;
+    /**
      * Store category list
      * @type {Array<CategoryClass>}
      * @memberof StoreClass
@@ -1986,6 +2048,12 @@ export interface ValidPromoEntity {
      */
     'type': ValidPromoEntityTypeEnum;
     /**
+     * 
+     * @type {ValidPromoEntityPromo}
+     * @memberof ValidPromoEntity
+     */
+    'promo'?: ValidPromoEntityPromo;
+    /**
      * Calculated discount for delivery fee
      * @type {number}
      * @memberof ValidPromoEntity
@@ -1997,12 +2065,6 @@ export interface ValidPromoEntity {
      * @memberof ValidPromoEntity
      */
     'description'?: string;
-    /**
-     * 
-     * @type {ValidPromoEntityDiscount}
-     * @memberof ValidPromoEntity
-     */
-    'discount'?: ValidPromoEntityDiscount;
     /**
      * Promo expiry
      * @type {string}
@@ -2029,25 +2091,25 @@ export type ValidPromoEntityTypeEnum = typeof ValidPromoEntityTypeEnum[keyof typ
 /**
  * Calculated discount base on total amount
  * @export
- * @interface ValidPromoEntityDiscount
+ * @interface ValidPromoEntityPromo
  */
-export interface ValidPromoEntityDiscount {
+export interface ValidPromoEntityPromo {
     /**
      * Total amount to be paid, used as base of calculation
      * @type {number}
-     * @memberof ValidPromoEntityDiscount
+     * @memberof ValidPromoEntityPromo
      */
     'original': number;
     /**
      * Total amount after promo is applied
      * @type {number}
-     * @memberof ValidPromoEntityDiscount
+     * @memberof ValidPromoEntityPromo
      */
     'applied': number;
     /**
      * Total promo value
      * @type {number}
-     * @memberof ValidPromoEntityDiscount
+     * @memberof ValidPromoEntityPromo
      */
     'total': number;
 }
@@ -2336,7 +2398,7 @@ export const DeliveryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deliveryControllerGetQuotation(quotationRequestDTO: QuotationRequestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async deliveryControllerGetQuotation(quotationRequestDTO: QuotationRequestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeliveryQuotationResultEntity>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deliveryControllerGetQuotation(quotationRequestDTO, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -2357,7 +2419,7 @@ export const DeliveryApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deliveryControllerGetQuotation(quotationRequestDTO: QuotationRequestDTO, options?: any): AxiosPromise<object> {
+        deliveryControllerGetQuotation(quotationRequestDTO: QuotationRequestDTO, options?: any): AxiosPromise<DeliveryQuotationResultEntity> {
             return localVarFp.deliveryControllerGetQuotation(quotationRequestDTO, options).then((request) => request(axios, basePath));
         },
     };
@@ -2990,8 +3052,8 @@ export const PromoApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * 
-         * @summary Validate promo and get calculated result
-         * @param {string} storeId 
+         * @summary Get list of promo per store
+         * @param {string} storeId Store ID of the list of promos you want to fetch
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3076,8 +3138,8 @@ export const PromoApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Validate promo and get calculated result
-         * @param {string} storeId 
+         * @summary Get list of promo per store
+         * @param {string} storeId Store ID of the list of promos you want to fetch
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3108,8 +3170,8 @@ export const PromoApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
-         * @summary Validate promo and get calculated result
-         * @param {string} storeId 
+         * @summary Get list of promo per store
+         * @param {string} storeId Store ID of the list of promos you want to fetch
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3136,7 +3198,7 @@ export const PromoApiFactory = function (configuration?: Configuration, basePath
  */
 export interface PromoApiPromoControllerGetPromosByStoreRequest {
     /**
-     * 
+     * Store ID of the list of promos you want to fetch
      * @type {string}
      * @memberof PromoApiPromoControllerGetPromosByStore
      */
@@ -3166,7 +3228,7 @@ export interface PromoApiPromoControllerValidatePromoRequest {
 export class PromoApi extends BaseAPI {
     /**
      * 
-     * @summary Validate promo and get calculated result
+     * @summary Get list of promo per store
      * @param {PromoApiPromoControllerGetPromosByStoreRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
