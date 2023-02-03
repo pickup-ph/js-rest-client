@@ -1780,10 +1780,10 @@ export interface StoreClass {
     'menu': Array<MenuClass>;
     /**
      * Available delivery payment method
-     * @type {Array<object>}
+     * @type {Array<string>}
      * @memberof StoreClass
      */
-    'delivery_payment_methods': Array<object>;
+    'delivery_payment_methods': Array<string>;
     /**
      * Store category list
      * @type {Array<CategoryClass>}
@@ -1856,6 +1856,12 @@ export interface StoreClass {
      * @memberof StoreClass
      */
     'is_store_open': boolean;
+    /**
+     * Pre-order feature is enabled
+     * @type {boolean}
+     * @memberof StoreClass
+     */
+    'is_accepting_in_advanced_orders': boolean;
 }
 /**
  * 
@@ -1997,6 +2003,12 @@ export interface StorePartialClass {
      * @memberof StorePartialClass
      */
     'is_store_open': boolean;
+    /**
+     * Pre-order feature is enabled
+     * @type {boolean}
+     * @memberof StorePartialClass
+     */
+    'is_accepting_in_advanced_orders': boolean;
 }
 /**
  * 
