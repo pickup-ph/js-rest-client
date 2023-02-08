@@ -24,6 +24,43 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface AvailableReservationEntity
+ */
+export interface AvailableReservationEntity {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AvailableReservationEntity
+     */
+    'has_next_page': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AvailableReservationEntity
+     */
+    'has_prev_page': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof AvailableReservationEntity
+     */
+    'total_pages': number;
+    /**
+     * 
+     * @type {Array<StoreReservationClass>}
+     * @memberof AvailableReservationEntity
+     */
+    'result': Array<StoreReservationClass>;
+    /**
+     * 
+     * @type {number}
+     * @memberof AvailableReservationEntity
+     */
+    'page': number;
+}
+/**
+ * 
+ * @export
  * @interface CartDTO
  */
 export interface CartDTO {
@@ -193,6 +230,167 @@ export interface CategoryClass {
      * @memberof CategoryClass
      */
     'visible': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface ConfirmReservationDTO
+ */
+export interface ConfirmReservationDTO {
+    /**
+     * Itended payment method
+     * @type {string}
+     * @memberof ConfirmReservationDTO
+     */
+    'payment_method': string;
+    /**
+     * Reservatio ID to confirm
+     * @type {string}
+     * @memberof ConfirmReservationDTO
+     */
+    'reservation_id': string;
+}
+/**
+ * 
+ * @export
+ * @interface ConfirmReservationEntity
+ */
+export interface ConfirmReservationEntity {
+    /**
+     * Reservation ID
+     * @type {string}
+     * @memberof ConfirmReservationEntity
+     */
+    'reservation_id': string;
+    /**
+     * Payment redirect URL
+     * @type {string}
+     * @memberof ConfirmReservationEntity
+     */
+    'checkout_url'?: string;
+    /**
+     * Payment token
+     * @type {string}
+     * @memberof ConfirmReservationEntity
+     */
+    'pending_token'?: string;
+    /**
+     * Payment intent ID
+     * @type {string}
+     * @memberof ConfirmReservationEntity
+     */
+    'payment_id'?: string;
+    /**
+     * Auth required for next step, payment method is card
+     * @type {string}
+     * @memberof ConfirmReservationEntity
+     */
+    'auth'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateReservationDTO
+ */
+export interface CreateReservationDTO {
+    /**
+     * Store ID
+     * @type {string}
+     * @memberof CreateReservationDTO
+     */
+    'store_id': string;
+    /**
+     * ISO8601 compliant order date string
+     * @type {string}
+     * @memberof CreateReservationDTO
+     */
+    'date': string;
+    /**
+     * Military time format
+     * @type {string}
+     * @memberof CreateReservationDTO
+     */
+    'time': string;
+    /**
+     * Reservation type ID
+     * @type {string}
+     * @memberof CreateReservationDTO
+     */
+    'id': string;
+    /**
+     * Number of seats to be reserved
+     * @type {number}
+     * @memberof CreateReservationDTO
+     */
+    'seats': number;
+    /**
+     * 
+     * @type {CreateReservationDTOContact}
+     * @memberof CreateReservationDTO
+     */
+    'contact': CreateReservationDTOContact;
+    /**
+     * Optional customer request
+     * @type {string}
+     * @memberof CreateReservationDTO
+     */
+    'remarks'?: string;
+}
+/**
+ * Customer/reservation contact information
+ * @export
+ * @interface CreateReservationDTOContact
+ */
+export interface CreateReservationDTOContact {
+    /**
+     * Customer first name
+     * @type {string}
+     * @memberof CreateReservationDTOContact
+     */
+    'first_name': string;
+    /**
+     * Customer last name
+     * @type {string}
+     * @memberof CreateReservationDTOContact
+     */
+    'last_name': string;
+    /**
+     * Valid personal or business email address
+     * @type {string}
+     * @memberof CreateReservationDTOContact
+     */
+    'email': string;
+    /**
+     * Valid mobile number
+     * @type {string}
+     * @memberof CreateReservationDTOContact
+     */
+    'contact_number': string;
+    /**
+     * Customer ID that you want us to save for you, optional so you can pass guest users as well
+     * @type {string}
+     * @memberof CreateReservationDTOContact
+     */
+    'id'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateReservationEntity
+ */
+export interface CreateReservationEntity {
+    /**
+     * New reservation id
+     * @type {string}
+     * @memberof CreateReservationEntity
+     */
+    'reservation_id': string;
+    /**
+     * Unique reservation number, you can use this for customer reference
+     * @type {string}
+     * @memberof CreateReservationEntity
+     */
+    'reservation_number': string;
 }
 /**
  * 
@@ -1181,13 +1379,19 @@ export interface OrderExtraClass {
      */
     'code': string;
     /**
+     * Extra ID
+     * @type {string}
+     * @memberof OrderExtraClass
+     */
+    'id': string;
+    /**
      * Name of the extra
      * @type {string}
      * @memberof OrderExtraClass
      */
     'name': string;
     /**
-     * Pertains to the regular price of the extra
+     * Indicates the regular price of the extra
      * @type {string}
      * @memberof OrderExtraClass
      */
@@ -1432,6 +1636,12 @@ export interface OrderPartialClassStoreDetails {
  * @interface PromoDTO
  */
 export interface PromoDTO {
+    /**
+     * Indicates delivery payment will be paid by cash
+     * @type {boolean}
+     * @memberof PromoDTO
+     */
+    'is_cod': boolean;
     /**
      * Promo code
      * @type {string}
@@ -1691,6 +1901,459 @@ export interface QuotationRequestDTOCustomer {
 /**
  * 
  * @export
+ * @interface ReservationContact
+ */
+export interface ReservationContact {
+    /**
+     * Customer first name
+     * @type {string}
+     * @memberof ReservationContact
+     */
+    'first_name': string;
+    /**
+     * Customer last name
+     * @type {string}
+     * @memberof ReservationContact
+     */
+    'last_name': string;
+    /**
+     * Valid personal or business email address
+     * @type {string}
+     * @memberof ReservationContact
+     */
+    'email': string;
+    /**
+     * Valid mobile number
+     * @type {string}
+     * @memberof ReservationContact
+     */
+    'contact_number': string;
+    /**
+     * Customer ID that you want us to save for you, optional so you can pass guest users as well
+     * @type {string}
+     * @memberof ReservationContact
+     */
+    'id'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ReservationCustomerEntity
+ */
+export interface ReservationCustomerEntity {
+    /**
+     * Customer ID that you passed to us
+     * @type {string}
+     * @memberof ReservationCustomerEntity
+     */
+    'id'?: string;
+    /**
+     * Customer\'s first name
+     * @type {string}
+     * @memberof ReservationCustomerEntity
+     */
+    'first_name': string;
+    /**
+     * Customer\'s last name
+     * @type {string}
+     * @memberof ReservationCustomerEntity
+     */
+    'last_name': string;
+    /**
+     * Valid email address of the customer
+     * @type {string}
+     * @memberof ReservationCustomerEntity
+     */
+    'email': string;
+    /**
+     * Valid mobile number of the customer
+     * @type {string}
+     * @memberof ReservationCustomerEntity
+     */
+    'contact_number': string;
+}
+/**
+ * 
+ * @export
+ * @interface ReservationInfoEntity
+ */
+export interface ReservationInfoEntity {
+    /**
+     * 
+     * @type {ReservationInfoEntityContact}
+     * @memberof ReservationInfoEntity
+     */
+    'contact': ReservationInfoEntityContact;
+    /**
+     * Reservation id
+     * @type {string}
+     * @memberof ReservationInfoEntity
+     */
+    'id': string;
+    /**
+     * Reservation status
+     * @type {string}
+     * @memberof ReservationInfoEntity
+     */
+    'status': string;
+    /**
+     * Reserved seats
+     * @type {number}
+     * @memberof ReservationInfoEntity
+     */
+    'seats': number;
+    /**
+     * Reserved date
+     * @type {string}
+     * @memberof ReservationInfoEntity
+     */
+    'date': string;
+    /**
+     * Reserved time in military format
+     * @type {string}
+     * @memberof ReservationInfoEntity
+     */
+    'time': string;
+    /**
+     * Reservation request last update timestamp
+     * @type {string}
+     * @memberof ReservationInfoEntity
+     */
+    'last_updated': string;
+    /**
+     * Reservation request timestamp
+     * @type {string}
+     * @memberof ReservationInfoEntity
+     */
+    'created': string;
+    /**
+     * 
+     * @type {ReservationInfoEntityType}
+     * @memberof ReservationInfoEntity
+     */
+    'type'?: ReservationInfoEntityType;
+    /**
+     * 
+     * @type {ReservationInfoEntityPayment}
+     * @memberof ReservationInfoEntity
+     */
+    'payment'?: ReservationInfoEntityPayment;
+    /**
+     * 
+     * @type {ReservationInfoEntityStore}
+     * @memberof ReservationInfoEntity
+     */
+    'store': ReservationInfoEntityStore;
+    /**
+     * Unique reservation reference number
+     * @type {string}
+     * @memberof ReservationInfoEntity
+     */
+    'reservation_number': string;
+    /**
+     * Customer request
+     * @type {string}
+     * @memberof ReservationInfoEntity
+     */
+    'remarks'?: string;
+    /**
+     * Store note
+     * @type {string}
+     * @memberof ReservationInfoEntity
+     */
+    'notes'?: string;
+    /**
+     * Refunded amount if reservation fee is refunded
+     * @type {number}
+     * @memberof ReservationInfoEntity
+     */
+    'refunded_amount'?: number;
+}
+/**
+ * Customer information
+ * @export
+ * @interface ReservationInfoEntityContact
+ */
+export interface ReservationInfoEntityContact {
+    /**
+     * Customer ID that you passed to us
+     * @type {string}
+     * @memberof ReservationInfoEntityContact
+     */
+    'id'?: string;
+    /**
+     * Customer\'s first name
+     * @type {string}
+     * @memberof ReservationInfoEntityContact
+     */
+    'first_name': string;
+    /**
+     * Customer\'s last name
+     * @type {string}
+     * @memberof ReservationInfoEntityContact
+     */
+    'last_name': string;
+    /**
+     * Valid email address of the customer
+     * @type {string}
+     * @memberof ReservationInfoEntityContact
+     */
+    'email': string;
+    /**
+     * Valid mobile number of the customer
+     * @type {string}
+     * @memberof ReservationInfoEntityContact
+     */
+    'contact_number': string;
+}
+/**
+ * Payment information and status
+ * @export
+ * @interface ReservationInfoEntityPayment
+ */
+export interface ReservationInfoEntityPayment {
+    /**
+     * Total amount paid/to be paid for this reservation to be accepted
+     * @type {number}
+     * @memberof ReservationInfoEntityPayment
+     */
+    'amount': number;
+    /**
+     * Customer\'s selected payment method
+     * @type {string}
+     * @memberof ReservationInfoEntityPayment
+     */
+    'payment_method': string;
+    /**
+     * Customer\'s payment status
+     * @type {string}
+     * @memberof ReservationInfoEntityPayment
+     */
+    'status': string;
+}
+/**
+ * Store information
+ * @export
+ * @interface ReservationInfoEntityStore
+ */
+export interface ReservationInfoEntityStore {
+    /**
+     * Id that will be used on searching store
+     * @type {string}
+     * @memberof ReservationInfoEntityStore
+     */
+    'id': string;
+    /**
+     * Store background image
+     * @type {string}
+     * @memberof ReservationInfoEntityStore
+     */
+    'store_bg': string;
+    /**
+     * Store distance limit for deliveries (in kilometers)
+     * @type {number}
+     * @memberof ReservationInfoEntityStore
+     */
+    'delivery_distance_limit'?: number;
+    /**
+     * Store opening and closing time
+     * @type {Array<StoreHoursClass>}
+     * @memberof ReservationInfoEntityStore
+     */
+    'store_hours': Array<StoreHoursClass>;
+    /**
+     * Store display name
+     * @type {string}
+     * @memberof ReservationInfoEntityStore
+     */
+    'name': string;
+    /**
+     * Store display logo
+     * @type {string}
+     * @memberof ReservationInfoEntityStore
+     */
+    'store_logo': string;
+    /**
+     * Store description
+     * @type {string}
+     * @memberof ReservationInfoEntityStore
+     */
+    'store_description': string;
+    /**
+     * Store address string used in delivery order type
+     * @type {string}
+     * @memberof ReservationInfoEntityStore
+     */
+    'location'?: string;
+    /**
+     * Store JSON geocoded address
+     * @type {string}
+     * @memberof ReservationInfoEntityStore
+     */
+    'geocode_location'?: string;
+    /**
+     * Store tags
+     * @type {Array<string>}
+     * @memberof ReservationInfoEntityStore
+     */
+    'store_tags'?: Array<string>;
+    /**
+     * Merchant displayed contact number
+     * @type {string}
+     * @memberof ReservationInfoEntityStore
+     */
+    'contact_number': string;
+    /**
+     * Store status helper, pertains to store being open and will be accepting order
+     * @type {boolean}
+     * @memberof ReservationInfoEntityStore
+     */
+    'is_store_open': boolean;
+    /**
+     * Pre-order feature is enabled
+     * @type {boolean}
+     * @memberof ReservationInfoEntityStore
+     */
+    'is_accepting_in_advanced_orders': boolean;
+}
+/**
+ * Reservation type information
+ * @export
+ * @interface ReservationInfoEntityType
+ */
+export interface ReservationInfoEntityType {
+    /**
+     * Reservation type id
+     * @type {string}
+     * @memberof ReservationInfoEntityType
+     */
+    'id': string;
+    /**
+     * Reservation type name
+     * @type {string}
+     * @memberof ReservationInfoEntityType
+     */
+    'name': string;
+    /**
+     * Reservation type description
+     * @type {string}
+     * @memberof ReservationInfoEntityType
+     */
+    'description': string;
+    /**
+     * Indicates if this type of reservation is still active
+     * @type {boolean}
+     * @memberof ReservationInfoEntityType
+     */
+    'is_active': boolean;
+    /**
+     * Indicates the maximum seats that can be reserved, 0 means no limit
+     * @type {number}
+     * @memberof ReservationInfoEntityType
+     */
+    'limit': number;
+    /**
+     * Indicates the minumum required seats that can be reserved
+     * @type {number}
+     * @memberof ReservationInfoEntityType
+     */
+    'minimum': number;
+    /**
+     * Reservation end date, void means no end date
+     * @type {string}
+     * @memberof ReservationInfoEntityType
+     */
+    'end_date'?: string;
+    /**
+     * Reservation start date, void means no start date
+     * @type {string}
+     * @memberof ReservationInfoEntityType
+     */
+    'start_date'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ReservationPaymentEntity
+ */
+export interface ReservationPaymentEntity {
+    /**
+     * Total amount paid/to be paid for this reservation to be accepted
+     * @type {number}
+     * @memberof ReservationPaymentEntity
+     */
+    'amount': number;
+    /**
+     * Customer\'s selected payment method
+     * @type {string}
+     * @memberof ReservationPaymentEntity
+     */
+    'payment_method': string;
+    /**
+     * Customer\'s payment status
+     * @type {string}
+     * @memberof ReservationPaymentEntity
+     */
+    'status': string;
+}
+/**
+ * 
+ * @export
+ * @interface ReservationSettingEntity
+ */
+export interface ReservationSettingEntity {
+    /**
+     * Reservation type id
+     * @type {string}
+     * @memberof ReservationSettingEntity
+     */
+    'id': string;
+    /**
+     * Reservation type name
+     * @type {string}
+     * @memberof ReservationSettingEntity
+     */
+    'name': string;
+    /**
+     * Reservation type description
+     * @type {string}
+     * @memberof ReservationSettingEntity
+     */
+    'description': string;
+    /**
+     * Indicates if this type of reservation is still active
+     * @type {boolean}
+     * @memberof ReservationSettingEntity
+     */
+    'is_active': boolean;
+    /**
+     * Indicates the maximum seats that can be reserved, 0 means no limit
+     * @type {number}
+     * @memberof ReservationSettingEntity
+     */
+    'limit': number;
+    /**
+     * Indicates the minumum required seats that can be reserved
+     * @type {number}
+     * @memberof ReservationSettingEntity
+     */
+    'minimum': number;
+    /**
+     * Reservation end date, void means no end date
+     * @type {string}
+     * @memberof ReservationSettingEntity
+     */
+    'end_date'?: string;
+    /**
+     * Reservation start date, void means no start date
+     * @type {string}
+     * @memberof ReservationSettingEntity
+     */
+    'start_date'?: string;
+}
+/**
+ * 
+ * @export
  * @interface StoreClass
  */
 export interface StoreClass {
@@ -1711,7 +2374,7 @@ export interface StoreClass {
      * @type {number}
      * @memberof StoreClass
      */
-    'delivery_distance_limit': number;
+    'delivery_distance_limit'?: number;
     /**
      * Store accepts curbside delivery
      * @type {boolean}
@@ -1839,12 +2502,6 @@ export interface StoreClass {
      */
     'store_tags'?: Array<string>;
     /**
-     * List of items related to name
-     * @type {Array<ItemPartialClass>}
-     * @memberof StoreClass
-     */
-    'searched_items'?: Array<ItemPartialClass>;
-    /**
      * Merchant displayed contact number
      * @type {string}
      * @memberof StoreClass
@@ -1942,7 +2599,7 @@ export interface StorePartialClass {
      * @type {number}
      * @memberof StorePartialClass
      */
-    'delivery_distance_limit': number;
+    'delivery_distance_limit'?: number;
     /**
      * Store opening and closing time
      * @type {Array<StoreHoursClass>}
@@ -1986,12 +2643,6 @@ export interface StorePartialClass {
      */
     'store_tags'?: Array<string>;
     /**
-     * List of items related to name
-     * @type {Array<ItemPartialClass>}
-     * @memberof StorePartialClass
-     */
-    'searched_items'?: Array<ItemPartialClass>;
-    /**
      * Merchant displayed contact number
      * @type {string}
      * @memberof StorePartialClass
@@ -2007,6 +2658,178 @@ export interface StorePartialClass {
      * Pre-order feature is enabled
      * @type {boolean}
      * @memberof StorePartialClass
+     */
+    'is_accepting_in_advanced_orders': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface StoreReservationClass
+ */
+export interface StoreReservationClass {
+    /**
+     * 
+     * @type {string}
+     * @memberof StoreReservationClass
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof StoreReservationClass
+     */
+    'type': StoreReservationClassTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof StoreReservationClass
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof StoreReservationClass
+     */
+    'description': string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof StoreReservationClass
+     */
+    'hours': Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof StoreReservationClass
+     */
+    'payment_type': StoreReservationClassPaymentTypeEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof StoreReservationClass
+     */
+    'limit': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof StoreReservationClass
+     */
+    'minimum': number;
+    /**
+     * 
+     * @type {StorePartialClass}
+     * @memberof StoreReservationClass
+     */
+    'store': StorePartialClass;
+    /**
+     * 
+     * @type {number}
+     * @memberof StoreReservationClass
+     */
+    'fee': number;
+}
+
+export const StoreReservationClassTypeEnum = {
+    Table: 'table',
+    Event: 'event'
+} as const;
+
+export type StoreReservationClassTypeEnum = typeof StoreReservationClassTypeEnum[keyof typeof StoreReservationClassTypeEnum];
+export const StoreReservationClassPaymentTypeEnum = {
+    AllIn: 'all_in',
+    PerGuest: 'per_guest'
+} as const;
+
+export type StoreReservationClassPaymentTypeEnum = typeof StoreReservationClassPaymentTypeEnum[keyof typeof StoreReservationClassPaymentTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface StoreSearchClass
+ */
+export interface StoreSearchClass {
+    /**
+     * Id that will be used on searching store
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'id': string;
+    /**
+     * Store background image
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'store_bg': string;
+    /**
+     * Store distance limit for deliveries (in kilometers)
+     * @type {number}
+     * @memberof StoreSearchClass
+     */
+    'delivery_distance_limit'?: number;
+    /**
+     * List of items related to name
+     * @type {Array<ItemPartialClass>}
+     * @memberof StoreSearchClass
+     */
+    'searched_items'?: Array<ItemPartialClass>;
+    /**
+     * Store opening and closing time
+     * @type {Array<StoreHoursClass>}
+     * @memberof StoreSearchClass
+     */
+    'store_hours': Array<StoreHoursClass>;
+    /**
+     * Store display name
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'name': string;
+    /**
+     * Store display logo
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'store_logo': string;
+    /**
+     * Store description
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'store_description': string;
+    /**
+     * Store address string used in delivery order type
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'location'?: string;
+    /**
+     * Store JSON geocoded address
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'geocode_location'?: string;
+    /**
+     * Store tags
+     * @type {Array<string>}
+     * @memberof StoreSearchClass
+     */
+    'store_tags'?: Array<string>;
+    /**
+     * Merchant displayed contact number
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'contact_number': string;
+    /**
+     * Store status helper, pertains to store being open and will be accepting order
+     * @type {boolean}
+     * @memberof StoreSearchClass
+     */
+    'is_store_open': boolean;
+    /**
+     * Pre-order feature is enabled
+     * @type {boolean}
+     * @memberof StoreSearchClass
      */
     'is_accepting_in_advanced_orders': boolean;
 }
@@ -2036,10 +2859,10 @@ export interface StoresEntity {
     'total_pages': number;
     /**
      * 
-     * @type {Array<StorePartialClass>}
+     * @type {Array<StoreSearchClass>}
      * @memberof StoresEntity
      */
-    'result': Array<StorePartialClass>;
+    'result': Array<StoreSearchClass>;
     /**
      * 
      * @type {number}
@@ -3260,6 +4083,447 @@ export class PromoApi extends BaseAPI {
      */
     public promoControllerValidatePromo(requestParameters: PromoApiPromoControllerValidatePromoRequest, options?: AxiosRequestConfig) {
         return PromoApiFp(this.configuration).promoControllerValidatePromo(requestParameters.promoDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * ReservationBetaApi - axios parameter creator
+ * @export
+ */
+export const ReservationBetaApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Confirm reservation
+         * @param {ConfirmReservationDTO} confirmReservationDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerConfirmReservation: async (confirmReservationDTO: ConfirmReservationDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'confirmReservationDTO' is not null or undefined
+            assertParamExists('reservationControllerConfirmReservation', 'confirmReservationDTO', confirmReservationDTO)
+            const localVarPath = `/v1/reservation/confirm`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(confirmReservationDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Create reservation request
+         * @param {CreateReservationDTO} createReservationDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerCreateReservation: async (createReservationDTO: CreateReservationDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createReservationDTO' is not null or undefined
+            assertParamExists('reservationControllerCreateReservation', 'createReservationDTO', createReservationDTO)
+            const localVarPath = `/v1/reservation`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createReservationDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get reservation status and information
+         * @param {string} reservationId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerGetReservationInfo: async (reservationId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'reservationId' is not null or undefined
+            assertParamExists('reservationControllerGetReservationInfo', 'reservationId', reservationId)
+            const localVarPath = `/v1/reservation/{reservation_id}`
+                .replace(`{${"reservation_id"}}`, encodeURIComponent(String(reservationId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get store list that offers reservations
+         * @param {string} seats Intended number of seats to reserve
+         * @param {string} date Intended date to reserve
+         * @param {string} time Intended time to reserve
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerGetStoresWithReservations: async (seats: string, date: string, time: string, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'seats' is not null or undefined
+            assertParamExists('reservationControllerGetStoresWithReservations', 'seats', seats)
+            // verify required parameter 'date' is not null or undefined
+            assertParamExists('reservationControllerGetStoresWithReservations', 'date', date)
+            // verify required parameter 'time' is not null or undefined
+            assertParamExists('reservationControllerGetStoresWithReservations', 'time', time)
+            const localVarPath = `/v1/reservation/store/search`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+            if (seats !== undefined) {
+                localVarQueryParameter['seats'] = seats;
+            }
+
+            if (date !== undefined) {
+                localVarQueryParameter['date'] = date;
+            }
+
+            if (time !== undefined) {
+                localVarQueryParameter['time'] = time;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ReservationBetaApi - functional programming interface
+ * @export
+ */
+export const ReservationBetaApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ReservationBetaApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Confirm reservation
+         * @param {ConfirmReservationDTO} confirmReservationDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async reservationControllerConfirmReservation(confirmReservationDTO: ConfirmReservationDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ConfirmReservationEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reservationControllerConfirmReservation(confirmReservationDTO, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Create reservation request
+         * @param {CreateReservationDTO} createReservationDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async reservationControllerCreateReservation(createReservationDTO: CreateReservationDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateReservationEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reservationControllerCreateReservation(createReservationDTO, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get reservation status and information
+         * @param {string} reservationId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async reservationControllerGetReservationInfo(reservationId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReservationInfoEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reservationControllerGetReservationInfo(reservationId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get store list that offers reservations
+         * @param {string} seats Intended number of seats to reserve
+         * @param {string} date Intended date to reserve
+         * @param {string} time Intended time to reserve
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async reservationControllerGetStoresWithReservations(seats: string, date: string, time: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AvailableReservationEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reservationControllerGetStoresWithReservations(seats, date, time, limit, offset, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * ReservationBetaApi - factory interface
+ * @export
+ */
+export const ReservationBetaApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ReservationBetaApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Confirm reservation
+         * @param {ConfirmReservationDTO} confirmReservationDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerConfirmReservation(confirmReservationDTO: ConfirmReservationDTO, options?: any): AxiosPromise<ConfirmReservationEntity> {
+            return localVarFp.reservationControllerConfirmReservation(confirmReservationDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Create reservation request
+         * @param {CreateReservationDTO} createReservationDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerCreateReservation(createReservationDTO: CreateReservationDTO, options?: any): AxiosPromise<CreateReservationEntity> {
+            return localVarFp.reservationControllerCreateReservation(createReservationDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get reservation status and information
+         * @param {string} reservationId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerGetReservationInfo(reservationId: string, options?: any): AxiosPromise<ReservationInfoEntity> {
+            return localVarFp.reservationControllerGetReservationInfo(reservationId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get store list that offers reservations
+         * @param {string} seats Intended number of seats to reserve
+         * @param {string} date Intended date to reserve
+         * @param {string} time Intended time to reserve
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerGetStoresWithReservations(seats: string, date: string, time: string, limit?: number, offset?: number, options?: any): AxiosPromise<AvailableReservationEntity> {
+            return localVarFp.reservationControllerGetStoresWithReservations(seats, date, time, limit, offset, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for reservationControllerConfirmReservation operation in ReservationBetaApi.
+ * @export
+ * @interface ReservationBetaApiReservationControllerConfirmReservationRequest
+ */
+export interface ReservationBetaApiReservationControllerConfirmReservationRequest {
+    /**
+     * 
+     * @type {ConfirmReservationDTO}
+     * @memberof ReservationBetaApiReservationControllerConfirmReservation
+     */
+    readonly confirmReservationDTO: ConfirmReservationDTO
+}
+
+/**
+ * Request parameters for reservationControllerCreateReservation operation in ReservationBetaApi.
+ * @export
+ * @interface ReservationBetaApiReservationControllerCreateReservationRequest
+ */
+export interface ReservationBetaApiReservationControllerCreateReservationRequest {
+    /**
+     * 
+     * @type {CreateReservationDTO}
+     * @memberof ReservationBetaApiReservationControllerCreateReservation
+     */
+    readonly createReservationDTO: CreateReservationDTO
+}
+
+/**
+ * Request parameters for reservationControllerGetReservationInfo operation in ReservationBetaApi.
+ * @export
+ * @interface ReservationBetaApiReservationControllerGetReservationInfoRequest
+ */
+export interface ReservationBetaApiReservationControllerGetReservationInfoRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ReservationBetaApiReservationControllerGetReservationInfo
+     */
+    readonly reservationId: string
+}
+
+/**
+ * Request parameters for reservationControllerGetStoresWithReservations operation in ReservationBetaApi.
+ * @export
+ * @interface ReservationBetaApiReservationControllerGetStoresWithReservationsRequest
+ */
+export interface ReservationBetaApiReservationControllerGetStoresWithReservationsRequest {
+    /**
+     * Intended number of seats to reserve
+     * @type {string}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
+     */
+    readonly seats: string
+
+    /**
+     * Intended date to reserve
+     * @type {string}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
+     */
+    readonly date: string
+
+    /**
+     * Intended time to reserve
+     * @type {string}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
+     */
+    readonly time: string
+
+    /**
+     * The number of record to return, 0 means all will be returned
+     * @type {number}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
+     */
+    readonly limit?: number
+
+    /**
+     * The number of records to skip
+     * @type {number}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
+     */
+    readonly offset?: number
+}
+
+/**
+ * ReservationBetaApi - object-oriented interface
+ * @export
+ * @class ReservationBetaApi
+ * @extends {BaseAPI}
+ */
+export class ReservationBetaApi extends BaseAPI {
+    /**
+     * 
+     * @summary Confirm reservation
+     * @param {ReservationBetaApiReservationControllerConfirmReservationRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationBetaApi
+     */
+    public reservationControllerConfirmReservation(requestParameters: ReservationBetaApiReservationControllerConfirmReservationRequest, options?: AxiosRequestConfig) {
+        return ReservationBetaApiFp(this.configuration).reservationControllerConfirmReservation(requestParameters.confirmReservationDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Create reservation request
+     * @param {ReservationBetaApiReservationControllerCreateReservationRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationBetaApi
+     */
+    public reservationControllerCreateReservation(requestParameters: ReservationBetaApiReservationControllerCreateReservationRequest, options?: AxiosRequestConfig) {
+        return ReservationBetaApiFp(this.configuration).reservationControllerCreateReservation(requestParameters.createReservationDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get reservation status and information
+     * @param {ReservationBetaApiReservationControllerGetReservationInfoRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationBetaApi
+     */
+    public reservationControllerGetReservationInfo(requestParameters: ReservationBetaApiReservationControllerGetReservationInfoRequest, options?: AxiosRequestConfig) {
+        return ReservationBetaApiFp(this.configuration).reservationControllerGetReservationInfo(requestParameters.reservationId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get store list that offers reservations
+     * @param {ReservationBetaApiReservationControllerGetStoresWithReservationsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationBetaApi
+     */
+    public reservationControllerGetStoresWithReservations(requestParameters: ReservationBetaApiReservationControllerGetStoresWithReservationsRequest, options?: AxiosRequestConfig) {
+        return ReservationBetaApiFp(this.configuration).reservationControllerGetStoresWithReservations(requestParameters.seats, requestParameters.date, requestParameters.time, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
