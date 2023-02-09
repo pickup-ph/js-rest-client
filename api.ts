@@ -1513,6 +1513,24 @@ export interface OrderPartialClass {
      */
     'delivery_paid_by_cash': boolean;
     /**
+     * Promotional discount applied on amount paid
+     * @type {number}
+     * @memberof OrderPartialClass
+     */
+    'promo_discount': number;
+    /**
+     * Indicates where the promotional discount has been applied
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'promo_base': OrderPartialClassPromoBaseEnum;
+    /**
+     * 
+     * @type {OrderPartialClassPromo}
+     * @memberof OrderPartialClass
+     */
+    'promo': OrderPartialClassPromo;
+    /**
      * Order type
      * @type {string}
      * @memberof OrderPartialClass
@@ -1584,8 +1602,20 @@ export interface OrderPartialClass {
      * @memberof OrderPartialClass
      */
     'tracking_page': string;
+    /**
+     * Store notes
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'store_notes': string;
 }
 
+export const OrderPartialClassPromoBaseEnum = {
+    Cart: 'cart',
+    Delivery: 'delivery'
+} as const;
+
+export type OrderPartialClassPromoBaseEnum = typeof OrderPartialClassPromoBaseEnum[keyof typeof OrderPartialClassPromoBaseEnum];
 export const OrderPartialClassOrderTypeEnum = {
     Delivery: 'delivery',
     Pickup: 'pickup',
@@ -1604,6 +1634,83 @@ export const OrderPartialClassStatusEnum = {
 } as const;
 
 export type OrderPartialClassStatusEnum = typeof OrderPartialClassStatusEnum[keyof typeof OrderPartialClassStatusEnum];
+
+/**
+ * Applied promo information
+ * @export
+ * @interface OrderPartialClassPromo
+ */
+export interface OrderPartialClassPromo {
+    /**
+     * Promo code
+     * @type {string}
+     * @memberof OrderPartialClassPromo
+     */
+    'code': string;
+    /**
+     * Type of this promo
+     * @type {string}
+     * @memberof OrderPartialClassPromo
+     */
+    'type': OrderPartialClassPromoTypeEnum;
+    /**
+     * Identifies order types this promo belongs to
+     * @type {Array<string>}
+     * @memberof OrderPartialClassPromo
+     */
+    'applies_to': Array<string>;
+    /**
+     * Promo discount as amount deductable
+     * @type {number}
+     * @memberof OrderPartialClassPromo
+     */
+    'amount_off': number;
+    /**
+     * Promo discount as percentage
+     * @type {number}
+     * @memberof OrderPartialClassPromo
+     */
+    'percentage_off': number;
+    /**
+     * Promo discount for delivery fee
+     * @type {number}
+     * @memberof OrderPartialClassPromo
+     */
+    'subsidized_delivery_amount': number;
+    /**
+     * Minimum total amount for this promo to be valid
+     * @type {number}
+     * @memberof OrderPartialClassPromo
+     */
+    'minimum_purchase': number;
+    /**
+     * Promo description
+     * @type {string}
+     * @memberof OrderPartialClassPromo
+     */
+    'free_item_description'?: string;
+    /**
+     * Promo start date
+     * @type {string}
+     * @memberof OrderPartialClassPromo
+     */
+    'start_date': string;
+    /**
+     * Promo end date
+     * @type {string}
+     * @memberof OrderPartialClassPromo
+     */
+    'end_date': string;
+}
+
+export const OrderPartialClassPromoTypeEnum = {
+    FreeItem: 'free_item',
+    AmountOff: 'amount_off',
+    PercentageOff: 'percentage_off',
+    FreeDelivery: 'free_delivery'
+} as const;
+
+export type OrderPartialClassPromoTypeEnum = typeof OrderPartialClassPromoTypeEnum[keyof typeof OrderPartialClassPromoTypeEnum];
 
 /**
  * Store Details
@@ -1684,23 +1791,29 @@ export type PromoDTOOrderTypeEnum = typeof PromoDTOOrderTypeEnum[keyof typeof Pr
  */
 export interface PromoDiscountDetails {
     /**
-     * Total amount to be paid, used as base of calculation
+     * Amount to be paid before promo is applied, used as base of calculation
      * @type {number}
      * @memberof PromoDiscountDetails
      */
     'original': number;
     /**
-     * Total amount after promo is applied
+     * Total amount after calculated promo is applied
      * @type {number}
      * @memberof PromoDiscountDetails
      */
     'applied': number;
     /**
-     * Total promo value
+     * Calculated promo value deducted from original price
      * @type {number}
      * @memberof PromoDiscountDetails
      */
     'total': number;
+    /**
+     * Base promo value, if promo type is amount_off this is Php 20.00 if type is percentage_off this is 20%
+     * @type {string}
+     * @memberof PromoDiscountDetails
+     */
+    'value': string;
 }
 /**
  * 
@@ -2930,23 +3043,29 @@ export type ValidPromoEntityTypeEnum = typeof ValidPromoEntityTypeEnum[keyof typ
  */
 export interface ValidPromoEntityPromo {
     /**
-     * Total amount to be paid, used as base of calculation
+     * Amount to be paid before promo is applied, used as base of calculation
      * @type {number}
      * @memberof ValidPromoEntityPromo
      */
     'original': number;
     /**
-     * Total amount after promo is applied
+     * Total amount after calculated promo is applied
      * @type {number}
      * @memberof ValidPromoEntityPromo
      */
     'applied': number;
     /**
-     * Total promo value
+     * Calculated promo value deducted from original price
      * @type {number}
      * @memberof ValidPromoEntityPromo
      */
     'total': number;
+    /**
+     * Base promo value, if promo type is amount_off this is Php 20.00 if type is percentage_off this is 20%
+     * @type {string}
+     * @memberof ValidPromoEntityPromo
+     */
+    'value': string;
 }
 
 /**
