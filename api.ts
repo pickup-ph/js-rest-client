@@ -45,6 +45,12 @@ export interface AttachedReservationPaymentEntity {
      * @memberof AttachedReservationPaymentEntity
      */
     'next_action_url'?: string;
+    /**
+     * additional response detail
+     * @type {string}
+     * @memberof AttachedReservationPaymentEntity
+     */
+    'detail'?: string;
 }
 /**
  * 
@@ -692,6 +698,12 @@ export interface GroupSelectionClass {
  */
 export interface ItemClass {
     /**
+     * Indicates item to not be shown to customers on an off-date
+     * @type {boolean}
+     * @memberof ItemClass
+     */
+    'is_visible_on_off_date'?: boolean;
+    /**
      * Item id that will be used for cart building on /cart route
      * @type {string}
      * @memberof ItemClass
@@ -818,12 +830,6 @@ export interface ItemClass {
      */
     'tags': Array<string>;
     /**
-     * Indicates item to not be shown to customers on an off-date
-     * @type {boolean}
-     * @memberof ItemClass
-     */
-    'is_visible_on_off_date'?: boolean;
-    /**
      * Item is available for order
      * @type {boolean}
      * @memberof ItemClass
@@ -867,6 +873,12 @@ export interface ItemInventoryEntity {
  * @interface ItemPartialClass
  */
 export interface ItemPartialClass {
+    /**
+     * Indicates item to not be shown to customers on an off-date
+     * @type {boolean}
+     * @memberof ItemPartialClass
+     */
+    'is_visible_on_off_date'?: boolean;
     /**
      * Item id that will be used for cart building on /cart route
      * @type {string}
@@ -951,12 +963,6 @@ export interface ItemPartialClass {
      * @memberof ItemPartialClass
      */
     'tags': Array<string>;
-    /**
-     * Indicates item to not be shown to customers on an off-date
-     * @type {boolean}
-     * @memberof ItemPartialClass
-     */
-    'is_visible_on_off_date'?: boolean;
     /**
      * Item is available for order
      * @type {boolean}
@@ -1094,6 +1100,12 @@ export interface MenuClass {
  */
 export interface MenuClassItem {
     /**
+     * Indicates item to not be shown to customers on an off-date
+     * @type {boolean}
+     * @memberof MenuClassItem
+     */
+    'is_visible_on_off_date'?: boolean;
+    /**
      * Item id that will be used for cart building on /cart route
      * @type {string}
      * @memberof MenuClassItem
@@ -1219,12 +1231,6 @@ export interface MenuClassItem {
      * @memberof MenuClassItem
      */
     'tags': Array<string>;
-    /**
-     * Indicates item to not be shown to customers on an off-date
-     * @type {boolean}
-     * @memberof MenuClassItem
-     */
-    'is_visible_on_off_date'?: boolean;
     /**
      * Item is available for order
      * @type {boolean}
@@ -2612,6 +2618,18 @@ export interface ReservationTypeClass {
      * @memberof ReservationTypeClass
      */
     'time_slots': string;
+    /**
+     * Reservation end date, void means no end date
+     * @type {string}
+     * @memberof ReservationTypeClass
+     */
+    'end_date'?: string;
+    /**
+     * Reservation start date, void means no start date
+     * @type {string}
+     * @memberof ReservationTypeClass
+     */
+    'start_date'?: string;
 }
 
 export const ReservationTypeClassTypeEnum = {
@@ -3059,6 +3077,18 @@ export interface StoreReservationClassReservations {
      * @memberof StoreReservationClassReservations
      */
     'time_slots': string;
+    /**
+     * Reservation end date, void means no end date
+     * @type {string}
+     * @memberof StoreReservationClassReservations
+     */
+    'end_date'?: string;
+    /**
+     * Reservation start date, void means no start date
+     * @type {string}
+     * @memberof StoreReservationClassReservations
+     */
+    'start_date'?: string;
 }
 
 export const StoreReservationClassReservationsTypeEnum = {
