@@ -2139,6 +2139,43 @@ export interface ReservationCustomerEntity {
 /**
  * 
  * @export
+ * @interface ReservationEntity
+ */
+export interface ReservationEntity {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ReservationEntity
+     */
+    'has_next_page': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ReservationEntity
+     */
+    'has_prev_page': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReservationEntity
+     */
+    'total_pages': number;
+    /**
+     * 
+     * @type {Array<ReservationInfoEntity>}
+     * @memberof ReservationEntity
+     */
+    'result': Array<ReservationInfoEntity>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReservationEntity
+     */
+    'page': number;
+}
+/**
+ * 
+ * @export
  * @interface ReservationInfoEntity
  */
 export interface ReservationInfoEntity {
@@ -2276,6 +2313,12 @@ export interface ReservationInfoEntityContact {
  * @interface ReservationInfoEntityPayment
  */
 export interface ReservationInfoEntityPayment {
+    /**
+     * Customer\'s payment reference number
+     * @type {string}
+     * @memberof ReservationInfoEntityPayment
+     */
+    'payment_id'?: string;
     /**
      * Total amount paid/to be paid for this reservation to be accepted
      * @type {number}
@@ -2472,6 +2515,12 @@ export interface ReservationPaymentAttachDTO {
  * @interface ReservationPaymentEntity
  */
 export interface ReservationPaymentEntity {
+    /**
+     * Customer\'s payment reference number
+     * @type {string}
+     * @memberof ReservationPaymentEntity
+     */
+    'payment_id'?: string;
     /**
      * Total amount paid/to be paid for this reservation to be accepted
      * @type {number}
@@ -4611,6 +4660,61 @@ export const ReservationBetaApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
+         * @summary Get Reservation History
+         * @param {string} id Customer ID that you passed to us
+         * @param {'pending' | 'new' | 'accepted' | 'canceled' | 'completed'} [status] Reservation status filter
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerGetReservationHistory: async (id: string, status?: 'pending' | 'new' | 'accepted' | 'canceled' | 'completed', limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('reservationControllerGetReservationHistory', 'id', id)
+            const localVarPath = `/v1/reservation/history`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+            if (id !== undefined) {
+                localVarQueryParameter['id'] = id;
+            }
+
+            if (status !== undefined) {
+                localVarQueryParameter['status'] = status;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get reservation status and information
          * @param {string} reservationId Reservation id
          * @param {*} [options] Override http request option.
@@ -4799,6 +4903,20 @@ export const ReservationBetaApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get Reservation History
+         * @param {string} id Customer ID that you passed to us
+         * @param {'pending' | 'new' | 'accepted' | 'canceled' | 'completed'} [status] Reservation status filter
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async reservationControllerGetReservationHistory(id: string, status?: 'pending' | 'new' | 'accepted' | 'canceled' | 'completed', limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReservationEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reservationControllerGetReservationHistory(id, status, limit, offset, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get reservation status and information
          * @param {string} reservationId Reservation id
          * @param {*} [options] Override http request option.
@@ -4874,6 +4992,19 @@ export const ReservationBetaApiFactory = function (configuration?: Configuration
          */
         reservationControllerCreateReservation(createReservationDTO: CreateReservationDTO, options?: any): AxiosPromise<CreateReservationEntity> {
             return localVarFp.reservationControllerCreateReservation(createReservationDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Reservation History
+         * @param {string} id Customer ID that you passed to us
+         * @param {'pending' | 'new' | 'accepted' | 'canceled' | 'completed'} [status] Reservation status filter
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerGetReservationHistory(id: string, status?: 'pending' | 'new' | 'accepted' | 'canceled' | 'completed', limit?: number, offset?: number, options?: any): AxiosPromise<ReservationEntity> {
+            return localVarFp.reservationControllerGetReservationHistory(id, status, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4953,6 +5084,41 @@ export interface ReservationBetaApiReservationControllerCreateReservationRequest
      * @memberof ReservationBetaApiReservationControllerCreateReservation
      */
     readonly createReservationDTO: CreateReservationDTO
+}
+
+/**
+ * Request parameters for reservationControllerGetReservationHistory operation in ReservationBetaApi.
+ * @export
+ * @interface ReservationBetaApiReservationControllerGetReservationHistoryRequest
+ */
+export interface ReservationBetaApiReservationControllerGetReservationHistoryRequest {
+    /**
+     * Customer ID that you passed to us
+     * @type {string}
+     * @memberof ReservationBetaApiReservationControllerGetReservationHistory
+     */
+    readonly id: string
+
+    /**
+     * Reservation status filter
+     * @type {'pending' | 'new' | 'accepted' | 'canceled' | 'completed'}
+     * @memberof ReservationBetaApiReservationControllerGetReservationHistory
+     */
+    readonly status?: 'pending' | 'new' | 'accepted' | 'canceled' | 'completed'
+
+    /**
+     * The number of record to return, 0 means all will be returned
+     * @type {number}
+     * @memberof ReservationBetaApiReservationControllerGetReservationHistory
+     */
+    readonly limit?: number
+
+    /**
+     * The number of records to skip
+     * @type {number}
+     * @memberof ReservationBetaApiReservationControllerGetReservationHistory
+     */
+    readonly offset?: number
 }
 
 /**
@@ -5073,6 +5239,18 @@ export class ReservationBetaApi extends BaseAPI {
      */
     public reservationControllerCreateReservation(requestParameters: ReservationBetaApiReservationControllerCreateReservationRequest, options?: AxiosRequestConfig) {
         return ReservationBetaApiFp(this.configuration).reservationControllerCreateReservation(requestParameters.createReservationDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Reservation History
+     * @param {ReservationBetaApiReservationControllerGetReservationHistoryRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationBetaApi
+     */
+    public reservationControllerGetReservationHistory(requestParameters: ReservationBetaApiReservationControllerGetReservationHistoryRequest, options?: AxiosRequestConfig) {
+        return ReservationBetaApiFp(this.configuration).reservationControllerGetReservationHistory(requestParameters.id, requestParameters.status, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
