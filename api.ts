@@ -131,6 +131,12 @@ export interface CartDTO {
      * @memberof CartDTO
      */
     'order_time'?: string;
+    /**
+     * Promo code
+     * @type {string}
+     * @memberof CartDTO
+     */
+    'promo_code'?: string;
 }
 
 export const CartDTOOrderTypeEnum = {
@@ -1043,6 +1049,31 @@ export interface ItemsEntity {
      * @memberof ItemsEntity
      */
     'page': number;
+}
+/**
+ * 
+ * @export
+ * @interface LocationPointDTO
+ */
+export interface LocationPointDTO {
+    /**
+     * Maximum store delivery distance in kilometers
+     * @type {number}
+     * @memberof LocationPointDTO
+     */
+    'max_radius': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof LocationPointDTO
+     */
+    'lng': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof LocationPointDTO
+     */
+    'lat': number;
 }
 /**
  * 
@@ -2399,6 +2430,12 @@ export interface ReservationInfoEntityStore {
      */
     'geocode_location'?: string;
     /**
+     * Distance from location_point to Store Distance in Kilometers
+     * @type {number}
+     * @memberof ReservationInfoEntityStore
+     */
+    'distance'?: number;
+    /**
      * Store tags
      * @type {Array<string>}
      * @memberof ReservationInfoEntityStore
@@ -2728,6 +2765,119 @@ export interface ReservationTypeClassHours {
 /**
  * 
  * @export
+ * @interface SearchStoreDTO
+ */
+export interface SearchStoreDTO {
+    /**
+     * 
+     * @type {SearchStoreDTOLocationPoint}
+     * @memberof SearchStoreDTO
+     */
+    'location_point'?: SearchStoreDTOLocationPoint;
+    /**
+     * ISO8601 compliant date string, defaults to current server date
+     * @type {string}
+     * @memberof SearchStoreDTO
+     */
+    'order_date'?: string;
+    /**
+     * Pre-order time filter in HH:MM format, void (omitting it) means stores that accepts ASAP order will be returned
+     * @type {string}
+     * @memberof SearchStoreDTO
+     */
+    'order_time'?: string;
+    /**
+     * General search key name for \"store name\",\"item name\", \"item description\"
+     * @type {string}
+     * @memberof SearchStoreDTO
+     */
+    'name'?: string;
+    /**
+     * Store tags filter comma separated
+     * @type {Array<string>}
+     * @memberof SearchStoreDTO
+     */
+    'tags'?: Array<string>;
+    /**
+     * Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
+     * @type {boolean}
+     * @memberof SearchStoreDTO
+     */
+    'open_only'?: boolean;
+    /**
+     * Store supported fulfillment service
+     * @type {string}
+     * @memberof SearchStoreDTO
+     */
+    'order_type'?: SearchStoreDTOOrderTypeEnum;
+    /**
+     * Filter store via id
+     * @type {Array<string>}
+     * @memberof SearchStoreDTO
+     */
+    'ids'?: Array<string>;
+    /**
+     * Custom data-driven filters
+     * @type {string}
+     * @memberof SearchStoreDTO
+     */
+    'funnel'?: SearchStoreDTOFunnelEnum;
+    /**
+     * The number of record to return, 0 means all will be returned
+     * @type {number}
+     * @memberof SearchStoreDTO
+     */
+    'limit'?: number;
+    /**
+     * The number of records to skip
+     * @type {number}
+     * @memberof SearchStoreDTO
+     */
+    'offset'?: number;
+}
+
+export const SearchStoreDTOOrderTypeEnum = {
+    Delivery: 'delivery',
+    Pickup: 'pickup',
+    ThirdPartyPickup: 'third_party_pickup',
+    CurbsidePickup: 'curbside_pickup'
+} as const;
+
+export type SearchStoreDTOOrderTypeEnum = typeof SearchStoreDTOOrderTypeEnum[keyof typeof SearchStoreDTOOrderTypeEnum];
+export const SearchStoreDTOFunnelEnum = {
+    PopularDay: 'popular_day'
+} as const;
+
+export type SearchStoreDTOFunnelEnum = typeof SearchStoreDTOFunnelEnum[keyof typeof SearchStoreDTOFunnelEnum];
+
+/**
+ * Optional location for kilometer distance search
+ * @export
+ * @interface SearchStoreDTOLocationPoint
+ */
+export interface SearchStoreDTOLocationPoint {
+    /**
+     * Maximum store delivery distance in kilometers
+     * @type {number}
+     * @memberof SearchStoreDTOLocationPoint
+     */
+    'max_radius': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchStoreDTOLocationPoint
+     */
+    'lng': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchStoreDTOLocationPoint
+     */
+    'lat': number;
+}
+/**
+ * 
+ * @export
  * @interface StoreClass
  */
 export interface StoreClass {
@@ -2870,6 +3020,12 @@ export interface StoreClass {
      */
     'geocode_location'?: string;
     /**
+     * Distance from location_point to Store Distance in Kilometers
+     * @type {number}
+     * @memberof StoreClass
+     */
+    'distance'?: number;
+    /**
      * Store tags
      * @type {Array<string>}
      * @memberof StoreClass
@@ -3010,6 +3166,12 @@ export interface StorePartialClass {
      * @memberof StorePartialClass
      */
     'geocode_location'?: string;
+    /**
+     * Distance from location_point to Store Distance in Kilometers
+     * @type {number}
+     * @memberof StorePartialClass
+     */
+    'distance'?: number;
     /**
      * Store tags
      * @type {Array<string>}
@@ -3250,6 +3412,12 @@ export interface StoreSearchClass {
      * @memberof StoreSearchClass
      */
     'geocode_location'?: string;
+    /**
+     * Distance from location_point to Store Distance in Kilometers
+     * @type {number}
+     * @memberof StoreSearchClass
+     */
+    'distance'?: number;
     /**
      * Store tags
      * @type {Array<string>}
@@ -5300,21 +5468,13 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Find store
-         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
-         * @param {string} [orderTime] Pre-order time filter in HH:MM format, void (omitting it) means stores that accepts ASAP order will be returned
-         * @param {string} [name] General search key name for \&quot;store name\&quot;,\&quot;item name\&quot;, \&quot;item description\&quot;
-         * @param {Array<string>} [tags] Store tags filter comma separated
-         * @param {number} [maxDistance] Maximum store delivery distance in kilometers
-         * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
-         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Store supported fulfillment service
-         * @param {Array<string>} [ids] Filter store via id
-         * @param {'popular_day'} [funnel] Custom data-driven filters
-         * @param {number} [limit] The number of record to return, 0 means all will be returned
-         * @param {number} [offset] The number of records to skip
+         * @param {SearchStoreDTO} searchStoreDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFind: async (orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', ids?: Array<string>, funnel?: 'popular_day', limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        storeControllerFind: async (searchStoreDTO: SearchStoreDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'searchStoreDTO' is not null or undefined
+            assertParamExists('storeControllerFind', 'searchStoreDTO', searchStoreDTO)
             const localVarPath = `/v1/store`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5323,62 +5483,21 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication api-key required
             await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
 
-            if (orderDate !== undefined) {
-                localVarQueryParameter['order_date'] = orderDate;
-            }
-
-            if (orderTime !== undefined) {
-                localVarQueryParameter['order_time'] = orderTime;
-            }
-
-            if (name !== undefined) {
-                localVarQueryParameter['name'] = name;
-            }
-
-            if (tags) {
-                localVarQueryParameter['tags'] = tags;
-            }
-
-            if (maxDistance !== undefined) {
-                localVarQueryParameter['max_distance'] = maxDistance;
-            }
-
-            if (openOnly !== undefined) {
-                localVarQueryParameter['open_only'] = openOnly;
-            }
-
-            if (orderType !== undefined) {
-                localVarQueryParameter['order_type'] = orderType;
-            }
-
-            if (ids) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-            if (funnel !== undefined) {
-                localVarQueryParameter['funnel'] = funnel;
-            }
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(searchStoreDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5435,22 +5554,12 @@ export const StoreApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Find store
-         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
-         * @param {string} [orderTime] Pre-order time filter in HH:MM format, void (omitting it) means stores that accepts ASAP order will be returned
-         * @param {string} [name] General search key name for \&quot;store name\&quot;,\&quot;item name\&quot;, \&quot;item description\&quot;
-         * @param {Array<string>} [tags] Store tags filter comma separated
-         * @param {number} [maxDistance] Maximum store delivery distance in kilometers
-         * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
-         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Store supported fulfillment service
-         * @param {Array<string>} [ids] Filter store via id
-         * @param {'popular_day'} [funnel] Custom data-driven filters
-         * @param {number} [limit] The number of record to return, 0 means all will be returned
-         * @param {number} [offset] The number of records to skip
+         * @param {SearchStoreDTO} searchStoreDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async storeControllerFind(orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', ids?: Array<string>, funnel?: 'popular_day', limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoresEntity>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFind(orderDate, orderTime, name, tags, maxDistance, openOnly, orderType, ids, funnel, limit, offset, options);
+        async storeControllerFind(searchStoreDTO: SearchStoreDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoresEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFind(searchStoreDTO, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -5477,22 +5586,12 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
         /**
          * 
          * @summary Find store
-         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
-         * @param {string} [orderTime] Pre-order time filter in HH:MM format, void (omitting it) means stores that accepts ASAP order will be returned
-         * @param {string} [name] General search key name for \&quot;store name\&quot;,\&quot;item name\&quot;, \&quot;item description\&quot;
-         * @param {Array<string>} [tags] Store tags filter comma separated
-         * @param {number} [maxDistance] Maximum store delivery distance in kilometers
-         * @param {boolean} [openOnly] Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
-         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Store supported fulfillment service
-         * @param {Array<string>} [ids] Filter store via id
-         * @param {'popular_day'} [funnel] Custom data-driven filters
-         * @param {number} [limit] The number of record to return, 0 means all will be returned
-         * @param {number} [offset] The number of records to skip
+         * @param {SearchStoreDTO} searchStoreDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFind(orderDate?: string, orderTime?: string, name?: string, tags?: Array<string>, maxDistance?: number, openOnly?: boolean, orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', ids?: Array<string>, funnel?: 'popular_day', limit?: number, offset?: number, options?: any): AxiosPromise<StoresEntity> {
-            return localVarFp.storeControllerFind(orderDate, orderTime, name, tags, maxDistance, openOnly, orderType, ids, funnel, limit, offset, options).then((request) => request(axios, basePath));
+        storeControllerFind(searchStoreDTO: SearchStoreDTO, options?: any): AxiosPromise<StoresEntity> {
+            return localVarFp.storeControllerFind(searchStoreDTO, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5514,81 +5613,11 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
  */
 export interface StoreApiStoreControllerFindRequest {
     /**
-     * ISO8601 compliant date string, defaults to current server date
-     * @type {string}
+     * 
+     * @type {SearchStoreDTO}
      * @memberof StoreApiStoreControllerFind
      */
-    readonly orderDate?: string
-
-    /**
-     * Pre-order time filter in HH:MM format, void (omitting it) means stores that accepts ASAP order will be returned
-     * @type {string}
-     * @memberof StoreApiStoreControllerFind
-     */
-    readonly orderTime?: string
-
-    /**
-     * General search key name for \&quot;store name\&quot;,\&quot;item name\&quot;, \&quot;item description\&quot;
-     * @type {string}
-     * @memberof StoreApiStoreControllerFind
-     */
-    readonly name?: string
-
-    /**
-     * Store tags filter comma separated
-     * @type {Array<string>}
-     * @memberof StoreApiStoreControllerFind
-     */
-    readonly tags?: Array<string>
-
-    /**
-     * Maximum store delivery distance in kilometers
-     * @type {number}
-     * @memberof StoreApiStoreControllerFind
-     */
-    readonly maxDistance?: number
-
-    /**
-     * Store status filter, null means all stores will be returned regardless if it is open or closed on the selected order_date and order_time
-     * @type {boolean}
-     * @memberof StoreApiStoreControllerFind
-     */
-    readonly openOnly?: boolean
-
-    /**
-     * Store supported fulfillment service
-     * @type {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'}
-     * @memberof StoreApiStoreControllerFind
-     */
-    readonly orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'
-
-    /**
-     * Filter store via id
-     * @type {Array<string>}
-     * @memberof StoreApiStoreControllerFind
-     */
-    readonly ids?: Array<string>
-
-    /**
-     * Custom data-driven filters
-     * @type {'popular_day'}
-     * @memberof StoreApiStoreControllerFind
-     */
-    readonly funnel?: 'popular_day'
-
-    /**
-     * The number of record to return, 0 means all will be returned
-     * @type {number}
-     * @memberof StoreApiStoreControllerFind
-     */
-    readonly limit?: number
-
-    /**
-     * The number of records to skip
-     * @type {number}
-     * @memberof StoreApiStoreControllerFind
-     */
-    readonly offset?: number
+    readonly searchStoreDTO: SearchStoreDTO
 }
 
 /**
@@ -5620,8 +5649,8 @@ export class StoreApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof StoreApi
      */
-    public storeControllerFind(requestParameters: StoreApiStoreControllerFindRequest = {}, options?: AxiosRequestConfig) {
-        return StoreApiFp(this.configuration).storeControllerFind(requestParameters.orderDate, requestParameters.orderTime, requestParameters.name, requestParameters.tags, requestParameters.maxDistance, requestParameters.openOnly, requestParameters.orderType, requestParameters.ids, requestParameters.funnel, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    public storeControllerFind(requestParameters: StoreApiStoreControllerFindRequest, options?: AxiosRequestConfig) {
+        return StoreApiFp(this.configuration).storeControllerFind(requestParameters.searchStoreDTO, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
