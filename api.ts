@@ -2495,7 +2495,7 @@ export interface ReservationInfoEntityType {
      * @type {number}
      * @memberof ReservationInfoEntityType
      */
-    'limit': number;
+    'maximum': number;
     /**
      * Indicates the minumum required seats that can be reserved
      * @type {number}
@@ -2612,7 +2612,7 @@ export interface ReservationSettingEntity {
      * @type {number}
      * @memberof ReservationSettingEntity
      */
-    'limit': number;
+    'maximum': number;
     /**
      * Indicates the minumum required seats that can be reserved
      * @type {number}
@@ -4968,12 +4968,13 @@ export const ReservationBetaApiAxiosParamCreator = function (configuration?: Con
          * @param {string} seats Intended number of seats to reserve
          * @param {string} date Intended date to reserve
          * @param {string} time Intended time to reserve
+         * @param {'table' | 'event'} [type] 
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        reservationControllerGetStoresWithReservations: async (seats: string, date: string, time: string, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        reservationControllerGetStoresWithReservations: async (seats: string, date: string, time: string, type?: 'table' | 'event', limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'seats' is not null or undefined
             assertParamExists('reservationControllerGetStoresWithReservations', 'seats', seats)
             // verify required parameter 'date' is not null or undefined
@@ -5005,6 +5006,10 @@ export const ReservationBetaApiAxiosParamCreator = function (configuration?: Con
 
             if (time !== undefined) {
                 localVarQueryParameter['time'] = time;
+            }
+
+            if (type !== undefined) {
+                localVarQueryParameter['type'] = type;
             }
 
             if (limit !== undefined) {
@@ -5112,13 +5117,14 @@ export const ReservationBetaApiFp = function(configuration?: Configuration) {
          * @param {string} seats Intended number of seats to reserve
          * @param {string} date Intended date to reserve
          * @param {string} time Intended time to reserve
+         * @param {'table' | 'event'} [type] 
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async reservationControllerGetStoresWithReservations(seats: string, date: string, time: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AvailableReservationEntity>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.reservationControllerGetStoresWithReservations(seats, date, time, limit, offset, options);
+        async reservationControllerGetStoresWithReservations(seats: string, date: string, time: string, type?: 'table' | 'event', limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AvailableReservationEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reservationControllerGetStoresWithReservations(seats, date, time, type, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -5201,13 +5207,14 @@ export const ReservationBetaApiFactory = function (configuration?: Configuration
          * @param {string} seats Intended number of seats to reserve
          * @param {string} date Intended date to reserve
          * @param {string} time Intended time to reserve
+         * @param {'table' | 'event'} [type] 
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        reservationControllerGetStoresWithReservations(seats: string, date: string, time: string, limit?: number, offset?: number, options?: any): AxiosPromise<AvailableReservationEntity> {
-            return localVarFp.reservationControllerGetStoresWithReservations(seats, date, time, limit, offset, options).then((request) => request(axios, basePath));
+        reservationControllerGetStoresWithReservations(seats: string, date: string, time: string, type?: 'table' | 'event', limit?: number, offset?: number, options?: any): AxiosPromise<AvailableReservationEntity> {
+            return localVarFp.reservationControllerGetStoresWithReservations(seats, date, time, type, limit, offset, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -5352,6 +5359,13 @@ export interface ReservationBetaApiReservationControllerGetStoresWithReservation
     readonly time: string
 
     /**
+     * 
+     * @type {'table' | 'event'}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
+     */
+    readonly type?: 'table' | 'event'
+
+    /**
      * The number of record to return, 0 means all will be returned
      * @type {number}
      * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
@@ -5454,7 +5468,7 @@ export class ReservationBetaApi extends BaseAPI {
      * @memberof ReservationBetaApi
      */
     public reservationControllerGetStoresWithReservations(requestParameters: ReservationBetaApiReservationControllerGetStoresWithReservationsRequest, options?: AxiosRequestConfig) {
-        return ReservationBetaApiFp(this.configuration).reservationControllerGetStoresWithReservations(requestParameters.seats, requestParameters.date, requestParameters.time, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+        return ReservationBetaApiFp(this.configuration).reservationControllerGetStoresWithReservations(requestParameters.seats, requestParameters.date, requestParameters.time, requestParameters.type, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
