@@ -1816,6 +1816,12 @@ export interface OrderPartialClassStoreDetails {
  */
 export interface PromoDTO {
     /**
+     * 
+     * @type {Array<CartItemDTO>}
+     * @memberof PromoDTO
+     */
+    'items': Array<CartItemDTO>;
+    /**
      * Indicates delivery payment will be paid by cash
      * @type {boolean}
      * @memberof PromoDTO
@@ -1833,12 +1839,6 @@ export interface PromoDTO {
      * @memberof PromoDTO
      */
     'store_id': string;
-    /**
-     * Total price of the items in cart
-     * @type {number}
-     * @memberof PromoDTO
-     */
-    'total_amount': number;
     /**
      * Intended order type for this promo
      * @type {string}
@@ -2923,6 +2923,12 @@ export interface StoreClass {
      * @memberof StoreClass
      */
     'is_meal_plan_active': boolean;
+    /**
+     * Meal plan discount offered, 0 means no discounts for meal plan items
+     * @type {number}
+     * @memberof StoreClass
+     */
+    'meal_plan_discount': number;
     /**
      * Store accepts dine in order
      * @type {boolean}
