@@ -2673,7 +2673,7 @@ export interface ReservationTypeClass {
      * @type {number}
      * @memberof ReservationTypeClass
      */
-    'limit': number;
+    'maximum': number;
     /**
      * Min seats that can be reserved per reservation
      * @type {number}
@@ -3263,7 +3263,7 @@ export interface StoreReservationClassReservations {
      * @type {number}
      * @memberof StoreReservationClassReservations
      */
-    'limit': number;
+    'maximum': number;
     /**
      * Min seats that can be reserved per reservation
      * @type {number}
