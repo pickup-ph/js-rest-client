@@ -2430,12 +2430,6 @@ export interface ReservationInfoEntityStore {
      */
     'geocode_location'?: string;
     /**
-     * Distance from location_point to Store Distance in Kilometers
-     * @type {number}
-     * @memberof ReservationInfoEntityStore
-     */
-    'distance'?: number;
-    /**
      * Store tags
      * @type {Array<string>}
      * @memberof ReservationInfoEntityStore
@@ -3026,12 +3020,6 @@ export interface StoreClass {
      */
     'geocode_location'?: string;
     /**
-     * Distance from location_point to Store Distance in Kilometers
-     * @type {number}
-     * @memberof StoreClass
-     */
-    'distance'?: number;
-    /**
      * Store tags
      * @type {Array<string>}
      * @memberof StoreClass
@@ -3172,12 +3160,6 @@ export interface StorePartialClass {
      * @memberof StorePartialClass
      */
     'geocode_location'?: string;
-    /**
-     * Distance from location_point to Store Distance in Kilometers
-     * @type {number}
-     * @memberof StorePartialClass
-     */
-    'distance'?: number;
     /**
      * Store tags
      * @type {Array<string>}
@@ -3383,6 +3365,12 @@ export interface StoreSearchClass {
      */
     'searched_items'?: Array<ItemPartialClass>;
     /**
+     * Distance from location_point to Store Distance in Kilometers
+     * @type {number}
+     * @memberof StoreSearchClass
+     */
+    'distance'?: number;
+    /**
      * Store opening and closing time
      * @type {Array<StoreHoursClass>}
      * @memberof StoreSearchClass
@@ -3418,12 +3406,6 @@ export interface StoreSearchClass {
      * @memberof StoreSearchClass
      */
     'geocode_location'?: string;
-    /**
-     * Distance from location_point to Store Distance in Kilometers
-     * @type {number}
-     * @memberof StoreSearchClass
-     */
-    'distance'?: number;
     /**
      * Store tags
      * @type {Array<string>}
