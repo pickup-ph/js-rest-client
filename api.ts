@@ -2629,6 +2629,25 @@ export interface ReservationSettingEntity {
 /**
  * 
  * @export
+ * @interface ReservationTimeSlots
+ */
+export interface ReservationTimeSlots {
+    /**
+     * The available time that can be reserved
+     * @type {string}
+     * @memberof ReservationTimeSlots
+     */
+    'time': string;
+    /**
+     * Available number of slots that can be reserved, \"-1\" means no limit and maximum will be used
+     * @type {number}
+     * @memberof ReservationTimeSlots
+     */
+    'available': number;
+}
+/**
+ * 
+ * @export
  * @interface ReservationTypeClass
  */
 export interface ReservationTypeClass {
@@ -2694,10 +2713,10 @@ export interface ReservationTypeClass {
     'fee': number;
     /**
      * UI helper, this is the calculated time slots that can be reserved within the selected reservation date
-     * @type {string}
+     * @type {Array<ReservationTimeSlots>}
      * @memberof ReservationTypeClass
      */
-    'time_slots': string;
+    'time_slots': Array<ReservationTimeSlots>;
     /**
      * Reservation end date, void means no end date
      * @type {string}
@@ -3272,10 +3291,10 @@ export interface StoreReservationClassReservations {
     'fee': number;
     /**
      * UI helper, this is the calculated time slots that can be reserved within the selected reservation date
-     * @type {string}
+     * @type {Array<ReservationTimeSlots>}
      * @memberof StoreReservationClassReservations
      */
-    'time_slots': string;
+    'time_slots': Array<ReservationTimeSlots>;
     /**
      * Reservation end date, void means no end date
      * @type {string}
