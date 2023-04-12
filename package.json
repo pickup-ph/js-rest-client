@@ -1,6 +1,6 @@
 {
   "name": "@pickupph/rest-client",
-  "version": "1.1.0",
+  "version": "1.0.30",
   "description": "OpenAPI client for @pickupph/rest-client",
   "author": "OpenAPI-Generator Contributors",
   "repository": {
@@ -22,7 +22,7 @@
     "prepare": "npm run build",
     "test": "echo \"Running tests for version $npm_package_version...\"",
     "preversion": "yarn test",
-    "postversion": "git push --tags && yarn publish . --tag $npm_package_version && git push && echo \"Successfully released version $npm_package_version!\""
+    "postversion": "echo \"Successfully released version $npm_package_version!\""
   },
   "dependencies": {
     "axios": "^0.26.1"

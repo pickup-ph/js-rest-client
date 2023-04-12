@@ -504,30 +504,6 @@ export interface CustomerQuoteDTO {
      */
     'address': CustomerAddressDTO;
     /**
-     * 
-     * @type {string}
-     * @memberof CustomerQuoteDTO
-     */
-    'first_name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomerQuoteDTO
-     */
-    'last_name': string;
-    /**
-     * The customer mobile number, does NOT support e164 format
-     * @type {string}
-     * @memberof CustomerQuoteDTO
-     */
-    'mobile_number': string;
-    /**
-     * A valid customer personal or work email
-     * @type {string}
-     * @memberof CustomerQuoteDTO
-     */
-    'email': string;
-    /**
      * A unique identifier for this customer
      * @type {string}
      * @memberof CustomerQuoteDTO
@@ -2035,6 +2011,12 @@ export interface QuotationRequestDTO {
      * @memberof QuotationRequestDTO
      */
     'order_date'?: string;
+    /**
+     * Meal plan type for meal plan quotation
+     * @type {string}
+     * @memberof QuotationRequestDTO
+     */
+    'meal_plan_type'?: QuotationRequestDTOMealPlanTypeEnum;
 }
 
 export const QuotationRequestDTODeliveryPaymentMethodEnum = {
@@ -2049,6 +2031,12 @@ export const QuotationRequestDTODeliveryVehicleEnum = {
 } as const;
 
 export type QuotationRequestDTODeliveryVehicleEnum = typeof QuotationRequestDTODeliveryVehicleEnum[keyof typeof QuotationRequestDTODeliveryVehicleEnum];
+export const QuotationRequestDTOMealPlanTypeEnum = {
+    _3Day: '3_day',
+    _5Day: '5_day'
+} as const;
+
+export type QuotationRequestDTOMealPlanTypeEnum = typeof QuotationRequestDTOMealPlanTypeEnum[keyof typeof QuotationRequestDTOMealPlanTypeEnum];
 
 /**
  * Customer Details
@@ -2062,30 +2050,6 @@ export interface QuotationRequestDTOCustomer {
      * @memberof QuotationRequestDTOCustomer
      */
     'address': CustomerAddressDTO;
-    /**
-     * 
-     * @type {string}
-     * @memberof QuotationRequestDTOCustomer
-     */
-    'first_name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof QuotationRequestDTOCustomer
-     */
-    'last_name': string;
-    /**
-     * The customer mobile number, does NOT support e164 format
-     * @type {string}
-     * @memberof QuotationRequestDTOCustomer
-     */
-    'mobile_number': string;
-    /**
-     * A valid customer personal or work email
-     * @type {string}
-     * @memberof QuotationRequestDTOCustomer
-     */
-    'email': string;
     /**
      * A unique identifier for this customer
      * @type {string}
@@ -2453,6 +2417,12 @@ export interface ReservationInfoEntityStore {
      * @memberof ReservationInfoEntityStore
      */
     'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Designated time for meal plan in military time
+     * @type {string}
+     * @memberof ReservationInfoEntityStore
+     */
+    'meal_plan_order_time': string;
 }
 /**
  * Reservation type information
@@ -2778,6 +2748,63 @@ export interface ReservationTypeClassHours {
 /**
  * 
  * @export
+ * @interface SearchAvailableStoresForReservationDTO
+ */
+export interface SearchAvailableStoresForReservationDTO {
+    /**
+     * 
+     * @type {SearchStoreDTOLocationPoint}
+     * @memberof SearchAvailableStoresForReservationDTO
+     */
+    'location_point'?: SearchStoreDTOLocationPoint;
+    /**
+     * Intended number of seats to reserve
+     * @type {string}
+     * @memberof SearchAvailableStoresForReservationDTO
+     */
+    'seats': string;
+    /**
+     * Intended date to reserve
+     * @type {string}
+     * @memberof SearchAvailableStoresForReservationDTO
+     */
+    'date': string;
+    /**
+     * Intended time to reserve
+     * @type {string}
+     * @memberof SearchAvailableStoresForReservationDTO
+     */
+    'time': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SearchAvailableStoresForReservationDTO
+     */
+    'type'?: SearchAvailableStoresForReservationDTOTypeEnum;
+    /**
+     * The number of record to return, 0 means all will be returned
+     * @type {number}
+     * @memberof SearchAvailableStoresForReservationDTO
+     */
+    'limit'?: number;
+    /**
+     * The number of records to skip
+     * @type {number}
+     * @memberof SearchAvailableStoresForReservationDTO
+     */
+    'offset'?: number;
+}
+
+export const SearchAvailableStoresForReservationDTOTypeEnum = {
+    Table: 'table',
+    Event: 'event'
+} as const;
+
+export type SearchAvailableStoresForReservationDTOTypeEnum = typeof SearchAvailableStoresForReservationDTOTypeEnum[keyof typeof SearchAvailableStoresForReservationDTOTypeEnum];
+
+/**
+ * 
+ * @export
  * @interface SearchStoreDTO
  */
 export interface SearchStoreDTO {
@@ -3062,6 +3089,12 @@ export interface StoreClass {
      * @memberof StoreClass
      */
     'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Designated time for meal plan in military time
+     * @type {string}
+     * @memberof StoreClass
+     */
+    'meal_plan_order_time': string;
 }
 /**
  * 
@@ -3203,6 +3236,12 @@ export interface StorePartialClass {
      * @memberof StorePartialClass
      */
     'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Designated time for meal plan in military time
+     * @type {string}
+     * @memberof StorePartialClass
+     */
+    'meal_plan_order_time': string;
 }
 /**
  * 
@@ -3449,6 +3488,12 @@ export interface StoreSearchClass {
      * @memberof StoreSearchClass
      */
     'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Designated time for meal plan in military time
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'meal_plan_order_time': string;
 }
 /**
  * 
@@ -4972,22 +5017,13 @@ export const ReservationBetaApiAxiosParamCreator = function (configuration?: Con
         /**
          * 
          * @summary Get store list that offers reservations
-         * @param {string} seats Intended number of seats to reserve
-         * @param {string} date Intended date to reserve
-         * @param {string} time Intended time to reserve
-         * @param {'table' | 'event'} [type] 
-         * @param {number} [limit] The number of record to return, 0 means all will be returned
-         * @param {number} [offset] The number of records to skip
+         * @param {SearchAvailableStoresForReservationDTO} searchAvailableStoresForReservationDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        reservationControllerGetStoresWithReservations: async (seats: string, date: string, time: string, type?: 'table' | 'event', limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'seats' is not null or undefined
-            assertParamExists('reservationControllerGetStoresWithReservations', 'seats', seats)
-            // verify required parameter 'date' is not null or undefined
-            assertParamExists('reservationControllerGetStoresWithReservations', 'date', date)
-            // verify required parameter 'time' is not null or undefined
-            assertParamExists('reservationControllerGetStoresWithReservations', 'time', time)
+        reservationControllerGetStoresWithReservations: async (searchAvailableStoresForReservationDTO: SearchAvailableStoresForReservationDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'searchAvailableStoresForReservationDTO' is not null or undefined
+            assertParamExists('reservationControllerGetStoresWithReservations', 'searchAvailableStoresForReservationDTO', searchAvailableStoresForReservationDTO)
             const localVarPath = `/v1/reservation/store/search`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4996,42 +5032,21 @@ export const ReservationBetaApiAxiosParamCreator = function (configuration?: Con
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication api-key required
             await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
 
-            if (seats !== undefined) {
-                localVarQueryParameter['seats'] = seats;
-            }
-
-            if (date !== undefined) {
-                localVarQueryParameter['date'] = date;
-            }
-
-            if (time !== undefined) {
-                localVarQueryParameter['time'] = time;
-            }
-
-            if (type !== undefined) {
-                localVarQueryParameter['type'] = type;
-            }
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(searchAvailableStoresForReservationDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5121,17 +5136,12 @@ export const ReservationBetaApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Get store list that offers reservations
-         * @param {string} seats Intended number of seats to reserve
-         * @param {string} date Intended date to reserve
-         * @param {string} time Intended time to reserve
-         * @param {'table' | 'event'} [type] 
-         * @param {number} [limit] The number of record to return, 0 means all will be returned
-         * @param {number} [offset] The number of records to skip
+         * @param {SearchAvailableStoresForReservationDTO} searchAvailableStoresForReservationDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async reservationControllerGetStoresWithReservations(seats: string, date: string, time: string, type?: 'table' | 'event', limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AvailableReservationEntity>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.reservationControllerGetStoresWithReservations(seats, date, time, type, limit, offset, options);
+        async reservationControllerGetStoresWithReservations(searchAvailableStoresForReservationDTO: SearchAvailableStoresForReservationDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AvailableReservationEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reservationControllerGetStoresWithReservations(searchAvailableStoresForReservationDTO, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -5211,17 +5221,12 @@ export const ReservationBetaApiFactory = function (configuration?: Configuration
         /**
          * 
          * @summary Get store list that offers reservations
-         * @param {string} seats Intended number of seats to reserve
-         * @param {string} date Intended date to reserve
-         * @param {string} time Intended time to reserve
-         * @param {'table' | 'event'} [type] 
-         * @param {number} [limit] The number of record to return, 0 means all will be returned
-         * @param {number} [offset] The number of records to skip
+         * @param {SearchAvailableStoresForReservationDTO} searchAvailableStoresForReservationDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        reservationControllerGetStoresWithReservations(seats: string, date: string, time: string, type?: 'table' | 'event', limit?: number, offset?: number, options?: any): AxiosPromise<AvailableReservationEntity> {
-            return localVarFp.reservationControllerGetStoresWithReservations(seats, date, time, type, limit, offset, options).then((request) => request(axios, basePath));
+        reservationControllerGetStoresWithReservations(searchAvailableStoresForReservationDTO: SearchAvailableStoresForReservationDTO, options?: any): AxiosPromise<AvailableReservationEntity> {
+            return localVarFp.reservationControllerGetStoresWithReservations(searchAvailableStoresForReservationDTO, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -5345,46 +5350,11 @@ export interface ReservationBetaApiReservationControllerGetReservationTypeInfoRe
  */
 export interface ReservationBetaApiReservationControllerGetStoresWithReservationsRequest {
     /**
-     * Intended number of seats to reserve
-     * @type {string}
-     * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
-     */
-    readonly seats: string
-
-    /**
-     * Intended date to reserve
-     * @type {string}
-     * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
-     */
-    readonly date: string
-
-    /**
-     * Intended time to reserve
-     * @type {string}
-     * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
-     */
-    readonly time: string
-
-    /**
      * 
-     * @type {'table' | 'event'}
+     * @type {SearchAvailableStoresForReservationDTO}
      * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
      */
-    readonly type?: 'table' | 'event'
-
-    /**
-     * The number of record to return, 0 means all will be returned
-     * @type {number}
-     * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
-     */
-    readonly limit?: number
-
-    /**
-     * The number of records to skip
-     * @type {number}
-     * @memberof ReservationBetaApiReservationControllerGetStoresWithReservations
-     */
-    readonly offset?: number
+    readonly searchAvailableStoresForReservationDTO: SearchAvailableStoresForReservationDTO
 }
 
 /**
@@ -5475,7 +5445,7 @@ export class ReservationBetaApi extends BaseAPI {
      * @memberof ReservationBetaApi
      */
     public reservationControllerGetStoresWithReservations(requestParameters: ReservationBetaApiReservationControllerGetStoresWithReservationsRequest, options?: AxiosRequestConfig) {
-        return ReservationBetaApiFp(this.configuration).reservationControllerGetStoresWithReservations(requestParameters.seats, requestParameters.date, requestParameters.time, requestParameters.type, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+        return ReservationBetaApiFp(this.configuration).reservationControllerGetStoresWithReservations(requestParameters.searchAvailableStoresForReservationDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
