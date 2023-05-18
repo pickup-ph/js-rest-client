@@ -1325,41 +1325,11 @@ export interface OrderDetailsClassItem {
      */
     'image_url': string;
     /**
-     * The item discount description
-     * @type {string}
-     * @memberof OrderDetailsClassItem
-     */
-    'discount_description'?: string;
-    /**
-     * The peso value of the current active item discount. If discount_type is rawDiscount, this is equal to the discount_value. If percentDiscount, this is equal to the regular_price multiplied to the discount_value/100.
-     * @type {string}
-     * @memberof OrderDetailsClassItem
-     */
-    'active_discount'?: string;
-    /**
      * The active price of the item, if there is an active discount, this should be equal to the discounted_price, if there is no active discount, this should be equal to the regular price
      * @type {string}
      * @memberof OrderDetailsClassItem
      */
     'price': string;
-    /**
-     * The type of discount applied (\"noDiscount\", \"rawDiscount\", \"percentDiscount\")
-     * @type {string}
-     * @memberof OrderDetailsClassItem
-     */
-    'discount_type'?: string;
-    /**
-     * The value of the discount applied. For example if discount_value is \"20\", if discount_type is percentDiscount, this means 20% off. If discount_type is rawDiscount, this means P20.00 off.
-     * @type {string}
-     * @memberof OrderDetailsClassItem
-     */
-    'discount_value'?: string;
-    /**
-     * The peso value of the item, applying the active_discount to the regular_price.
-     * @type {string}
-     * @memberof OrderDetailsClassItem
-     */
-    'discounted_price': string;
     /**
      * The peso value of the item without any discounts.
      * @type {string}
@@ -1466,41 +1436,11 @@ export interface OrderItemClass {
      */
     'image_url': string;
     /**
-     * The item discount description
-     * @type {string}
-     * @memberof OrderItemClass
-     */
-    'discount_description'?: string;
-    /**
-     * The peso value of the current active item discount. If discount_type is rawDiscount, this is equal to the discount_value. If percentDiscount, this is equal to the regular_price multiplied to the discount_value/100.
-     * @type {string}
-     * @memberof OrderItemClass
-     */
-    'active_discount'?: string;
-    /**
      * The active price of the item, if there is an active discount, this should be equal to the discounted_price, if there is no active discount, this should be equal to the regular price
      * @type {string}
      * @memberof OrderItemClass
      */
     'price': string;
-    /**
-     * The type of discount applied (\"noDiscount\", \"rawDiscount\", \"percentDiscount\")
-     * @type {string}
-     * @memberof OrderItemClass
-     */
-    'discount_type'?: string;
-    /**
-     * The value of the discount applied. For example if discount_value is \"20\", if discount_type is percentDiscount, this means 20% off. If discount_type is rawDiscount, this means P20.00 off.
-     * @type {string}
-     * @memberof OrderItemClass
-     */
-    'discount_value'?: string;
-    /**
-     * The peso value of the item, applying the active_discount to the regular_price.
-     * @type {string}
-     * @memberof OrderItemClass
-     */
-    'discounted_price': string;
     /**
      * The peso value of the item without any discounts.
      * @type {string}
@@ -1533,11 +1473,17 @@ export interface OrderPartialClass {
      */
     'customer': object;
     /**
-     * Total order amount
+     * Total order amount charged to the customer
      * @type {number}
      * @memberof OrderPartialClass
      */
     'total_amount'?: number;
+    /**
+     * Total order amount without discounts applied
+     * @type {number}
+     * @memberof OrderPartialClass
+     */
+    'regular_total_amount': number;
     /**
      * Delivery fee charged if order type is delivery
      * @type {string}
@@ -1568,6 +1514,24 @@ export interface OrderPartialClass {
      * @memberof OrderPartialClass
      */
     'promo': OrderPartialClassPromo;
+    /**
+     * Customer notes
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'customer_notes': string;
+    /**
+     * Indicates if the order is part of a meal plan
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'meal_plan': string;
+    /**
+     * Indicates order placement as part of a meal plan i.e. placement/total
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'meal_plan_index': string;
     /**
      * Order type
      * @type {string}
@@ -1987,12 +1951,6 @@ export interface QuotationRequestDTO {
      * @memberof QuotationRequestDTO
      */
     'delivery_payment_method': QuotationRequestDTODeliveryPaymentMethodEnum;
-    /**
-     * Customer Delivery Address String
-     * @type {string}
-     * @memberof QuotationRequestDTO
-     */
-    'address_string': string;
     /**
      * Delivery Vehicle Type for the request , null will default to motorcycle
      * @type {string}
@@ -3251,10 +3209,10 @@ export interface StorePartialClass {
 export interface StoreReservationClass {
     /**
      * 
-     * @type {ReservationInfoEntityStore}
+     * @type {StoreReservationClassStore}
      * @memberof StoreReservationClass
      */
-    'store': ReservationInfoEntityStore;
+    'store': StoreReservationClassStore;
     /**
      * 
      * @type {StoreReservationClassReservations}
@@ -3362,6 +3320,103 @@ export const StoreReservationClassReservationsPaymentTypeEnum = {
 export type StoreReservationClassReservationsPaymentTypeEnum = typeof StoreReservationClassReservationsPaymentTypeEnum[keyof typeof StoreReservationClassReservationsPaymentTypeEnum];
 
 /**
+ * Store information
+ * @export
+ * @interface StoreReservationClassStore
+ */
+export interface StoreReservationClassStore {
+    /**
+     * Id that will be used on searching store
+     * @type {string}
+     * @memberof StoreReservationClassStore
+     */
+    'id': string;
+    /**
+     * Store background image
+     * @type {string}
+     * @memberof StoreReservationClassStore
+     */
+    'store_bg': string;
+    /**
+     * Store distance limit for deliveries (in kilometers)
+     * @type {number}
+     * @memberof StoreReservationClassStore
+     */
+    'delivery_distance_limit'?: number;
+    /**
+     * Store opening and closing time
+     * @type {Array<StoreHoursClass>}
+     * @memberof StoreReservationClassStore
+     */
+    'store_hours': Array<StoreHoursClass>;
+    /**
+     * Store display name
+     * @type {string}
+     * @memberof StoreReservationClassStore
+     */
+    'name': string;
+    /**
+     * Store display logo
+     * @type {string}
+     * @memberof StoreReservationClassStore
+     */
+    'store_logo': string;
+    /**
+     * Store description
+     * @type {string}
+     * @memberof StoreReservationClassStore
+     */
+    'store_description': string;
+    /**
+     * Store address string used in delivery order type
+     * @type {string}
+     * @memberof StoreReservationClassStore
+     */
+    'location'?: string;
+    /**
+     * Store JSON geocoded address
+     * @type {string}
+     * @memberof StoreReservationClassStore
+     */
+    'geocode_location'?: string;
+    /**
+     * Store tags
+     * @type {Array<string>}
+     * @memberof StoreReservationClassStore
+     */
+    'store_tags'?: Array<string>;
+    /**
+     * Merchant displayed contact number
+     * @type {string}
+     * @memberof StoreReservationClassStore
+     */
+    'contact_number': string;
+    /**
+     * Store status helper, pertains to store being open and will be accepting order
+     * @type {boolean}
+     * @memberof StoreReservationClassStore
+     */
+    'is_store_open': boolean;
+    /**
+     * Pre-order feature is enabled
+     * @type {boolean}
+     * @memberof StoreReservationClassStore
+     */
+    'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Designated time for meal plan in military time
+     * @type {string}
+     * @memberof StoreReservationClassStore
+     */
+    'meal_plan_order_time': string;
+    /**
+     * Distance from location_point to Store Distance in Kilometers
+     * @type {number}
+     * @memberof StoreReservationClassStore
+     */
+    'distance'?: number;
+}
+/**
  * 
  * @export
  * @interface StoreReservationHoursEntity
@@ -3391,6 +3446,103 @@ export interface StoreReservationHoursEntity {
      * @memberof StoreReservationHoursEntity
      */
     'closing': string;
+}
+/**
+ * 
+ * @export
+ * @interface StoreReservationSearchClass
+ */
+export interface StoreReservationSearchClass {
+    /**
+     * Id that will be used on searching store
+     * @type {string}
+     * @memberof StoreReservationSearchClass
+     */
+    'id': string;
+    /**
+     * Store background image
+     * @type {string}
+     * @memberof StoreReservationSearchClass
+     */
+    'store_bg': string;
+    /**
+     * Store distance limit for deliveries (in kilometers)
+     * @type {number}
+     * @memberof StoreReservationSearchClass
+     */
+    'delivery_distance_limit'?: number;
+    /**
+     * Store opening and closing time
+     * @type {Array<StoreHoursClass>}
+     * @memberof StoreReservationSearchClass
+     */
+    'store_hours': Array<StoreHoursClass>;
+    /**
+     * Store display name
+     * @type {string}
+     * @memberof StoreReservationSearchClass
+     */
+    'name': string;
+    /**
+     * Store display logo
+     * @type {string}
+     * @memberof StoreReservationSearchClass
+     */
+    'store_logo': string;
+    /**
+     * Store description
+     * @type {string}
+     * @memberof StoreReservationSearchClass
+     */
+    'store_description': string;
+    /**
+     * Store address string used in delivery order type
+     * @type {string}
+     * @memberof StoreReservationSearchClass
+     */
+    'location'?: string;
+    /**
+     * Store JSON geocoded address
+     * @type {string}
+     * @memberof StoreReservationSearchClass
+     */
+    'geocode_location'?: string;
+    /**
+     * Store tags
+     * @type {Array<string>}
+     * @memberof StoreReservationSearchClass
+     */
+    'store_tags'?: Array<string>;
+    /**
+     * Merchant displayed contact number
+     * @type {string}
+     * @memberof StoreReservationSearchClass
+     */
+    'contact_number': string;
+    /**
+     * Store status helper, pertains to store being open and will be accepting order
+     * @type {boolean}
+     * @memberof StoreReservationSearchClass
+     */
+    'is_store_open': boolean;
+    /**
+     * Pre-order feature is enabled
+     * @type {boolean}
+     * @memberof StoreReservationSearchClass
+     */
+    'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Designated time for meal plan in military time
+     * @type {string}
+     * @memberof StoreReservationSearchClass
+     */
+    'meal_plan_order_time': string;
+    /**
+     * Distance from location_point to Store Distance in Kilometers
+     * @type {number}
+     * @memberof StoreReservationSearchClass
+     */
+    'distance'?: number;
 }
 /**
  * 
@@ -4352,12 +4504,13 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {string} [minOrderDate] ISO8601 compliant order date string
          * @param {'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
+         * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan if set to true Defaults to true
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ordersControllerFind: async (id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        ordersControllerFind: async (id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('ordersControllerFind', 'id', id)
             const localVarPath = `/v1/orders`;
@@ -4393,6 +4546,10 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 
             if (orderType !== undefined) {
                 localVarQueryParameter['order_type'] = orderType;
+            }
+
+            if (mealPlan !== undefined) {
+                localVarQueryParameter['meal_plan'] = mealPlan;
             }
 
             if (limit !== undefined) {
@@ -4432,13 +4589,14 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          * @param {string} [minOrderDate] ISO8601 compliant order date string
          * @param {'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
+         * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan if set to true Defaults to true
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderEntity>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, limit, offset, options);
+        async ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, mealPlan, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -4459,13 +4617,14 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
          * @param {string} [minOrderDate] ISO8601 compliant order date string
          * @param {'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
+         * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan if set to true Defaults to true
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', limit?: number, offset?: number, options?: any): AxiosPromise<OrderEntity> {
-            return localVarFp.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, limit, offset, options).then((request) => request(axios, basePath));
+        ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options?: any): AxiosPromise<OrderEntity> {
+            return localVarFp.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, mealPlan, limit, offset, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -4512,6 +4671,13 @@ export interface OrdersApiOrdersControllerFindRequest {
     readonly orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'
 
     /**
+     * Toggle meal plan filter, returns orders that are part of a meal plan if set to true Defaults to true
+     * @type {boolean}
+     * @memberof OrdersApiOrdersControllerFind
+     */
+    readonly mealPlan?: boolean
+
+    /**
      * The number of record to return, 0 means all will be returned
      * @type {number}
      * @memberof OrdersApiOrdersControllerFind
@@ -4542,7 +4708,7 @@ export class OrdersApi extends BaseAPI {
      * @memberof OrdersApi
      */
     public ordersControllerFind(requestParameters: OrdersApiOrdersControllerFindRequest, options?: AxiosRequestConfig) {
-        return OrdersApiFp(this.configuration).ordersControllerFind(requestParameters.id, requestParameters.maxOrderDate, requestParameters.minOrderDate, requestParameters.status, requestParameters.orderType, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+        return OrdersApiFp(this.configuration).ordersControllerFind(requestParameters.id, requestParameters.maxOrderDate, requestParameters.minOrderDate, requestParameters.status, requestParameters.orderType, requestParameters.mealPlan, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
