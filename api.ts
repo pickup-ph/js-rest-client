@@ -1479,11 +1479,11 @@ export interface OrderPartialClass {
      */
     'total_amount'?: number;
     /**
-     * Total order amount without discounts applied
+     * Total item amount without delivery fee and discounts applied
      * @type {number}
      * @memberof OrderPartialClass
      */
-    'regular_total_amount': number;
+    'items_total_amount': number;
     /**
      * Delivery fee charged if order type is delivery
      * @type {string}
@@ -4504,7 +4504,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {string} [minOrderDate] ISO8601 compliant order date string
          * @param {'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
-         * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan if set to true Defaults to true
+         * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan ONLY if set to true Defaults to false
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
@@ -4589,7 +4589,7 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          * @param {string} [minOrderDate] ISO8601 compliant order date string
          * @param {'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
-         * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan if set to true Defaults to true
+         * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan ONLY if set to true Defaults to false
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
@@ -4617,7 +4617,7 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
          * @param {string} [minOrderDate] ISO8601 compliant order date string
          * @param {'new' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
-         * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan if set to true Defaults to true
+         * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan ONLY if set to true Defaults to false
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
@@ -4671,7 +4671,7 @@ export interface OrdersApiOrdersControllerFindRequest {
     readonly orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'
 
     /**
-     * Toggle meal plan filter, returns orders that are part of a meal plan if set to true Defaults to true
+     * Toggle meal plan filter, returns orders that are part of a meal plan ONLY if set to true Defaults to false
      * @type {boolean}
      * @memberof OrdersApiOrdersControllerFind
      */
