@@ -5138,6 +5138,43 @@ export const ReservationBetaApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
+         * @summary Get reservation info using reservation number
+         * @param {string} reservationNumber Reservation number
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerGetReservationStatusByNumber: async (reservationNumber: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'reservationNumber' is not null or undefined
+            assertParamExists('reservationControllerGetReservationStatusByNumber', 'reservationNumber', reservationNumber)
+            const localVarPath = `/v1/reservation/check-status/{reservation_number}`
+                .replace(`{${"reservation_number"}}`, encodeURIComponent(String(reservationNumber)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get reservation type information
          * @param {string} id Reservation type id
          * @param {string} date Intended date to reserve
@@ -5289,6 +5326,17 @@ export const ReservationBetaApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get reservation info using reservation number
+         * @param {string} reservationNumber Reservation number
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async reservationControllerGetReservationStatusByNumber(reservationNumber: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReservationInfoEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reservationControllerGetReservationStatusByNumber(reservationNumber, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get reservation type information
          * @param {string} id Reservation type id
          * @param {string} date Intended date to reserve
@@ -5372,6 +5420,16 @@ export const ReservationBetaApiFactory = function (configuration?: Configuration
          */
         reservationControllerGetReservationStatus(reservationId: string, options?: any): AxiosPromise<ReservationInfoEntity> {
             return localVarFp.reservationControllerGetReservationStatus(reservationId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get reservation info using reservation number
+         * @param {string} reservationNumber Reservation number
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerGetReservationStatusByNumber(reservationNumber: string, options?: any): AxiosPromise<ReservationInfoEntity> {
+            return localVarFp.reservationControllerGetReservationStatusByNumber(reservationNumber, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5489,6 +5547,20 @@ export interface ReservationBetaApiReservationControllerGetReservationStatusRequ
 }
 
 /**
+ * Request parameters for reservationControllerGetReservationStatusByNumber operation in ReservationBetaApi.
+ * @export
+ * @interface ReservationBetaApiReservationControllerGetReservationStatusByNumberRequest
+ */
+export interface ReservationBetaApiReservationControllerGetReservationStatusByNumberRequest {
+    /**
+     * Reservation number
+     * @type {string}
+     * @memberof ReservationBetaApiReservationControllerGetReservationStatusByNumber
+     */
+    readonly reservationNumber: string
+}
+
+/**
  * Request parameters for reservationControllerGetReservationTypeInfo operation in ReservationBetaApi.
  * @export
  * @interface ReservationBetaApiReservationControllerGetReservationTypeInfoRequest
@@ -5588,6 +5660,18 @@ export class ReservationBetaApi extends BaseAPI {
      */
     public reservationControllerGetReservationStatus(requestParameters: ReservationBetaApiReservationControllerGetReservationStatusRequest, options?: AxiosRequestConfig) {
         return ReservationBetaApiFp(this.configuration).reservationControllerGetReservationStatus(requestParameters.reservationId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get reservation info using reservation number
+     * @param {ReservationBetaApiReservationControllerGetReservationStatusByNumberRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationBetaApi
+     */
+    public reservationControllerGetReservationStatusByNumber(requestParameters: ReservationBetaApiReservationControllerGetReservationStatusByNumberRequest, options?: AxiosRequestConfig) {
+        return ReservationBetaApiFp(this.configuration).reservationControllerGetReservationStatusByNumber(requestParameters.reservationNumber, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
