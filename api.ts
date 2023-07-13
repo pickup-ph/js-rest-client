@@ -267,6 +267,12 @@ export interface CategoryClass {
      * @memberof CategoryClass
      */
     'visible': boolean;
+    /**
+     * Indicates available stock at the time of pulling the store data
+     * @type {number}
+     * @memberof CategoryClass
+     */
+    'stock': number;
 }
 /**
  * 
@@ -1099,6 +1105,12 @@ export interface MenuClass {
      * @memberof MenuClass
      */
     'item_limit_per_time_slot': Array<ItemTimeSlotClass>;
+    /**
+     * Indicates available stock at the time of pulling the store data
+     * @type {number}
+     * @memberof MenuClass
+     */
+    'stock': number;
 }
 /**
  * Item id that will be used for cart building on /cart route
@@ -1748,6 +1760,12 @@ export interface OrderPartialClassStoreDetails {
      * @memberof OrderPartialClassStoreDetails
      */
     'image': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderPartialClassStoreDetails
+     */
+    'store_bg': string;
 }
 /**
  * 
@@ -3078,6 +3096,12 @@ export interface StoreDetailsClass {
      * @memberof StoreDetailsClass
      */
     'image': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof StoreDetailsClass
+     */
+    'store_bg': string;
 }
 /**
  * 
@@ -5749,10 +5773,12 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
          * 
          * @summary Get store information
          * @param {string} id ID of store
+         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [orderTime] Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        storeControllerFindOne: async (id: string, orderDate?: string, orderTime?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('storeControllerFindOne', 'id', id)
             const localVarPath = `/v1/store/{id}`
@@ -5770,6 +5796,14 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
 
             // authentication api-key required
             await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+            if (orderDate !== undefined) {
+                localVarQueryParameter['order_date'] = orderDate;
+            }
+
+            if (orderTime !== undefined) {
+                localVarQueryParameter['order_time'] = orderTime;
+            }
 
 
     
@@ -5807,11 +5841,13 @@ export const StoreApiFp = function(configuration?: Configuration) {
          * 
          * @summary Get store information
          * @param {string} id ID of store
+         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [orderTime] Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async storeControllerFindOne(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoreClass>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFindOne(id, options);
+        async storeControllerFindOne(id: string, orderDate?: string, orderTime?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoreClass>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFindOne(id, orderDate, orderTime, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -5838,11 +5874,13 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
          * 
          * @summary Get store information
          * @param {string} id ID of store
+         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [orderTime] Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFindOne(id: string, options?: any): AxiosPromise<StoreClass> {
-            return localVarFp.storeControllerFindOne(id, options).then((request) => request(axios, basePath));
+        storeControllerFindOne(id: string, orderDate?: string, orderTime?: string, options?: any): AxiosPromise<StoreClass> {
+            return localVarFp.storeControllerFindOne(id, orderDate, orderTime, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -5873,6 +5911,20 @@ export interface StoreApiStoreControllerFindOneRequest {
      * @memberof StoreApiStoreControllerFindOne
      */
     readonly id: string
+
+    /**
+     * ISO8601 compliant date string, defaults to current server date
+     * @type {string}
+     * @memberof StoreApiStoreControllerFindOne
+     */
+    readonly orderDate?: string
+
+    /**
+     * Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
+     * @type {string}
+     * @memberof StoreApiStoreControllerFindOne
+     */
+    readonly orderTime?: string
 }
 
 /**
@@ -5903,7 +5955,7 @@ export class StoreApi extends BaseAPI {
      * @memberof StoreApi
      */
     public storeControllerFindOne(requestParameters: StoreApiStoreControllerFindOneRequest, options?: AxiosRequestConfig) {
-        return StoreApiFp(this.configuration).storeControllerFindOne(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+        return StoreApiFp(this.configuration).storeControllerFindOne(requestParameters.id, requestParameters.orderDate, requestParameters.orderTime, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
