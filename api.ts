@@ -1415,7 +1415,7 @@ export interface OrderExtraClass {
      * @type {string}
      * @memberof OrderExtraClass
      */
-    'price': string;
+    'price'?: string;
 }
 /**
  * 
@@ -1539,11 +1539,29 @@ export interface OrderPartialClass {
      */
     'meal_plan': string;
     /**
+     * Indicates discount applied to a meal plan
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'meal_plan_discount'?: string;
+    /**
+     * Indicates max delivery discount for meal plans
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'meal_plan_delivery_discount'?: string;
+    /**
+     * Indicates total delivery fee quoted for a meal plan
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'meal_plan_quoted_delivery_fee'?: string;
+    /**
      * Indicates order placement as part of a meal plan i.e. placement/total
      * @type {string}
      * @memberof OrderPartialClass
      */
-    'meal_plan_index': string;
+    'meal_plan_index'?: string;
     /**
      * Order type
      * @type {string}
@@ -2982,29 +3000,11 @@ export interface StoreClass {
      */
     'days_accepting_in_advanced_orders': number;
     /**
-     * Store menu grouped and ordered by category
-     * @type {Array<MenuClass>}
-     * @memberof StoreClass
-     */
-    'menu': Array<MenuClass>;
-    /**
      * Available delivery payment method
      * @type {Array<string>}
      * @memberof StoreClass
      */
     'delivery_payment_methods': Array<string>;
-    /**
-     * Store category list
-     * @type {Array<CategoryClass>}
-     * @memberof StoreClass
-     */
-    'categories': Array<CategoryClass>;
-    /**
-     * Helper for expected meal plan deliveries dates
-     * @type {Array<string>}
-     * @memberof StoreClass
-     */
-    'meal_plan_dates': Array<string>;
     /**
      * Store opening and closing time
      * @type {Array<StoreHoursClass>}
@@ -3133,6 +3133,37 @@ export interface StoreHoursClass {
      * @memberof StoreHoursClass
      */
     'closing': string;
+}
+/**
+ * 
+ * @export
+ * @interface StoreMenuClass
+ */
+export interface StoreMenuClass {
+    /**
+     * Store ID
+     * @type {string}
+     * @memberof StoreMenuClass
+     */
+    'id': string;
+    /**
+     * Store menu grouped and ordered by category
+     * @type {Array<MenuClass>}
+     * @memberof StoreMenuClass
+     */
+    'menu': Array<MenuClass>;
+    /**
+     * Store category list
+     * @type {Array<CategoryClass>}
+     * @memberof StoreMenuClass
+     */
+    'categories': Array<CategoryClass>;
+    /**
+     * Helper for expected meal plan deliveries dates
+     * @type {Array<string>}
+     * @memberof StoreMenuClass
+     */
+    'meal_plan_dates': Array<string>;
 }
 /**
  * 
@@ -4522,6 +4553,43 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
     return {
         /**
          * 
+         * @summary Get order status update
+         * @param {string} transactionNumber 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersControllerFetchStatus: async (transactionNumber: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'transactionNumber' is not null or undefined
+            assertParamExists('ordersControllerFetchStatus', 'transactionNumber', transactionNumber)
+            const localVarPath = `/v1/orders/{transaction_number}`
+                .replace(`{${"transaction_number"}}`, encodeURIComponent(String(transactionNumber)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get customer order history
          * @param {string} id Customer ID that you passed to us
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
@@ -4607,6 +4675,17 @@ export const OrdersApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Get order status update
+         * @param {string} transactionNumber 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersControllerFetchStatus(transactionNumber: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderPartialClass>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerFetchStatus(transactionNumber, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get customer order history
          * @param {string} id Customer ID that you passed to us
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
@@ -4635,6 +4714,16 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
     return {
         /**
          * 
+         * @summary Get order status update
+         * @param {string} transactionNumber 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersControllerFetchStatus(transactionNumber: string, options?: any): AxiosPromise<OrderPartialClass> {
+            return localVarFp.ordersControllerFetchStatus(transactionNumber, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get customer order history
          * @param {string} id Customer ID that you passed to us
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
@@ -4652,6 +4741,20 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
         },
     };
 };
+
+/**
+ * Request parameters for ordersControllerFetchStatus operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersControllerFetchStatusRequest
+ */
+export interface OrdersApiOrdersControllerFetchStatusRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof OrdersApiOrdersControllerFetchStatus
+     */
+    readonly transactionNumber: string
+}
 
 /**
  * Request parameters for ordersControllerFind operation in OrdersApi.
@@ -4723,6 +4826,18 @@ export interface OrdersApiOrdersControllerFindRequest {
  * @extends {BaseAPI}
  */
 export class OrdersApi extends BaseAPI {
+    /**
+     * 
+     * @summary Get order status update
+     * @param {OrdersApiOrdersControllerFetchStatusRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersControllerFetchStatus(requestParameters: OrdersApiOrdersControllerFetchStatusRequest, options?: AxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersControllerFetchStatus(requestParameters.transactionNumber, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Get customer order history
@@ -5732,6 +5847,53 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * 
+         * @summary Get store menu
+         * @param {string} id ID of store
+         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [orderTime] Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        storeControllerFetchMenu: async (id: string, orderDate?: string, orderTime?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('storeControllerFetchMenu', 'id', id)
+            const localVarPath = `/v1/store/{id}/menu`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+            if (orderDate !== undefined) {
+                localVarQueryParameter['order_date'] = orderDate;
+            }
+
+            if (orderTime !== undefined) {
+                localVarQueryParameter['order_time'] = orderTime;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Find store
          * @param {SearchStoreDTO} searchStoreDTO 
          * @param {*} [options] Override http request option.
@@ -5773,12 +5935,10 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
          * 
          * @summary Get store information
          * @param {string} id ID of store
-         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
-         * @param {string} [orderTime] Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFindOne: async (id: string, orderDate?: string, orderTime?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        storeControllerFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('storeControllerFindOne', 'id', id)
             const localVarPath = `/v1/store/{id}`
@@ -5796,14 +5956,6 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
 
             // authentication api-key required
             await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
-
-            if (orderDate !== undefined) {
-                localVarQueryParameter['order_date'] = orderDate;
-            }
-
-            if (orderTime !== undefined) {
-                localVarQueryParameter['order_time'] = orderTime;
-            }
 
 
     
@@ -5828,6 +5980,19 @@ export const StoreApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Get store menu
+         * @param {string} id ID of store
+         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [orderTime] Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async storeControllerFetchMenu(id: string, orderDate?: string, orderTime?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoreMenuClass>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFetchMenu(id, orderDate, orderTime, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Find store
          * @param {SearchStoreDTO} searchStoreDTO 
          * @param {*} [options] Override http request option.
@@ -5841,13 +6006,11 @@ export const StoreApiFp = function(configuration?: Configuration) {
          * 
          * @summary Get store information
          * @param {string} id ID of store
-         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
-         * @param {string} [orderTime] Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async storeControllerFindOne(id: string, orderDate?: string, orderTime?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoreClass>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFindOne(id, orderDate, orderTime, options);
+        async storeControllerFindOne(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoreClass>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFindOne(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -5862,6 +6025,18 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
+         * @summary Get store menu
+         * @param {string} id ID of store
+         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [orderTime] Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        storeControllerFetchMenu(id: string, orderDate?: string, orderTime?: string, options?: any): AxiosPromise<StoreMenuClass> {
+            return localVarFp.storeControllerFetchMenu(id, orderDate, orderTime, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Find store
          * @param {SearchStoreDTO} searchStoreDTO 
          * @param {*} [options] Override http request option.
@@ -5874,16 +6049,42 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
          * 
          * @summary Get store information
          * @param {string} id ID of store
-         * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
-         * @param {string} [orderTime] Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFindOne(id: string, orderDate?: string, orderTime?: string, options?: any): AxiosPromise<StoreClass> {
-            return localVarFp.storeControllerFindOne(id, orderDate, orderTime, options).then((request) => request(axios, basePath));
+        storeControllerFindOne(id: string, options?: any): AxiosPromise<StoreClass> {
+            return localVarFp.storeControllerFindOne(id, options).then((request) => request(axios, basePath));
         },
     };
 };
+
+/**
+ * Request parameters for storeControllerFetchMenu operation in StoreApi.
+ * @export
+ * @interface StoreApiStoreControllerFetchMenuRequest
+ */
+export interface StoreApiStoreControllerFetchMenuRequest {
+    /**
+     * ID of store
+     * @type {string}
+     * @memberof StoreApiStoreControllerFetchMenu
+     */
+    readonly id: string
+
+    /**
+     * ISO8601 compliant date string, defaults to current server date
+     * @type {string}
+     * @memberof StoreApiStoreControllerFetchMenu
+     */
+    readonly orderDate?: string
+
+    /**
+     * Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
+     * @type {string}
+     * @memberof StoreApiStoreControllerFetchMenu
+     */
+    readonly orderTime?: string
+}
 
 /**
  * Request parameters for storeControllerFind operation in StoreApi.
@@ -5911,20 +6112,6 @@ export interface StoreApiStoreControllerFindOneRequest {
      * @memberof StoreApiStoreControllerFindOne
      */
     readonly id: string
-
-    /**
-     * ISO8601 compliant date string, defaults to current server date
-     * @type {string}
-     * @memberof StoreApiStoreControllerFindOne
-     */
-    readonly orderDate?: string
-
-    /**
-     * Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
-     * @type {string}
-     * @memberof StoreApiStoreControllerFindOne
-     */
-    readonly orderTime?: string
 }
 
 /**
@@ -5934,6 +6121,18 @@ export interface StoreApiStoreControllerFindOneRequest {
  * @extends {BaseAPI}
  */
 export class StoreApi extends BaseAPI {
+    /**
+     * 
+     * @summary Get store menu
+     * @param {StoreApiStoreControllerFetchMenuRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof StoreApi
+     */
+    public storeControllerFetchMenu(requestParameters: StoreApiStoreControllerFetchMenuRequest, options?: AxiosRequestConfig) {
+        return StoreApiFp(this.configuration).storeControllerFetchMenu(requestParameters.id, requestParameters.orderDate, requestParameters.orderTime, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Find store
@@ -5955,7 +6154,7 @@ export class StoreApi extends BaseAPI {
      * @memberof StoreApi
      */
     public storeControllerFindOne(requestParameters: StoreApiStoreControllerFindOneRequest, options?: AxiosRequestConfig) {
-        return StoreApiFp(this.configuration).storeControllerFindOne(requestParameters.id, requestParameters.orderDate, requestParameters.orderTime, options).then((request) => request(this.axios, this.basePath));
+        return StoreApiFp(this.configuration).storeControllerFindOne(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
