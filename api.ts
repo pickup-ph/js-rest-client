@@ -59,23 +59,29 @@ export interface AttachedReservationPaymentEntity {
  */
 export interface AvailableReservationEntity {
     /**
-     * 
+     * Indicates if there is a page after the current one
      * @type {boolean}
      * @memberof AvailableReservationEntity
      */
     'has_next_page': boolean;
     /**
-     * 
+     * Indicates if there is a page before the current one
      * @type {boolean}
      * @memberof AvailableReservationEntity
      */
     'has_prev_page': boolean;
     /**
-     * 
+     * Total number of pages according to limit and result
      * @type {number}
      * @memberof AvailableReservationEntity
      */
     'total_pages': number;
+    /**
+     * Total number of records found against the query
+     * @type {number}
+     * @memberof AvailableReservationEntity
+     */
+    'total_records': number;
     /**
      * 
      * @type {StoreReservationClass}
@@ -83,7 +89,7 @@ export interface AvailableReservationEntity {
      */
     'result': StoreReservationClass;
     /**
-     * 
+     * Indicates current page
      * @type {number}
      * @memberof AvailableReservationEntity
      */
@@ -109,10 +115,10 @@ export interface CartDTO {
     'delivery_option'?: CartDTODeliveryOption;
     /**
      * 
-     * @type {CustomerDetailDTO}
+     * @type {CartDTOCustomer}
      * @memberof CartDTO
      */
-    'customer'?: CustomerDetailDTO;
+    'customer'?: CartDTOCustomer;
     /**
      * PickupPH supported order types
      * @type {string}
@@ -161,6 +167,49 @@ export const CartDTOPaymentMethodEnum = {
 
 export type CartDTOPaymentMethodEnum = typeof CartDTOPaymentMethodEnum[keyof typeof CartDTOPaymentMethodEnum];
 
+/**
+ * The customer\'s information
+ * @export
+ * @interface CartDTOCustomer
+ */
+export interface CartDTOCustomer {
+    /**
+     * 
+     * @type {CustomerDetailDTOAddress}
+     * @memberof CartDTOCustomer
+     */
+    'address'?: CustomerDetailDTOAddress;
+    /**
+     * The customer first name
+     * @type {string}
+     * @memberof CartDTOCustomer
+     */
+    'first_name': string;
+    /**
+     * The customer last name
+     * @type {string}
+     * @memberof CartDTOCustomer
+     */
+    'last_name': string;
+    /**
+     * The customer mobile number, does NOT support e164 format
+     * @type {string}
+     * @memberof CartDTOCustomer
+     */
+    'mobile_number': string;
+    /**
+     * A valid customer personal or work email
+     * @type {string}
+     * @memberof CartDTOCustomer
+     */
+    'email': string;
+    /**
+     * A unique identifier for this customer
+     * @type {string}
+     * @memberof CartDTOCustomer
+     */
+    'id'?: string;
+}
 /**
  * Optional variable for delivery option
  * @export
@@ -461,13 +510,13 @@ export interface CreateReservationEntity {
  */
 export interface CustomerAddressDTO {
     /**
-     * 
+     * Coordinate\'s longitude
      * @type {number}
      * @memberof CustomerAddressDTO
      */
     'lng': number;
     /**
-     * 
+     * Coordinate\'s latitude
      * @type {number}
      * @memberof CustomerAddressDTO
      */
@@ -481,40 +530,59 @@ export interface CustomerAddressDTO {
 export interface CustomerDetailDTO {
     /**
      * 
-     * @type {CustomerAddressDTO}
+     * @type {CustomerDetailDTOAddress}
      * @memberof CustomerDetailDTO
      */
-    'address'?: CustomerAddressDTO;
+    'address'?: CustomerDetailDTOAddress;
     /**
-     * 
+     * The customer first name
      * @type {string}
      * @memberof CustomerDetailDTO
      */
-    'first_name'?: string;
+    'first_name': string;
     /**
-     * 
+     * The customer last name
      * @type {string}
      * @memberof CustomerDetailDTO
      */
-    'last_name'?: string;
+    'last_name': string;
     /**
      * The customer mobile number, does NOT support e164 format
      * @type {string}
      * @memberof CustomerDetailDTO
      */
-    'mobile_number'?: string;
+    'mobile_number': string;
     /**
      * A valid customer personal or work email
      * @type {string}
      * @memberof CustomerDetailDTO
      */
-    'email'?: string;
+    'email': string;
     /**
      * A unique identifier for this customer
      * @type {string}
      * @memberof CustomerDetailDTO
      */
     'id'?: string;
+}
+/**
+ * The customer\'s address information
+ * @export
+ * @interface CustomerDetailDTOAddress
+ */
+export interface CustomerDetailDTOAddress {
+    /**
+     * Coordinate\'s longitude
+     * @type {number}
+     * @memberof CustomerDetailDTOAddress
+     */
+    'lng': number;
+    /**
+     * Coordinate\'s latitude
+     * @type {number}
+     * @memberof CustomerDetailDTOAddress
+     */
+    'lat': number;
 }
 /**
  * 
@@ -524,10 +592,10 @@ export interface CustomerDetailDTO {
 export interface CustomerQuoteDTO {
     /**
      * 
-     * @type {CustomerAddressDTO}
+     * @type {CustomerDetailDTOAddress}
      * @memberof CustomerQuoteDTO
      */
-    'address': CustomerAddressDTO;
+    'address': CustomerDetailDTOAddress;
     /**
      * A unique identifier for this customer
      * @type {string}
@@ -607,16 +675,47 @@ export interface DeliveryQuotationEntity {
 export interface DeliveryQuotationResultEntity {
     /**
      * 
-     * @type {DeliveryQuotationEntity}
+     * @type {DeliveryQuotationResultEntitySelected}
      * @memberof DeliveryQuotationResultEntity
      */
-    'selected': DeliveryQuotationEntity;
+    'selected': DeliveryQuotationResultEntitySelected;
     /**
      * List of active delivery partners from quotation , for quotation reference on multihailing stores
      * @type {Array<DeliveryQuotationEntity>}
      * @memberof DeliveryQuotationResultEntity
      */
     'delivery_partner_quotations'?: Array<DeliveryQuotationEntity>;
+}
+/**
+ * The selected delivery quotation and will be used in the final computation of total amopunt to be paid
+ * @export
+ * @interface DeliveryQuotationResultEntitySelected
+ */
+export interface DeliveryQuotationResultEntitySelected {
+    /**
+     * Quoted Delivery Fee from respective partner
+     * @type {number}
+     * @memberof DeliveryQuotationResultEntitySelected
+     */
+    'delivery_fee': number;
+    /**
+     * Delivery Partner quotation source
+     * @type {string}
+     * @memberof DeliveryQuotationResultEntitySelected
+     */
+    'partner': string;
+    /**
+     * Indicator for the success quotation
+     * @type {boolean}
+     * @memberof DeliveryQuotationResultEntitySelected
+     */
+    'is_success': boolean;
+    /**
+     * Indicator for the success quotation
+     * @type {Array<string>}
+     * @memberof DeliveryQuotationResultEntitySelected
+     */
+    'message'?: Array<string>;
 }
 /**
  * 
@@ -630,6 +729,12 @@ export interface ExtraGroupClass {
      * @memberof ExtraGroupClass
      */
     'is_required': boolean;
+    /**
+     * List of extras within a group
+     * @type {Array<GroupSelectionClass>}
+     * @memberof ExtraGroupClass
+     */
+    'extras'?: Array<GroupSelectionClass>;
     /**
      * The name of the extra group
      * @type {string}
@@ -654,12 +759,6 @@ export interface ExtraGroupClass {
      * @memberof ExtraGroupClass
      */
     'maximum_number': number;
-    /**
-     * List of extras within a group
-     * @type {Array<GroupSelectionClass>}
-     * @memberof ExtraGroupClass
-     */
-    'extras'?: Array<GroupSelectionClass>;
 }
 /**
  * 
@@ -711,17 +810,23 @@ export interface ItemClass {
      */
     'is_visible_on_off_date'?: boolean;
     /**
-     * Item id that will be used for cart building on /cart route
-     * @type {string}
-     * @memberof ItemClass
-     */
-    'id': string;
-    /**
      * List of grouped extras of an item
      * @type {Array<ExtraGroupClass>}
      * @memberof ItemClass
      */
     'extra_group'?: Array<ExtraGroupClass>;
+    /**
+     * Maximum number of allowed purchase of the item across all platform per time slot
+     * @type {Array<ItemTimeSlotClass>}
+     * @memberof ItemClass
+     */
+    'item_limit_per_time_slot'?: Array<ItemTimeSlotClass>;
+    /**
+     * Item id that will be used for cart building on /cart route
+     * @type {string}
+     * @memberof ItemClass
+     */
+    'id': string;
     /**
      * Random unique item code
      * @type {string}
@@ -752,12 +857,6 @@ export interface ItemClass {
      * @memberof ItemClass
      */
     'item_limit_per_day'?: number;
-    /**
-     * Maximum number of allowed purchase of the item across all platform per time slot
-     * @type {Array<ItemTimeSlotClass>}
-     * @memberof ItemClass
-     */
-    'item_limit_per_time_slot'?: Array<ItemTimeSlotClass>;
     /**
      * Store which this item belongs to, can be used for filtering
      * @type {string}
@@ -1021,31 +1120,37 @@ export interface ItemTimeSlotClass {
  */
 export interface ItemsEntity {
     /**
-     * 
+     * Indicates if there is a page after the current one
      * @type {boolean}
      * @memberof ItemsEntity
      */
     'has_next_page': boolean;
     /**
-     * 
+     * Indicates if there is a page before the current one
      * @type {boolean}
      * @memberof ItemsEntity
      */
     'has_prev_page': boolean;
     /**
-     * 
+     * Total number of pages according to limit and result
      * @type {number}
      * @memberof ItemsEntity
      */
     'total_pages': number;
     /**
-     * 
+     * Total number of records found against the query
+     * @type {number}
+     * @memberof ItemsEntity
+     */
+    'total_records': number;
+    /**
+     * Search results
      * @type {Array<ItemPartialClass>}
      * @memberof ItemsEntity
      */
     'result': Array<ItemPartialClass>;
     /**
-     * 
+     * Indicates current page
      * @type {number}
      * @memberof ItemsEntity
      */
@@ -1064,13 +1169,13 @@ export interface LocationPointDTO {
      */
     'max_radius': number;
     /**
-     * 
+     * Coordinate\'s longitude
      * @type {number}
      * @memberof LocationPointDTO
      */
     'lng': number;
     /**
-     * 
+     * Coordinate\'s latitude
      * @type {number}
      * @memberof LocationPointDTO
      */
@@ -1144,17 +1249,23 @@ export interface MenuClassItem {
      */
     'is_visible_on_off_date'?: boolean;
     /**
-     * Item id that will be used for cart building on /cart route
-     * @type {string}
-     * @memberof MenuClassItem
-     */
-    'id': string;
-    /**
      * List of grouped extras of an item
      * @type {Array<ExtraGroupClass>}
      * @memberof MenuClassItem
      */
     'extra_group'?: Array<ExtraGroupClass>;
+    /**
+     * Maximum number of allowed purchase of the item across all platform per time slot
+     * @type {Array<ItemTimeSlotClass>}
+     * @memberof MenuClassItem
+     */
+    'item_limit_per_time_slot'?: Array<ItemTimeSlotClass>;
+    /**
+     * Item id that will be used for cart building on /cart route
+     * @type {string}
+     * @memberof MenuClassItem
+     */
+    'id': string;
     /**
      * Random unique item code
      * @type {string}
@@ -1185,12 +1296,6 @@ export interface MenuClassItem {
      * @memberof MenuClassItem
      */
     'item_limit_per_day'?: number;
-    /**
-     * Maximum number of allowed purchase of the item across all platform per time slot
-     * @type {Array<ItemTimeSlotClass>}
-     * @memberof MenuClassItem
-     */
-    'item_limit_per_time_slot'?: Array<ItemTimeSlotClass>;
     /**
      * Store which this item belongs to, can be used for filtering
      * @type {string}
@@ -1375,23 +1480,29 @@ export interface OrderDetailsClassItem {
  */
 export interface OrderEntity {
     /**
-     * 
+     * Indicates if there is a page after the current one
      * @type {boolean}
      * @memberof OrderEntity
      */
     'has_next_page': boolean;
     /**
-     * 
+     * Indicates if there is a page before the current one
      * @type {boolean}
      * @memberof OrderEntity
      */
     'has_prev_page': boolean;
     /**
-     * 
+     * Total number of pages according to limit and result
      * @type {number}
      * @memberof OrderEntity
      */
     'total_pages': number;
+    /**
+     * Total number of records found against the query
+     * @type {number}
+     * @memberof OrderEntity
+     */
+    'total_records': number;
     /**
      * 
      * @type {Array<OrderPartialClass>}
@@ -1399,7 +1510,7 @@ export interface OrderEntity {
      */
     'result': Array<OrderPartialClass>;
     /**
-     * 
+     * Indicates current page
      * @type {number}
      * @memberof OrderEntity
      */
@@ -2062,10 +2173,10 @@ export type QuotationRequestDTOMealPlanTypeEnum = typeof QuotationRequestDTOMeal
 export interface QuotationRequestDTOCustomer {
     /**
      * 
-     * @type {CustomerAddressDTO}
+     * @type {CustomerDetailDTOAddress}
      * @memberof QuotationRequestDTOCustomer
      */
-    'address': CustomerAddressDTO;
+    'address': CustomerDetailDTOAddress;
     /**
      * A unique identifier for this customer
      * @type {string}
@@ -2154,23 +2265,29 @@ export interface ReservationCustomerEntity {
  */
 export interface ReservationEntity {
     /**
-     * 
+     * Indicates if there is a page after the current one
      * @type {boolean}
      * @memberof ReservationEntity
      */
     'has_next_page': boolean;
     /**
-     * 
+     * Indicates if there is a page before the current one
      * @type {boolean}
      * @memberof ReservationEntity
      */
     'has_prev_page': boolean;
     /**
-     * 
+     * Total number of pages according to limit and result
      * @type {number}
      * @memberof ReservationEntity
      */
     'total_pages': number;
+    /**
+     * Total number of records found against the query
+     * @type {number}
+     * @memberof ReservationEntity
+     */
+    'total_records': number;
     /**
      * 
      * @type {Array<ReservationInfoEntity>}
@@ -2178,7 +2295,7 @@ export interface ReservationEntity {
      */
     'result': Array<ReservationInfoEntity>;
     /**
-     * 
+     * Indicates current page
      * @type {number}
      * @memberof ReservationEntity
      */
@@ -2879,6 +2996,12 @@ export interface SearchStoreDTO {
      */
     'funnel'?: SearchStoreDTOFunnelEnum;
     /**
+     * Product Type filter
+     * @type {string}
+     * @memberof SearchStoreDTO
+     */
+    'product_type'?: SearchStoreDTOProductTypeEnum;
+    /**
      * The number of record to return, 0 means all will be returned
      * @type {number}
      * @memberof SearchStoreDTO
@@ -2905,6 +3028,12 @@ export const SearchStoreDTOFunnelEnum = {
 } as const;
 
 export type SearchStoreDTOFunnelEnum = typeof SearchStoreDTOFunnelEnum[keyof typeof SearchStoreDTOFunnelEnum];
+export const SearchStoreDTOProductTypeEnum = {
+    Food: 'food',
+    NonFood: 'non-food'
+} as const;
+
+export type SearchStoreDTOProductTypeEnum = typeof SearchStoreDTOProductTypeEnum[keyof typeof SearchStoreDTOProductTypeEnum];
 
 /**
  * Optional location for kilometer distance search
@@ -2919,13 +3048,13 @@ export interface SearchStoreDTOLocationPoint {
      */
     'max_radius': number;
     /**
-     * 
+     * Coordinate\'s longitude
      * @type {number}
      * @memberof SearchStoreDTOLocationPoint
      */
     'lng': number;
     /**
-     * 
+     * Coordinate\'s latitude
      * @type {number}
      * @memberof SearchStoreDTOLocationPoint
      */
@@ -3658,6 +3787,12 @@ export interface StoreSearchClass {
      */
     'distance'?: number;
     /**
+     * Indicates store product type
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'product_type'?: StoreSearchClassProductTypeEnum;
+    /**
      * Store opening and closing time
      * @type {Array<StoreHoursClass>}
      * @memberof StoreSearchClass
@@ -3724,6 +3859,14 @@ export interface StoreSearchClass {
      */
     'meal_plan_order_time': string;
 }
+
+export const StoreSearchClassProductTypeEnum = {
+    Food: 'food',
+    NonFood: 'non-food'
+} as const;
+
+export type StoreSearchClassProductTypeEnum = typeof StoreSearchClassProductTypeEnum[keyof typeof StoreSearchClassProductTypeEnum];
+
 /**
  * 
  * @export
@@ -3731,23 +3874,29 @@ export interface StoreSearchClass {
  */
 export interface StoresEntity {
     /**
-     * 
+     * Indicates if there is a page after the current one
      * @type {boolean}
      * @memberof StoresEntity
      */
     'has_next_page': boolean;
     /**
-     * 
+     * Indicates if there is a page before the current one
      * @type {boolean}
      * @memberof StoresEntity
      */
     'has_prev_page': boolean;
     /**
-     * 
+     * Total number of pages according to limit and result
      * @type {number}
      * @memberof StoresEntity
      */
     'total_pages': number;
+    /**
+     * Total number of records found against the query
+     * @type {number}
+     * @memberof StoresEntity
+     */
+    'total_records': number;
     /**
      * 
      * @type {Array<StoreSearchClass>}
@@ -3755,7 +3904,7 @@ export interface StoresEntity {
      */
     'result': Array<StoreSearchClass>;
     /**
-     * 
+     * Indicates current page
      * @type {number}
      * @memberof StoresEntity
      */
