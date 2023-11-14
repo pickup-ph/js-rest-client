@@ -967,7 +967,19 @@ export interface ItemClass {
  */
 export interface ItemInventoryEntity {
     /**
-     * Number of available item quantity
+     * Number of available item in inventory, -1 means unlimited item stock
+     * @type {number}
+     * @memberof ItemInventoryEntity
+     */
+    'item_stock': number;
+    /**
+     * Number of available item in inventory per category, -1 means unlimited category stock
+     * @type {number}
+     * @memberof ItemInventoryEntity
+     */
+    'category_stock': number;
+    /**
+     * Available stock that CAN be added to cart, -1 means unlimited stock for both item and category stock Use this as general rule of thumb in displaying item stock availability in UI This SHOULD equal to item_stock if category_stock is higher, and vice versa E.g. item_stock = 3 category_stock = 5 available = 3
      * @type {number}
      * @memberof ItemInventoryEntity
      */
