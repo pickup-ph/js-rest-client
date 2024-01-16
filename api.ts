@@ -115,6 +115,18 @@ export interface CartDTO {
     'delivery_option'?: CartDTODeliveryOption;
     /**
      * 
+     * @type {CartDTOCurbsidePickupOption}
+     * @memberof CartDTO
+     */
+    'curbside_pickup_option'?: CartDTOCurbsidePickupOption;
+    /**
+     * 
+     * @type {CartDTOThirdPartyPickupOption}
+     * @memberof CartDTO
+     */
+    'third_party_pickup_option'?: CartDTOThirdPartyPickupOption;
+    /**
+     * 
      * @type {CartDTOCustomer}
      * @memberof CartDTO
      */
@@ -168,6 +180,31 @@ export const CartDTOPaymentMethodEnum = {
 export type CartDTOPaymentMethodEnum = typeof CartDTOPaymentMethodEnum[keyof typeof CartDTOPaymentMethodEnum];
 
 /**
+ * Optional variable for curbside pickup order type
+ * @export
+ * @interface CartDTOCurbsidePickupOption
+ */
+export interface CartDTOCurbsidePickupOption {
+    /**
+     * Vehicle make
+     * @type {string}
+     * @memberof CartDTOCurbsidePickupOption
+     */
+    'vehicle_make': string;
+    /**
+     * Vehicle color
+     * @type {string}
+     * @memberof CartDTOCurbsidePickupOption
+     */
+    'vehicle_color': string;
+    /**
+     * Vehicle plate number
+     * @type {string}
+     * @memberof CartDTOCurbsidePickupOption
+     */
+    'vehicle_plate_number': string;
+}
+/**
  * The customer\'s information
  * @export
  * @interface CartDTOCustomer
@@ -211,7 +248,7 @@ export interface CartDTOCustomer {
     'id'?: string;
 }
 /**
- * Optional variable for delivery option
+ * Optional variable for delivery order type
  * @export
  * @interface CartDTODeliveryOption
  */
@@ -227,7 +264,7 @@ export interface CartDTODeliveryOption {
      * @type {string}
      * @memberof CartDTODeliveryOption
      */
-    'delivery_vehicle': CartDTODeliveryOptionDeliveryVehicleEnum;
+    'delivery_vehicle'?: CartDTODeliveryOptionDeliveryVehicleEnum;
 }
 
 export const CartDTODeliveryOptionDeliveryPaymentMethodEnum = {
@@ -243,6 +280,31 @@ export const CartDTODeliveryOptionDeliveryVehicleEnum = {
 
 export type CartDTODeliveryOptionDeliveryVehicleEnum = typeof CartDTODeliveryOptionDeliveryVehicleEnum[keyof typeof CartDTODeliveryOptionDeliveryVehicleEnum];
 
+/**
+ * Optional variable for third party pickup order type
+ * @export
+ * @interface CartDTOThirdPartyPickupOption
+ */
+export interface CartDTOThirdPartyPickupOption {
+    /**
+     * The customer first name
+     * @type {string}
+     * @memberof CartDTOThirdPartyPickupOption
+     */
+    'first_name': string;
+    /**
+     * The customer last name
+     * @type {string}
+     * @memberof CartDTOThirdPartyPickupOption
+     */
+    'last_name': string;
+    /**
+     * The customer mobile number, does NOT support e164 format
+     * @type {string}
+     * @memberof CartDTOThirdPartyPickupOption
+     */
+    'mobile_number': string;
+}
 /**
  * 
  * @export
@@ -506,6 +568,31 @@ export interface CreateReservationEntity {
 /**
  * 
  * @export
+ * @interface CursbsidePickupDTO
+ */
+export interface CursbsidePickupDTO {
+    /**
+     * Vehicle make
+     * @type {string}
+     * @memberof CursbsidePickupDTO
+     */
+    'vehicle_make': string;
+    /**
+     * Vehicle color
+     * @type {string}
+     * @memberof CursbsidePickupDTO
+     */
+    'vehicle_color': string;
+    /**
+     * Vehicle plate number
+     * @type {string}
+     * @memberof CursbsidePickupDTO
+     */
+    'vehicle_plate_number': string;
+}
+/**
+ * 
+ * @export
  * @interface CustomerAddressDTO
  */
 export interface CustomerAddressDTO {
@@ -620,7 +707,7 @@ export interface DeliveryOptionDTO {
      * @type {string}
      * @memberof DeliveryOptionDTO
      */
-    'delivery_vehicle': DeliveryOptionDTODeliveryVehicleEnum;
+    'delivery_vehicle'?: DeliveryOptionDTODeliveryVehicleEnum;
 }
 
 export const DeliveryOptionDTODeliveryPaymentMethodEnum = {
@@ -648,6 +735,12 @@ export interface DeliveryQuotationEntity {
      * @memberof DeliveryQuotationEntity
      */
     'delivery_fee': number;
+    /**
+     * Priority fee on top of delivery fee, ONLY supported by lalamove
+     * @type {number}
+     * @memberof DeliveryQuotationEntity
+     */
+    'priority_fee': number;
     /**
      * Delivery Partner quotation source
      * @type {string}
@@ -698,6 +791,12 @@ export interface DeliveryQuotationResultEntitySelected {
      * @memberof DeliveryQuotationResultEntitySelected
      */
     'delivery_fee': number;
+    /**
+     * Priority fee on top of delivery fee, ONLY supported by lalamove
+     * @type {number}
+     * @memberof DeliveryQuotationResultEntitySelected
+     */
+    'priority_fee': number;
     /**
      * Delivery Partner quotation source
      * @type {string}
@@ -1615,12 +1714,6 @@ export interface OrderPartialClass {
      */
     'id': string;
     /**
-     * 
-     * @type {OrderPartialClassStoreDetails}
-     * @memberof OrderPartialClass
-     */
-    'store_details': OrderPartialClassStoreDetails;
-    /**
      * Guest customer information
      * @type {object}
      * @memberof OrderPartialClass
@@ -1658,16 +1751,10 @@ export interface OrderPartialClass {
     'promo_discount': number;
     /**
      * Indicates where the promotional discount has been applied
-     * @type {string}
+     * @type {object}
      * @memberof OrderPartialClass
      */
     'promo_base': OrderPartialClassPromoBaseEnum;
-    /**
-     * 
-     * @type {OrderPartialClassPromo}
-     * @memberof OrderPartialClass
-     */
-    'promo': OrderPartialClassPromo;
     /**
      * Customer notes
      * @type {string}
@@ -1741,6 +1828,12 @@ export interface OrderPartialClass {
      */
     'order_details': Array<OrderDetailsClass>;
     /**
+     * 
+     * @type {OrderPartialClassStoreDetails}
+     * @memberof OrderPartialClass
+     */
+    'store_details': OrderPartialClassStoreDetails;
+    /**
      * Status update timestamps
      * @type {object}
      * @memberof OrderPartialClass
@@ -1776,6 +1869,12 @@ export interface OrderPartialClass {
      * @memberof OrderPartialClass
      */
     'tracking_page': string;
+    /**
+     * 
+     * @type {OrderPartialClassPromo}
+     * @memberof OrderPartialClass
+     */
+    'promo': OrderPartialClassPromo;
     /**
      * Store notes
      * @type {string}
@@ -1826,7 +1925,7 @@ export interface OrderPartialClassPromo {
     'code': string;
     /**
      * Type of this promo
-     * @type {string}
+     * @type {object}
      * @memberof OrderPartialClassPromo
      */
     'type': OrderPartialClassPromoTypeEnum;
@@ -2022,7 +2121,7 @@ export interface PromoEntity {
     'code': string;
     /**
      * Type of this promo
-     * @type {string}
+     * @type {object}
      * @memberof PromoEntity
      */
     'type': PromoEntityTypeEnum;
@@ -2563,6 +2662,12 @@ export interface ReservationInfoEntityStore {
      */
     'is_accepting_in_advanced_orders': boolean;
     /**
+     * Store order prep time in minutes
+     * @type {number}
+     * @memberof ReservationInfoEntityStore
+     */
+    'pre_order_to_order_queue_timer': number;
+    /**
      * Designated time for meal plan in military time
      * @type {string}
      * @memberof ReservationInfoEntityStore
@@ -2768,7 +2873,7 @@ export interface ReservationTimeSlots {
 export interface ReservationTypeClass {
     /**
      * Type of reservation
-     * @type {string}
+     * @type {object}
      * @memberof ReservationTypeClass
      */
     'type': ReservationTypeClassTypeEnum;
@@ -2792,7 +2897,7 @@ export interface ReservationTypeClass {
     'hours': ReservationTypeClassHours;
     /**
      * Indicates the payment type
-     * @type {string}
+     * @type {object}
      * @memberof ReservationTypeClass
      */
     'payment_type': ReservationTypeClassPaymentTypeEnum;
@@ -3151,12 +3256,6 @@ export interface StoreClass {
      */
     'off_dates': Array<string>;
     /**
-     * Store order prep time in minutes
-     * @type {number}
-     * @memberof StoreClass
-     */
-    'pre_order_to_order_queue_timer': number;
-    /**
      * Pre-order limit in days
      * @type {number}
      * @memberof StoreClass
@@ -3228,6 +3327,12 @@ export interface StoreClass {
      * @memberof StoreClass
      */
     'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Store order prep time in minutes
+     * @type {number}
+     * @memberof StoreClass
+     */
+    'pre_order_to_order_queue_timer': number;
     /**
      * Designated time for meal plan in military time
      * @type {string}
@@ -3413,6 +3518,12 @@ export interface StorePartialClass {
      */
     'is_accepting_in_advanced_orders': boolean;
     /**
+     * Store order prep time in minutes
+     * @type {number}
+     * @memberof StorePartialClass
+     */
+    'pre_order_to_order_queue_timer': number;
+    /**
      * Designated time for meal plan in military time
      * @type {string}
      * @memberof StorePartialClass
@@ -3446,7 +3557,7 @@ export interface StoreReservationClass {
 export interface StoreReservationClassReservations {
     /**
      * Type of reservation
-     * @type {string}
+     * @type {object}
      * @memberof StoreReservationClassReservations
      */
     'type': StoreReservationClassReservationsTypeEnum;
@@ -3470,7 +3581,7 @@ export interface StoreReservationClassReservations {
     'hours': ReservationTypeClassHours;
     /**
      * Indicates the payment type
-     * @type {string}
+     * @type {object}
      * @memberof StoreReservationClassReservations
      */
     'payment_type': StoreReservationClassReservationsPaymentTypeEnum;
@@ -3622,6 +3733,12 @@ export interface StoreReservationClassStore {
      */
     'is_accepting_in_advanced_orders': boolean;
     /**
+     * Store order prep time in minutes
+     * @type {number}
+     * @memberof StoreReservationClassStore
+     */
+    'pre_order_to_order_queue_timer': number;
+    /**
      * Designated time for meal plan in military time
      * @type {string}
      * @memberof StoreReservationClassStore
@@ -3750,6 +3867,12 @@ export interface StoreReservationSearchClass {
      */
     'is_accepting_in_advanced_orders': boolean;
     /**
+     * Store order prep time in minutes
+     * @type {number}
+     * @memberof StoreReservationSearchClass
+     */
+    'pre_order_to_order_queue_timer': number;
+    /**
      * Designated time for meal plan in military time
      * @type {string}
      * @memberof StoreReservationSearchClass
@@ -3865,6 +3988,12 @@ export interface StoreSearchClass {
      */
     'is_accepting_in_advanced_orders': boolean;
     /**
+     * Store order prep time in minutes
+     * @type {number}
+     * @memberof StoreSearchClass
+     */
+    'pre_order_to_order_queue_timer': number;
+    /**
      * Designated time for meal plan in military time
      * @type {string}
      * @memberof StoreSearchClass
@@ -3925,12 +4054,37 @@ export interface StoresEntity {
 /**
  * 
  * @export
+ * @interface ThirdPartyPickupDTO
+ */
+export interface ThirdPartyPickupDTO {
+    /**
+     * The customer first name
+     * @type {string}
+     * @memberof ThirdPartyPickupDTO
+     */
+    'first_name': string;
+    /**
+     * The customer last name
+     * @type {string}
+     * @memberof ThirdPartyPickupDTO
+     */
+    'last_name': string;
+    /**
+     * The customer mobile number, does NOT support e164 format
+     * @type {string}
+     * @memberof ThirdPartyPickupDTO
+     */
+    'mobile_number': string;
+}
+/**
+ * 
+ * @export
  * @interface ValidPromoEntity
  */
 export interface ValidPromoEntity {
     /**
      * Type of this promo
-     * @type {string}
+     * @type {object}
      * @memberof ValidPromoEntity
      */
     'type': ValidPromoEntityTypeEnum;
