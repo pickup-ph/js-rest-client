@@ -144,7 +144,7 @@ export interface CartDTO {
      */
     'order_date'?: string;
     /**
-     * Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot)
+     * Order time in HH:MM format, void (omitting it) means order is ASAP (current system, or nearest available time slot). You can explicitly state that you want current time, just pass asap_order_time string
      * @type {string}
      * @memberof CartDTO
      */
@@ -2011,19 +2011,19 @@ export interface OrderPartialClassStoreDetails {
      */
     'id': string;
     /**
-     * 
+     * Store name
      * @type {string}
      * @memberof OrderPartialClassStoreDetails
      */
     'name': string;
     /**
-     * 
+     * Store image URL
      * @type {string}
      * @memberof OrderPartialClassStoreDetails
      */
     'image': string;
     /**
-     * 
+     * Store nominated header image URL
      * @type {string}
      * @memberof OrderPartialClassStoreDetails
      */
@@ -2295,6 +2295,119 @@ export interface QuotationRequestDTOCustomer {
      */
     'id': string;
 }
+/**
+ * 
+ * @export
+ * @interface ReorderEntity
+ */
+export interface ReorderEntity {
+    /**
+     * Indicates if store is currently accepting orders, or for pre orders
+     * @type {boolean}
+     * @memberof ReorderEntity
+     */
+    'is_store_open': boolean;
+    /**
+     * List of available items for reorder
+     * @type {Array<OrderDetailsClass>}
+     * @memberof ReorderEntity
+     */
+    'available_items': Array<OrderDetailsClass>;
+    /**
+     * List of unavailable items for reorder
+     * @type {Array<OrderDetailsClass>}
+     * @memberof ReorderEntity
+     */
+    'unavailable_items': Array<OrderDetailsClass>;
+    /**
+     * Indicates store supports pre order
+     * @type {boolean}
+     * @memberof ReorderEntity
+     */
+    'pre_order_available': boolean;
+    /**
+     * 
+     * @type {ReorderEntityStatus}
+     * @memberof ReorderEntity
+     */
+    'status': ReorderEntityStatus;
+    /**
+     * 
+     * @type {ReorderEntityPlan}
+     * @memberof ReorderEntity
+     */
+    'plan': ReorderEntityPlan;
+}
+/**
+ * Suggested re order plan
+ * @export
+ * @interface ReorderEntityPlan
+ */
+export interface ReorderEntityPlan {
+    /**
+     * Order dates for the planned meal plan
+     * @type {Array<string>}
+     * @memberof ReorderEntityPlan
+     */
+    'meal_plan_dates'?: Array<string>;
+    /**
+     * Order type pre selected for reorder, defaults to delivery and falls back to pickup
+     * @type {string}
+     * @memberof ReorderEntityPlan
+     */
+    'order_type'?: string;
+    /**
+     * Order date pre selected for reorder
+     * @type {string}
+     * @memberof ReorderEntityPlan
+     */
+    'order_date'?: string;
+    /**
+     * Order time pre selected for reorder
+     * @type {string}
+     * @memberof ReorderEntityPlan
+     */
+    'order_time'?: string;
+    /**
+     * Items available for pre order
+     * @type {Array<OrderDetailsClass>}
+     * @memberof ReorderEntityPlan
+     */
+    'items'?: Array<OrderDetailsClass>;
+}
+/**
+ * Pre evaluated result if you continue with reordering
+ * @export
+ * @interface ReorderEntityStatus
+ */
+export interface ReorderEntityStatus {
+    /**
+     * Indicates reorder status if pushed through
+     * @type {boolean}
+     * @memberof ReorderEntityStatus
+     */
+    'possible': boolean;
+    /**
+     * List of conditions the reorder will encounter
+     * @type {Array<string>}
+     * @memberof ReorderEntityStatus
+     */
+    'reasons': Array<ReorderEntityStatusReasonsEnum>;
+}
+
+export const ReorderEntityStatusReasonsEnum = {
+    StoreOpen: 'store_open',
+    StoreClosed: 'store_closed',
+    StoreSupportsPreOrder: 'store_supports_pre_order',
+    AvailableItemsEmpty: 'available_items_empty',
+    OrderTypeDifferent: 'order_type_different',
+    MealPlanOngoing: 'meal_plan_ongoing',
+    MealPlanUnavailable: 'meal_plan_unavailable',
+    DeliveryUnavailable: 'delivery_unavailable'
+} as const;
+
+export type ReorderEntityStatusReasonsEnum = typeof ReorderEntityStatusReasonsEnum[keyof typeof ReorderEntityStatusReasonsEnum];
+
 /**
  * 
  * @export
@@ -2595,6 +2708,12 @@ export interface ReservationInfoEntityStore {
      * @memberof ReservationInfoEntityStore
      */
     'store_bg': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReservationInfoEntityStore
+     */
+    'opening_hour_buffer': number;
     /**
      * Store distance limit for deliveries (in kilometers)
      * @type {number}
@@ -3196,6 +3315,12 @@ export interface StoreClass {
      */
     'store_bg': string;
     /**
+     * 
+     * @type {number}
+     * @memberof StoreClass
+     */
+    'opening_hour_buffer': number;
+    /**
      * Store distance limit for deliveries (in kilometers)
      * @type {number}
      * @memberof StoreClass
@@ -3353,19 +3478,19 @@ export interface StoreDetailsClass {
      */
     'id': string;
     /**
-     * 
+     * Store name
      * @type {string}
      * @memberof StoreDetailsClass
      */
     'name': string;
     /**
-     * 
+     * Store image URL
      * @type {string}
      * @memberof StoreDetailsClass
      */
     'image': string;
     /**
-     * 
+     * Store nominated header image URL
      * @type {string}
      * @memberof StoreDetailsClass
      */
@@ -3436,6 +3561,62 @@ export interface StoreMenuClass {
 /**
  * 
  * @export
+ * @interface StoreOrderDateTimeOptions
+ */
+export interface StoreOrderDateTimeOptions {
+    /**
+     * Time in Pickup API supported format
+     * @type {string}
+     * @memberof StoreOrderDateTimeOptions
+     */
+    'value': string;
+    /**
+     * Human readable time format
+     * @type {string}
+     * @memberof StoreOrderDateTimeOptions
+     */
+    'text': string;
+    /**
+     * Time slot start
+     * @type {string}
+     * @memberof StoreOrderDateTimeOptions
+     */
+    'start'?: string;
+    /**
+     * Time slot end
+     * @type {string}
+     * @memberof StoreOrderDateTimeOptions
+     */
+    'end'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface StoreOrderDates
+ */
+export interface StoreOrderDates {
+    /**
+     * Date in Pickup API supported format
+     * @type {string}
+     * @memberof StoreOrderDates
+     */
+    'value': string;
+    /**
+     * Human readable date format
+     * @type {string}
+     * @memberof StoreOrderDates
+     */
+    'text': string;
+    /**
+     * Time options list
+     * @type {Array<StoreOrderDateTimeOptions>}
+     * @memberof StoreOrderDates
+     */
+    'time_options': Array<StoreOrderDateTimeOptions>;
+}
+/**
+ * 
+ * @export
  * @interface StorePartialClass
  */
 export interface StorePartialClass {
@@ -3451,6 +3632,12 @@ export interface StorePartialClass {
      * @memberof StorePartialClass
      */
     'store_bg': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof StorePartialClass
+     */
+    'opening_hour_buffer': number;
     /**
      * Store distance limit for deliveries (in kilometers)
      * @type {number}
@@ -3667,6 +3854,12 @@ export interface StoreReservationClassStore {
      */
     'store_bg': string;
     /**
+     * 
+     * @type {number}
+     * @memberof StoreReservationClassStore
+     */
+    'opening_hour_buffer': number;
+    /**
      * Store distance limit for deliveries (in kilometers)
      * @type {number}
      * @memberof StoreReservationClassStore
@@ -3801,6 +3994,12 @@ export interface StoreReservationSearchClass {
      */
     'store_bg': string;
     /**
+     * 
+     * @type {number}
+     * @memberof StoreReservationSearchClass
+     */
+    'opening_hour_buffer': number;
+    /**
      * Store distance limit for deliveries (in kilometers)
      * @type {number}
      * @memberof StoreReservationSearchClass
@@ -3903,6 +4102,12 @@ export interface StoreSearchClass {
      * @memberof StoreSearchClass
      */
     'store_bg': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof StoreSearchClass
+     */
+    'opening_hour_buffer': number;
     /**
      * Store distance limit for deliveries (in kilometers)
      * @type {number}
@@ -5000,6 +5205,43 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Get re-order plan
+         * @param {string} orderId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersControllerReorder: async (orderId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'orderId' is not null or undefined
+            assertParamExists('ordersControllerReorder', 'orderId', orderId)
+            const localVarPath = `/v1/orders/{order_id}/reorder`
+                .replace(`{${"order_id"}}`, encodeURIComponent(String(orderId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -5039,6 +5281,17 @@ export const OrdersApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, mealPlan, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @summary Get re-order plan
+         * @param {string} orderId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersControllerReorder(orderId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReorderEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerReorder(orderId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -5075,6 +5328,16 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
          */
         ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options?: any): AxiosPromise<OrderEntity> {
             return localVarFp.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, mealPlan, limit, offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get re-order plan
+         * @param {string} orderId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersControllerReorder(orderId: string, options?: any): AxiosPromise<ReorderEntity> {
+            return localVarFp.ordersControllerReorder(orderId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -5157,6 +5420,20 @@ export interface OrdersApiOrdersControllerFindRequest {
 }
 
 /**
+ * Request parameters for ordersControllerReorder operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersControllerReorderRequest
+ */
+export interface OrdersApiOrdersControllerReorderRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof OrdersApiOrdersControllerReorder
+     */
+    readonly orderId: string
+}
+
+/**
  * OrdersApi - object-oriented interface
  * @export
  * @class OrdersApi
@@ -5185,6 +5462,18 @@ export class OrdersApi extends BaseAPI {
      */
     public ordersControllerFind(requestParameters: OrdersApiOrdersControllerFindRequest, options?: AxiosRequestConfig) {
         return OrdersApiFp(this.configuration).ordersControllerFind(requestParameters.id, requestParameters.maxOrderDate, requestParameters.minOrderDate, requestParameters.status, requestParameters.orderType, requestParameters.mealPlan, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get re-order plan
+     * @param {OrdersApiOrdersControllerReorderRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersControllerReorder(requestParameters: OrdersApiOrdersControllerReorderRequest, options?: AxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersControllerReorder(requestParameters.orderId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -6305,6 +6594,43 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Get store date options
+         * @param {string} id ID of store
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        storeControllerGetStoreDateOptions: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('storeControllerGetStoreDateOptions', 'id', id)
+            const localVarPath = `/v1/store/{id}/order-dates`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -6350,6 +6676,17 @@ export const StoreApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFindOne(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @summary Get store date options
+         * @param {string} id ID of store
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async storeControllerGetStoreDateOptions(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoreOrderDates>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerGetStoreDateOptions(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -6391,6 +6728,16 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
          */
         storeControllerFindOne(id: string, options?: any): AxiosPromise<StoreClass> {
             return localVarFp.storeControllerFindOne(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get store date options
+         * @param {string} id ID of store
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        storeControllerGetStoreDateOptions(id: string, options?: any): AxiosPromise<StoreOrderDates> {
+            return localVarFp.storeControllerGetStoreDateOptions(id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -6452,6 +6799,20 @@ export interface StoreApiStoreControllerFindOneRequest {
 }
 
 /**
+ * Request parameters for storeControllerGetStoreDateOptions operation in StoreApi.
+ * @export
+ * @interface StoreApiStoreControllerGetStoreDateOptionsRequest
+ */
+export interface StoreApiStoreControllerGetStoreDateOptionsRequest {
+    /**
+     * ID of store
+     * @type {string}
+     * @memberof StoreApiStoreControllerGetStoreDateOptions
+     */
+    readonly id: string
+}
+
+/**
  * StoreApi - object-oriented interface
  * @export
  * @class StoreApi
@@ -6492,6 +6853,18 @@ export class StoreApi extends BaseAPI {
      */
     public storeControllerFindOne(requestParameters: StoreApiStoreControllerFindOneRequest, options?: AxiosRequestConfig) {
         return StoreApiFp(this.configuration).storeControllerFindOne(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get store date options
+     * @param {StoreApiStoreControllerGetStoreDateOptionsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof StoreApi
+     */
+    public storeControllerGetStoreDateOptions(requestParameters: StoreApiStoreControllerGetStoreDateOptionsRequest, options?: AxiosRequestConfig) {
+        return StoreApiFp(this.configuration).storeControllerGetStoreDateOptions(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
