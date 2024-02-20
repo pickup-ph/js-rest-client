@@ -2709,7 +2709,7 @@ export interface ReservationInfoEntityStore {
      */
     'store_bg': string;
     /**
-     * 
+     * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
      * @memberof ReservationInfoEntityStore
      */
@@ -2775,11 +2775,17 @@ export interface ReservationInfoEntityStore {
      */
     'is_store_open': boolean;
     /**
-     * Pre-order feature is enabled
+     * Pre-order feature is enabled, if set to true it means you can accept order anytime until days_accepting_in_advanced_orders
      * @type {boolean}
      * @memberof ReservationInfoEntityStore
      */
     'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Pre-order limit in days
+     * @type {number}
+     * @memberof ReservationInfoEntityStore
+     */
+    'days_accepting_in_advanced_orders': number;
     /**
      * Store order prep time in minutes
      * @type {number}
@@ -3315,7 +3321,7 @@ export interface StoreClass {
      */
     'store_bg': string;
     /**
-     * 
+     * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
      * @memberof StoreClass
      */
@@ -3381,12 +3387,6 @@ export interface StoreClass {
      */
     'off_dates': Array<string>;
     /**
-     * Pre-order limit in days
-     * @type {number}
-     * @memberof StoreClass
-     */
-    'days_accepting_in_advanced_orders': number;
-    /**
      * Available delivery payment method
      * @type {Array<string>}
      * @memberof StoreClass
@@ -3447,11 +3447,17 @@ export interface StoreClass {
      */
     'is_store_open': boolean;
     /**
-     * Pre-order feature is enabled
+     * Pre-order feature is enabled, if set to true it means you can accept order anytime until days_accepting_in_advanced_orders
      * @type {boolean}
      * @memberof StoreClass
      */
     'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Pre-order limit in days
+     * @type {number}
+     * @memberof StoreClass
+     */
+    'days_accepting_in_advanced_orders': number;
     /**
      * Store order prep time in minutes
      * @type {number}
@@ -3571,19 +3577,13 @@ export interface StoreOrderDateTimeOptions {
      */
     'value': string;
     /**
-     * Human readable time format
-     * @type {string}
-     * @memberof StoreOrderDateTimeOptions
-     */
-    'text': string;
-    /**
-     * Time slot start
+     * Time slot start, iso format
      * @type {string}
      * @memberof StoreOrderDateTimeOptions
      */
     'start'?: string;
     /**
-     * Time slot end
+     * Time slot end, iso format
      * @type {string}
      * @memberof StoreOrderDateTimeOptions
      */
@@ -3602,17 +3602,30 @@ export interface StoreOrderDates {
      */
     'value': string;
     /**
-     * Human readable date format
+     * Date in ISO format
      * @type {string}
      * @memberof StoreOrderDates
      */
-    'text': string;
+    'iso': string;
     /**
      * Time options list
      * @type {Array<StoreOrderDateTimeOptions>}
      * @memberof StoreOrderDates
      */
     'time_options': Array<StoreOrderDateTimeOptions>;
+}
+/**
+ * 
+ * @export
+ * @interface StoreOrderDatesEntity
+ */
+export interface StoreOrderDatesEntity {
+    /**
+     * 
+     * @type {Array<StoreOrderDates>}
+     * @memberof StoreOrderDatesEntity
+     */
+    'dates': Array<StoreOrderDates>;
 }
 /**
  * 
@@ -3633,7 +3646,7 @@ export interface StorePartialClass {
      */
     'store_bg': string;
     /**
-     * 
+     * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
      * @memberof StorePartialClass
      */
@@ -3699,11 +3712,17 @@ export interface StorePartialClass {
      */
     'is_store_open': boolean;
     /**
-     * Pre-order feature is enabled
+     * Pre-order feature is enabled, if set to true it means you can accept order anytime until days_accepting_in_advanced_orders
      * @type {boolean}
      * @memberof StorePartialClass
      */
     'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Pre-order limit in days
+     * @type {number}
+     * @memberof StorePartialClass
+     */
+    'days_accepting_in_advanced_orders': number;
     /**
      * Store order prep time in minutes
      * @type {number}
@@ -3854,7 +3873,7 @@ export interface StoreReservationClassStore {
      */
     'store_bg': string;
     /**
-     * 
+     * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
      * @memberof StoreReservationClassStore
      */
@@ -3920,11 +3939,17 @@ export interface StoreReservationClassStore {
      */
     'is_store_open': boolean;
     /**
-     * Pre-order feature is enabled
+     * Pre-order feature is enabled, if set to true it means you can accept order anytime until days_accepting_in_advanced_orders
      * @type {boolean}
      * @memberof StoreReservationClassStore
      */
     'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Pre-order limit in days
+     * @type {number}
+     * @memberof StoreReservationClassStore
+     */
+    'days_accepting_in_advanced_orders': number;
     /**
      * Store order prep time in minutes
      * @type {number}
@@ -3994,7 +4019,7 @@ export interface StoreReservationSearchClass {
      */
     'store_bg': string;
     /**
-     * 
+     * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
      * @memberof StoreReservationSearchClass
      */
@@ -4060,11 +4085,17 @@ export interface StoreReservationSearchClass {
      */
     'is_store_open': boolean;
     /**
-     * Pre-order feature is enabled
+     * Pre-order feature is enabled, if set to true it means you can accept order anytime until days_accepting_in_advanced_orders
      * @type {boolean}
      * @memberof StoreReservationSearchClass
      */
     'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Pre-order limit in days
+     * @type {number}
+     * @memberof StoreReservationSearchClass
+     */
+    'days_accepting_in_advanced_orders': number;
     /**
      * Store order prep time in minutes
      * @type {number}
@@ -4103,7 +4134,7 @@ export interface StoreSearchClass {
      */
     'store_bg': string;
     /**
-     * 
+     * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
      * @memberof StoreSearchClass
      */
@@ -4187,11 +4218,17 @@ export interface StoreSearchClass {
      */
     'is_store_open': boolean;
     /**
-     * Pre-order feature is enabled
+     * Pre-order feature is enabled, if set to true it means you can accept order anytime until days_accepting_in_advanced_orders
      * @type {boolean}
      * @memberof StoreSearchClass
      */
     'is_accepting_in_advanced_orders': boolean;
+    /**
+     * Pre-order limit in days
+     * @type {number}
+     * @memberof StoreSearchClass
+     */
+    'days_accepting_in_advanced_orders': number;
     /**
      * Store order prep time in minutes
      * @type {number}
@@ -6683,7 +6720,7 @@ export const StoreApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async storeControllerGetStoreDateOptions(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoreOrderDates>> {
+        async storeControllerGetStoreDateOptions(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoreOrderDatesEntity>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerGetStoreDateOptions(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -6736,7 +6773,7 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerGetStoreDateOptions(id: string, options?: any): AxiosPromise<StoreOrderDates> {
+        storeControllerGetStoreDateOptions(id: string, options?: any): AxiosPromise<StoreOrderDatesEntity> {
             return localVarFp.storeControllerGetStoreDateOptions(id, options).then((request) => request(axios, basePath));
         },
     };
