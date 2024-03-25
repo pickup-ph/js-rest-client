@@ -870,7 +870,7 @@ export interface GroupSelectionClass {
      * @type {string}
      * @memberof GroupSelectionClass
      */
-    'id'?: string;
+    'id': string;
     /**
      * Nominated position of the extra in a list
      * @type {number}
@@ -2298,9 +2298,160 @@ export interface QuotationRequestDTOCustomer {
 /**
  * 
  * @export
+ * @interface ReorderDetailsClass
+ */
+export interface ReorderDetailsClass {
+    /**
+     * List of grouped extras of an item
+     * @type {Array<ExtraGroupClass>}
+     * @memberof ReorderDetailsClass
+     */
+    'extra_group'?: Array<ExtraGroupClass>;
+    /**
+     * Maximum number of allowed purchase of the item across all platform per time slot
+     * @type {Array<ItemTimeSlotClass>}
+     * @memberof ReorderDetailsClass
+     */
+    'item_limit_per_time_slot'?: Array<ItemTimeSlotClass>;
+    /**
+     * Item id that will be used for cart building on /cart route
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'id': string;
+    /**
+     * Item order quantity
+     * @type {number}
+     * @memberof ReorderDetailsClass
+     */
+    'quantity': number;
+    /**
+     * 
+     * @type {Array<OrderExtraClass>}
+     * @memberof ReorderDetailsClass
+     */
+    'extras': Array<OrderExtraClass>;
+    /**
+     * Store which this item belongs to, can be used for filtering
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'store_id'?: string;
+    /**
+     * Store name which this item belongs to
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'store_name'?: string;
+    /**
+     * The name of the item
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'name': string;
+    /**
+     * The description of the item
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'description': string;
+    /**
+     * The nominated item display image in url form
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'image_url': string;
+    /**
+     * The item discount description
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'discount_description'?: string;
+    /**
+     * The peso value of the current active item discount. If discount_type is rawDiscount, this is equal to the discount_value. If percentDiscount, this is equal to the regular_price multiplied to the discount_value/100.
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'active_discount'?: string;
+    /**
+     * The active price of the item, if there is an active discount, this should be equal to the discounted_price, if there is no active discount, this should be equal to the regular price
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'price': string;
+    /**
+     * The type of discount applied (\"noDiscount\", \"rawDiscount\", \"percentDiscount\")
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'discount_type'?: string;
+    /**
+     * The value of the discount applied. For example if discount_value is \"20\", if discount_type is percentDiscount, this means 20% off. If discount_type is rawDiscount, this means P20.00 off.
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'discount_value'?: string;
+    /**
+     * The peso value of the item, applying the active_discount to the regular_price.
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'discounted_price': string;
+    /**
+     * The peso value of the item without any discounts.
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'regular_price'?: string;
+    /**
+     * Item tags
+     * @type {Array<string>}
+     * @memberof ReorderDetailsClass
+     */
+    'tags': Array<string>;
+    /**
+     * Item category, should be in store category list
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'category'?: string;
+    /**
+     * Random unique item code
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'item_code': string;
+    /**
+     * Indicates the item is bulky and will automatically select car on checkout if order type is delivery
+     * @type {boolean}
+     * @memberof ReorderDetailsClass
+     */
+    'is_bulk'?: boolean;
+    /**
+     * Indicates if item is part of meal plan order type
+     * @type {boolean}
+     * @memberof ReorderDetailsClass
+     */
+    'is_meal_plan'?: boolean;
+    /**
+     * Maximum number of allowed purchase of the item across all platform per day
+     * @type {number}
+     * @memberof ReorderDetailsClass
+     */
+    'item_limit_per_day'?: number;
+}
+/**
+ * 
+ * @export
  * @interface ReorderEntity
  */
 export interface ReorderEntity {
+    /**
+     * Store ID
+     * @type {string}
+     * @memberof ReorderEntity
+     */
+    'store_id': string;
     /**
      * Indicates if store is currently accepting orders, or for pre orders
      * @type {boolean}
@@ -2309,16 +2460,16 @@ export interface ReorderEntity {
     'is_store_open': boolean;
     /**
      * List of available items for reorder
-     * @type {Array<OrderDetailsClass>}
+     * @type {Array<ReorderDetailsClass>}
      * @memberof ReorderEntity
      */
-    'available_items': Array<OrderDetailsClass>;
+    'available_items': Array<ReorderDetailsClass>;
     /**
      * List of unavailable items for reorder
-     * @type {Array<OrderDetailsClass>}
+     * @type {Array<ReorderDetailsClass>}
      * @memberof ReorderEntity
      */
-    'unavailable_items': Array<OrderDetailsClass>;
+    'unavailable_items': Array<ReorderDetailsClass>;
     /**
      * Indicates store supports pre order
      * @type {boolean}
@@ -2370,10 +2521,10 @@ export interface ReorderEntityPlan {
     'order_time'?: string;
     /**
      * Items available for pre order
-     * @type {Array<OrderDetailsClass>}
+     * @type {Array<ReorderDetailsClass>}
      * @memberof ReorderEntityPlan
      */
-    'items'?: Array<OrderDetailsClass>;
+    'items'?: Array<ReorderDetailsClass>;
 }
 /**
  * Pre evaluated result if you continue with reordering
