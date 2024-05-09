@@ -132,7 +132,7 @@ export interface CartDTO {
      */
     'customer'?: CartDTOCustomer;
     /**
-     * PickupPH supported order types
+     * PickupPH supported order types, meal plan will be automatically changed to delivery (if not selected)
      * @type {string}
      * @memberof CartDTO
      */
@@ -612,6 +612,37 @@ export interface CustomerAddressDTO {
 /**
  * 
  * @export
+ * @interface CustomerDetail
+ */
+export interface CustomerDetail {
+    /**
+     * Customer\'s first name
+     * @type {string}
+     * @memberof CustomerDetail
+     */
+    'first_name': string;
+    /**
+     * Customer\'s last name
+     * @type {string}
+     * @memberof CustomerDetail
+     */
+    'last_name': string;
+    /**
+     * Customer\'s email
+     * @type {string}
+     * @memberof CustomerDetail
+     */
+    'email': string;
+    /**
+     * Customer\'s phone number
+     * @type {string}
+     * @memberof CustomerDetail
+     */
+    'contact_number': string;
+}
+/**
+ * 
+ * @export
  * @interface CustomerDetailDTO
  */
 export interface CustomerDetailDTO {
@@ -903,6 +934,12 @@ export interface GroupSelectionClass {
  */
 export interface ItemClass {
     /**
+     * Item id that will be used for cart building on /cart route
+     * @type {string}
+     * @memberof ItemClass
+     */
+    'id': string;
+    /**
      * Indicates item to not be shown to customers on an off-date
      * @type {boolean}
      * @memberof ItemClass
@@ -920,12 +957,6 @@ export interface ItemClass {
      * @memberof ItemClass
      */
     'item_limit_per_time_slot'?: Array<ItemTimeSlotClass>;
-    /**
-     * Item id that will be used for cart building on /cart route
-     * @type {string}
-     * @memberof ItemClass
-     */
-    'id': string;
     /**
      * Random unique item code
      * @type {string}
@@ -1091,17 +1122,17 @@ export interface ItemInventoryEntity {
  */
 export interface ItemPartialClass {
     /**
+     * Item id that will be used for cart building on /cart route
+     * @type {string}
+     * @memberof ItemPartialClass
+     */
+    'id': string;
+    /**
      * Indicates item to not be shown to customers on an off-date
      * @type {boolean}
      * @memberof ItemPartialClass
      */
     'is_visible_on_off_date'?: boolean;
-    /**
-     * Item id that will be used for cart building on /cart route
-     * @type {string}
-     * @memberof ItemPartialClass
-     */
-    'id'?: string;
     /**
      * Store which this item belongs to, can be used for filtering
      * @type {string}
@@ -1354,6 +1385,12 @@ export interface MenuClass {
  */
 export interface MenuClassItem {
     /**
+     * Item id that will be used for cart building on /cart route
+     * @type {string}
+     * @memberof MenuClassItem
+     */
+    'id': string;
+    /**
      * Indicates item to not be shown to customers on an off-date
      * @type {boolean}
      * @memberof MenuClassItem
@@ -1365,60 +1402,6 @@ export interface MenuClassItem {
      * @memberof MenuClassItem
      */
     'extra_group'?: Array<ExtraGroupClass>;
-    /**
-     * Maximum number of allowed purchase of the item across all platform per time slot
-     * @type {Array<ItemTimeSlotClass>}
-     * @memberof MenuClassItem
-     */
-    'item_limit_per_time_slot'?: Array<ItemTimeSlotClass>;
-    /**
-     * Item id that will be used for cart building on /cart route
-     * @type {string}
-     * @memberof MenuClassItem
-     */
-    'id': string;
-    /**
-     * Random unique item code
-     * @type {string}
-     * @memberof MenuClassItem
-     */
-    'item_code': string;
-    /**
-     * Indicates the item is bulky and will automatically select car on checkout if order type is delivery
-     * @type {boolean}
-     * @memberof MenuClassItem
-     */
-    'is_bulk'?: boolean;
-    /**
-     * Indicates if item is part of meal plan order type
-     * @type {boolean}
-     * @memberof MenuClassItem
-     */
-    'is_meal_plan'?: boolean;
-    /**
-     * Store off dates helper
-     * @type {Array<string>}
-     * @memberof MenuClassItem
-     */
-    'off_dates'?: Array<string>;
-    /**
-     * Maximum number of allowed purchase of the item across all platform per day
-     * @type {number}
-     * @memberof MenuClassItem
-     */
-    'item_limit_per_day'?: number;
-    /**
-     * Store which this item belongs to, can be used for filtering
-     * @type {string}
-     * @memberof MenuClassItem
-     */
-    'store_id'?: string;
-    /**
-     * Store name which this item belongs to
-     * @type {string}
-     * @memberof MenuClassItem
-     */
-    'store_name'?: string;
     /**
      * The name of the item
      * @type {string}
@@ -1486,29 +1469,156 @@ export interface MenuClassItem {
      */
     'tags': Array<string>;
     /**
-     * Item is available for order
-     * @type {boolean}
-     * @memberof MenuClassItem
-     */
-    'available'?: boolean;
-    /**
-     * Item category, should be in store category list
-     * @type {string}
-     * @memberof MenuClassItem
-     */
-    'category'?: string;
-    /**
      * Indicates if item has an extra group to be shown as part of the order
      * @type {boolean}
      * @memberof MenuClassItem
      */
     'extras'?: boolean;
     /**
-     * Indicates if item should be visible to the customer
+     * Random unique item code
+     * @type {string}
+     * @memberof MenuClassItem
+     */
+    'item_code': string;
+    /**
+     * Indicates the item is bulky and will automatically select car on checkout if order type is delivery
      * @type {boolean}
      * @memberof MenuClassItem
      */
-    'visible'?: boolean;
+    'is_bulk'?: boolean;
+    /**
+     * Indicates if item is part of meal plan order type
+     * @type {boolean}
+     * @memberof MenuClassItem
+     */
+    'is_meal_plan'?: boolean;
+    /**
+     * Store off dates helper
+     * @type {Array<string>}
+     * @memberof MenuClassItem
+     */
+    'off_dates'?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface MenuItemClass
+ */
+export interface MenuItemClass {
+    /**
+     * Item id that will be used for cart building on /cart route
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'id': string;
+    /**
+     * Indicates item to not be shown to customers on an off-date
+     * @type {boolean}
+     * @memberof MenuItemClass
+     */
+    'is_visible_on_off_date'?: boolean;
+    /**
+     * List of grouped extras of an item
+     * @type {Array<ExtraGroupClass>}
+     * @memberof MenuItemClass
+     */
+    'extra_group'?: Array<ExtraGroupClass>;
+    /**
+     * The name of the item
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'name': string;
+    /**
+     * The description of the item
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'description': string;
+    /**
+     * The nominated item display image in url form
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'image_url': string;
+    /**
+     * The item discount description
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'discount_description'?: string;
+    /**
+     * The peso value of the current active item discount. If discount_type is rawDiscount, this is equal to the discount_value. If percentDiscount, this is equal to the regular_price multiplied to the discount_value/100.
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'active_discount'?: string;
+    /**
+     * The active price of the item, if there is an active discount, this should be equal to the discounted_price, if there is no active discount, this should be equal to the regular price
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'price': string;
+    /**
+     * The type of discount applied (\"noDiscount\", \"rawDiscount\", \"percentDiscount\")
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'discount_type'?: string;
+    /**
+     * The value of the discount applied. For example if discount_value is \"20\", if discount_type is percentDiscount, this means 20% off. If discount_type is rawDiscount, this means P20.00 off.
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'discount_value'?: string;
+    /**
+     * The peso value of the item, applying the active_discount to the regular_price.
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'discounted_price': string;
+    /**
+     * The peso value of the item without any discounts.
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'regular_price'?: string;
+    /**
+     * Item tags
+     * @type {Array<string>}
+     * @memberof MenuItemClass
+     */
+    'tags': Array<string>;
+    /**
+     * Indicates if item has an extra group to be shown as part of the order
+     * @type {boolean}
+     * @memberof MenuItemClass
+     */
+    'extras'?: boolean;
+    /**
+     * Random unique item code
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'item_code': string;
+    /**
+     * Indicates the item is bulky and will automatically select car on checkout if order type is delivery
+     * @type {boolean}
+     * @memberof MenuItemClass
+     */
+    'is_bulk'?: boolean;
+    /**
+     * Indicates if item is part of meal plan order type
+     * @type {boolean}
+     * @memberof MenuItemClass
+     */
+    'is_meal_plan'?: boolean;
+    /**
+     * Store off dates helper
+     * @type {Array<string>}
+     * @memberof MenuItemClass
+     */
+    'off_dates'?: Array<string>;
 }
 /**
  * 
@@ -1714,11 +1824,11 @@ export interface OrderPartialClass {
      */
     'id': string;
     /**
-     * Guest customer information
-     * @type {object}
+     * 
+     * @type {OrderPartialClassCustomer}
      * @memberof OrderPartialClass
      */
-    'customer': object;
+    'customer': OrderPartialClassCustomer;
     /**
      * Total order amount charged to the customer
      * @type {number}
@@ -1763,10 +1873,10 @@ export interface OrderPartialClass {
     'customer_notes': string;
     /**
      * Indicates if the order is part of a meal plan
-     * @type {string}
+     * @type {boolean}
      * @memberof OrderPartialClass
      */
-    'meal_plan': string;
+    'meal_plan': boolean;
     /**
      * Indicates discount applied to a meal plan
      * @type {string}
@@ -1816,6 +1926,18 @@ export interface OrderPartialClass {
      */
     'delivery_address': string;
     /**
+     * Order delivery status
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'delivery_status'?: OrderPartialClassDeliveryStatusEnum;
+    /**
+     * Order delivery tracking link
+     * @type {string}
+     * @memberof OrderPartialClass
+     */
+    'delivery_tracking_link'?: string;
+    /**
      * Order status, expired means the cart was abandoned
      * @type {string}
      * @memberof OrderPartialClass
@@ -1858,11 +1980,11 @@ export interface OrderPartialClass {
      */
     'refunded_amount': number;
     /**
-     * Third party pickup information
-     * @type {object}
+     * 
+     * @type {OrderPartialClassPickupDetails}
      * @memberof OrderPartialClass
      */
-    'pickup_details': object;
+    'pickup_details': OrderPartialClassPickupDetails;
     /**
      * Tracking page for this particular order
      * @type {string}
@@ -1897,6 +2019,15 @@ export const OrderPartialClassOrderTypeEnum = {
 } as const;
 
 export type OrderPartialClassOrderTypeEnum = typeof OrderPartialClassOrderTypeEnum[keyof typeof OrderPartialClassOrderTypeEnum];
+export const OrderPartialClassDeliveryStatusEnum = {
+    Assigning: 'ASSIGNING',
+    OnGoing: 'ON_GOING',
+    PickedUp: 'PICKED_UP',
+    Completed: 'COMPLETED',
+    Failed: 'FAILED'
+} as const;
+
+export type OrderPartialClassDeliveryStatusEnum = typeof OrderPartialClassDeliveryStatusEnum[keyof typeof OrderPartialClassDeliveryStatusEnum];
 export const OrderPartialClassStatusEnum = {
     New: 'new',
     OutForDelivery: 'out_for_delivery',
@@ -1906,17 +2037,80 @@ export const OrderPartialClassStatusEnum = {
     Completed: 'completed',
     Refunded: 'refunded',
     Expired: 'expired',
-    PaymentFailed: 'payment_failed'
+    PaymentFailed: 'payment_failed',
+    PaymentPending: 'payment_pending'
 } as const;
 
 export type OrderPartialClassStatusEnum = typeof OrderPartialClassStatusEnum[keyof typeof OrderPartialClassStatusEnum];
 
+/**
+ * Guest customer information
+ * @export
+ * @interface OrderPartialClassCustomer
+ */
+export interface OrderPartialClassCustomer {
+    /**
+     * Customer\'s first name
+     * @type {string}
+     * @memberof OrderPartialClassCustomer
+     */
+    'first_name': string;
+    /**
+     * Customer\'s last name
+     * @type {string}
+     * @memberof OrderPartialClassCustomer
+     */
+    'last_name': string;
+    /**
+     * Customer\'s email
+     * @type {string}
+     * @memberof OrderPartialClassCustomer
+     */
+    'email': string;
+    /**
+     * Customer\'s phone number
+     * @type {string}
+     * @memberof OrderPartialClassCustomer
+     */
+    'contact_number': string;
+}
+/**
+ * Third party pickup information
+ * @export
+ * @interface OrderPartialClassPickupDetails
+ */
+export interface OrderPartialClassPickupDetails {
+    /**
+     * Customer\'s first name
+     * @type {string}
+     * @memberof OrderPartialClassPickupDetails
+     */
+    'first_name': string;
+    /**
+     * Customer\'s last name
+     * @type {string}
+     * @memberof OrderPartialClassPickupDetails
+     */
+    'last_name': string;
+    /**
+     * Customer\'s phone number
+     * @type {string}
+     * @memberof OrderPartialClassPickupDetails
+     */
+    'contact_number': string;
+}
 /**
  * Applied promo information
  * @export
  * @interface OrderPartialClassPromo
  */
 export interface OrderPartialClassPromo {
+    /**
+     * Identifies order types this promo belongs to
+     * @type {string}
+     * @memberof OrderPartialClassPromo
+     */
+    'applies_to': OrderPartialClassPromoAppliesToEnum;
     /**
      * Promo code
      * @type {string}
@@ -1925,16 +2119,10 @@ export interface OrderPartialClassPromo {
     'code': string;
     /**
      * Type of this promo
-     * @type {object}
-     * @memberof OrderPartialClassPromo
-     */
-    'type': OrderPartialClassPromoTypeEnum;
-    /**
-     * Identifies order types this promo belongs to
      * @type {string}
      * @memberof OrderPartialClassPromo
      */
-    'applies_to': OrderPartialClassPromoAppliesToEnum;
+    'type': OrderPartialClassPromoTypeEnum;
     /**
      * Promo discount as amount deductable
      * @type {number}
@@ -1972,21 +2160,13 @@ export interface OrderPartialClassPromo {
      */
     'start_date': string;
     /**
-     * Promo end date
+     * Promo end date, null means promo does not expire via date
      * @type {string}
      * @memberof OrderPartialClassPromo
      */
     'end_date': string;
 }
 
-export const OrderPartialClassPromoTypeEnum = {
-    AmountOff: 'amount_off',
-    PercentageOff: 'percentage_off',
-    FreeDelivery: 'free_delivery',
-    FreeItem: 'free_item'
-} as const;
-
-export type OrderPartialClassPromoTypeEnum = typeof OrderPartialClassPromoTypeEnum[keyof typeof OrderPartialClassPromoTypeEnum];
 export const OrderPartialClassPromoAppliesToEnum = {
     Pickup: 'pickup',
     Delivery: 'delivery',
@@ -1997,6 +2177,14 @@ export const OrderPartialClassPromoAppliesToEnum = {
 } as const;
 
 export type OrderPartialClassPromoAppliesToEnum = typeof OrderPartialClassPromoAppliesToEnum[keyof typeof OrderPartialClassPromoAppliesToEnum];
+export const OrderPartialClassPromoTypeEnum = {
+    AmountOff: 'amount_off',
+    PercentageOff: 'percentage_off',
+    FreeDelivery: 'free_delivery',
+    FreeItem: 'free_item'
+} as const;
+
+export type OrderPartialClassPromoTypeEnum = typeof OrderPartialClassPromoTypeEnum[keyof typeof OrderPartialClassPromoTypeEnum];
 
 /**
  * Store Details
@@ -2114,6 +2302,12 @@ export interface PromoDiscountDetails {
  */
 export interface PromoEntity {
     /**
+     * Identifies order types this promo belongs to
+     * @type {string}
+     * @memberof PromoEntity
+     */
+    'applies_to': PromoEntityAppliesToEnum;
+    /**
      * Promo code
      * @type {string}
      * @memberof PromoEntity
@@ -2121,16 +2315,10 @@ export interface PromoEntity {
     'code': string;
     /**
      * Type of this promo
-     * @type {object}
-     * @memberof PromoEntity
-     */
-    'type': PromoEntityTypeEnum;
-    /**
-     * Identifies order types this promo belongs to
      * @type {string}
      * @memberof PromoEntity
      */
-    'applies_to': PromoEntityAppliesToEnum;
+    'type': PromoEntityTypeEnum;
     /**
      * Promo discount as amount deductable
      * @type {number}
@@ -2168,21 +2356,13 @@ export interface PromoEntity {
      */
     'start_date': string;
     /**
-     * Promo end date
+     * Promo end date, null means promo does not expire via date
      * @type {string}
      * @memberof PromoEntity
      */
     'end_date': string;
 }
 
-export const PromoEntityTypeEnum = {
-    AmountOff: 'amount_off',
-    PercentageOff: 'percentage_off',
-    FreeDelivery: 'free_delivery',
-    FreeItem: 'free_item'
-} as const;
-
-export type PromoEntityTypeEnum = typeof PromoEntityTypeEnum[keyof typeof PromoEntityTypeEnum];
 export const PromoEntityAppliesToEnum = {
     Pickup: 'pickup',
     Delivery: 'delivery',
@@ -2193,6 +2373,14 @@ export const PromoEntityAppliesToEnum = {
 } as const;
 
 export type PromoEntityAppliesToEnum = typeof PromoEntityAppliesToEnum[keyof typeof PromoEntityAppliesToEnum];
+export const PromoEntityTypeEnum = {
+    AmountOff: 'amount_off',
+    PercentageOff: 'percentage_off',
+    FreeDelivery: 'free_delivery',
+    FreeItem: 'free_item'
+} as const;
+
+export type PromoEntityTypeEnum = typeof PromoEntityTypeEnum[keyof typeof PromoEntityTypeEnum];
 
 /**
  * 
@@ -2220,7 +2408,7 @@ export interface QuotationRequestDTO {
      */
     'customer': QuotationRequestDTOCustomer;
     /**
-     * The 24 character hexadecimal string id of the store to be search for delivery availability and details
+     * The 24 character hexadecimal string id of the store (origin)
      * @type {string}
      * @memberof QuotationRequestDTO
      */
@@ -2302,6 +2490,12 @@ export interface QuotationRequestDTOCustomer {
  */
 export interface ReorderDetailsClass {
     /**
+     * Item ID
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'id': string;
+    /**
      * List of grouped extras of an item
      * @type {Array<ExtraGroupClass>}
      * @memberof ReorderDetailsClass
@@ -2313,12 +2507,6 @@ export interface ReorderDetailsClass {
      * @memberof ReorderDetailsClass
      */
     'item_limit_per_time_slot'?: Array<ItemTimeSlotClass>;
-    /**
-     * Item id that will be used for cart building on /cart route
-     * @type {string}
-     * @memberof ReorderDetailsClass
-     */
-    'id': string;
     /**
      * Item order quantity
      * @type {number}
@@ -2506,7 +2694,7 @@ export interface ReorderEntityPlan {
      * @type {string}
      * @memberof ReorderEntityPlan
      */
-    'order_type'?: string;
+    'order_type'?: ReorderEntityPlanOrderTypeEnum;
     /**
      * Order date pre selected for reorder
      * @type {string}
@@ -2526,6 +2714,16 @@ export interface ReorderEntityPlan {
      */
     'items'?: Array<ReorderDetailsClass>;
 }
+
+export const ReorderEntityPlanOrderTypeEnum = {
+    Delivery: 'delivery',
+    Pickup: 'pickup',
+    ThirdPartyPickup: 'third_party_pickup',
+    CurbsidePickup: 'curbside_pickup'
+} as const;
+
+export type ReorderEntityPlanOrderTypeEnum = typeof ReorderEntityPlanOrderTypeEnum[keyof typeof ReorderEntityPlanOrderTypeEnum];
+
 /**
  * Pre evaluated result if you continue with reordering
  * @export
@@ -3149,7 +3347,7 @@ export interface ReservationTimeSlots {
 export interface ReservationTypeClass {
     /**
      * Type of reservation
-     * @type {object}
+     * @type {string}
      * @memberof ReservationTypeClass
      */
     'type': ReservationTypeClassTypeEnum;
@@ -3173,7 +3371,7 @@ export interface ReservationTypeClass {
     'hours': ReservationTypeClassHours;
     /**
      * Indicates the payment type
-     * @type {object}
+     * @type {string}
      * @memberof ReservationTypeClass
      */
     'payment_type': ReservationTypeClassPaymentTypeEnum;
@@ -3189,12 +3387,6 @@ export interface ReservationTypeClass {
      * @memberof ReservationTypeClass
      */
     'minimum': number;
-    /**
-     * 
-     * @type {ReservationInfoEntityStore}
-     * @memberof ReservationTypeClass
-     */
-    'store': ReservationInfoEntityStore;
     /**
      * ID of the reservation type
      * @type {string}
@@ -3213,6 +3405,12 @@ export interface ReservationTypeClass {
      * @memberof ReservationTypeClass
      */
     'time_slots': Array<ReservationTimeSlots>;
+    /**
+     * 
+     * @type {ReservationInfoEntityStore}
+     * @memberof ReservationTypeClass
+     */
+    'store': ReservationInfoEntityStore;
     /**
      * Reservation end date, void means no end date
      * @type {string}
@@ -3914,7 +4112,7 @@ export interface StoreReservationClass {
 export interface StoreReservationClassReservations {
     /**
      * Type of reservation
-     * @type {object}
+     * @type {string}
      * @memberof StoreReservationClassReservations
      */
     'type': StoreReservationClassReservationsTypeEnum;
@@ -3938,7 +4136,7 @@ export interface StoreReservationClassReservations {
     'hours': ReservationTypeClassHours;
     /**
      * Indicates the payment type
-     * @type {object}
+     * @type {string}
      * @memberof StoreReservationClassReservations
      */
     'payment_type': StoreReservationClassReservationsPaymentTypeEnum;
@@ -3954,12 +4152,6 @@ export interface StoreReservationClassReservations {
      * @memberof StoreReservationClassReservations
      */
     'minimum': number;
-    /**
-     * 
-     * @type {ReservationInfoEntityStore}
-     * @memberof StoreReservationClassReservations
-     */
-    'store': ReservationInfoEntityStore;
     /**
      * ID of the reservation type
      * @type {string}
@@ -3978,6 +4170,12 @@ export interface StoreReservationClassReservations {
      * @memberof StoreReservationClassReservations
      */
     'time_slots': Array<ReservationTimeSlots>;
+    /**
+     * 
+     * @type {ReservationInfoEntityStore}
+     * @memberof StoreReservationClassReservations
+     */
+    'store': ReservationInfoEntityStore;
     /**
      * Reservation end date, void means no end date
      * @type {string}
@@ -4309,6 +4507,12 @@ export interface StoreSearchClass {
      */
     'distance'?: number;
     /**
+     * Duration in Minutes from Store geo location to location_point
+     * @type {number}
+     * @memberof StoreSearchClass
+     */
+    'duration'?: number;
+    /**
      * Indicates store product type
      * @type {string}
      * @memberof StoreSearchClass
@@ -4447,6 +4651,31 @@ export interface StoresEntity {
 /**
  * 
  * @export
+ * @interface ThirdPartyCustomerDetail
+ */
+export interface ThirdPartyCustomerDetail {
+    /**
+     * Customer\'s first name
+     * @type {string}
+     * @memberof ThirdPartyCustomerDetail
+     */
+    'first_name': string;
+    /**
+     * Customer\'s last name
+     * @type {string}
+     * @memberof ThirdPartyCustomerDetail
+     */
+    'last_name': string;
+    /**
+     * Customer\'s phone number
+     * @type {string}
+     * @memberof ThirdPartyCustomerDetail
+     */
+    'contact_number': string;
+}
+/**
+ * 
+ * @export
  * @interface ThirdPartyPickupDTO
  */
 export interface ThirdPartyPickupDTO {
@@ -4477,7 +4706,7 @@ export interface ThirdPartyPickupDTO {
 export interface ValidPromoEntity {
     /**
      * Type of this promo
-     * @type {object}
+     * @type {string}
      * @memberof ValidPromoEntity
      */
     'type': ValidPromoEntityTypeEnum;
@@ -5324,7 +5553,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {string} id Customer ID that you passed to us
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
          * @param {string} [minOrderDate] ISO8601 compliant order date string
-         * @param {'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
+         * @param {'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
          * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan ONLY if set to true Defaults to false
          * @param {number} [limit] The number of record to return, 0 means all will be returned
@@ -5332,7 +5561,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ordersControllerFind: async (id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        ordersControllerFind: async (id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('ordersControllerFind', 'id', id)
             const localVarPath = `/v1/orders`;
@@ -5457,7 +5686,7 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          * @param {string} id Customer ID that you passed to us
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
          * @param {string} [minOrderDate] ISO8601 compliant order date string
-         * @param {'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
+         * @param {'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
          * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan ONLY if set to true Defaults to false
          * @param {number} [limit] The number of record to return, 0 means all will be returned
@@ -5465,7 +5694,7 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderEntity>> {
+        async ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderEntity>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, mealPlan, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -5506,7 +5735,7 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
          * @param {string} id Customer ID that you passed to us
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
          * @param {string} [minOrderDate] ISO8601 compliant order date string
-         * @param {'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'} [status] Order status filter
+         * @param {'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending'} [status] Order status filter
          * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
          * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan ONLY if set to true Defaults to false
          * @param {number} [limit] The number of record to return, 0 means all will be returned
@@ -5514,7 +5743,7 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options?: any): AxiosPromise<OrderEntity> {
+        ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options?: any): AxiosPromise<OrderEntity> {
             return localVarFp.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, mealPlan, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
@@ -5573,10 +5802,10 @@ export interface OrdersApiOrdersControllerFindRequest {
 
     /**
      * Order status filter
-     * @type {'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'}
+     * @type {'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending'}
      * @memberof OrdersApiOrdersControllerFind
      */
-    readonly status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed'
+    readonly status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending'
 
     /**
      * Order type
