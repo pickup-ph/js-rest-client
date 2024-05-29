@@ -715,6 +715,12 @@ export interface CustomerQuoteDTO {
      */
     'address': CustomerDetailDTOAddress;
     /**
+     * address string use for delivery address
+     * @type {string}
+     * @memberof CustomerQuoteDTO
+     */
+    'address_string': string;
+    /**
      * A unique identifier for this customer
      * @type {string}
      * @memberof CustomerQuoteDTO
@@ -1884,7 +1890,7 @@ export interface OrderPartialClass {
      */
     'meal_plan_discount'?: string;
     /**
-     * Indicates max delivery discount for meal plans
+     * Indicates the applied delivery discount at the time of ordering
      * @type {string}
      * @memberof OrderPartialClass
      */
@@ -2476,6 +2482,12 @@ export interface QuotationRequestDTOCustomer {
      * @memberof QuotationRequestDTOCustomer
      */
     'address': CustomerDetailDTOAddress;
+    /**
+     * address string use for delivery address
+     * @type {string}
+     * @memberof QuotationRequestDTOCustomer
+     */
+    'address_string': string;
     /**
      * A unique identifier for this customer
      * @type {string}
@@ -3735,6 +3747,12 @@ export interface StoreClass {
      * @memberof StoreClass
      */
     'off_dates': Array<string>;
+    /**
+     * Discount applied to the delivery cost for each day of the meal plan orders. 0 means no discount\"
+     * @type {number}
+     * @memberof StoreClass
+     */
+    'free_delivery_amount': number;
     /**
      * Available delivery payment method
      * @type {Array<string>}
