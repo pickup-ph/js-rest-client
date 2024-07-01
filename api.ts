@@ -2009,6 +2009,12 @@ export interface OrderPartialClass {
      * @memberof OrderPartialClass
      */
     'store_notes': string;
+    /**
+     * Additional Charges included on the order
+     * @type {Array<object>}
+     * @memberof OrderPartialClass
+     */
+    'additional_charges': Array<object>;
 }
 
 export const OrderPartialClassPromoBaseEnum = {
@@ -3754,6 +3760,12 @@ export interface StoreClass {
      */
     'free_delivery_amount': number;
     /**
+     * Additional Charges set by the store
+     * @type {Array<object>}
+     * @memberof StoreClass
+     */
+    'additional_charges': Array<object>;
+    /**
      * Available delivery payment method
      * @type {Array<string>}
      * @memberof StoreClass
@@ -4518,6 +4530,12 @@ export interface StoreSearchClass {
      * @memberof StoreSearchClass
      */
     'searched_items'?: Array<ItemPartialClass>;
+    /**
+     * List of store featured promos
+     * @type {Array<PromoEntity>}
+     * @memberof StoreSearchClass
+     */
+    'featured_promos'?: Array<PromoEntity>;
     /**
      * Distance from location_point to Store Distance in Kilometers
      * @type {number}
