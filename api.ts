@@ -24,6 +24,45 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface AdditionalCharge
+ */
+export interface AdditionalCharge {
+    /**
+     * Additional charge classification
+     * @type {string}
+     * @memberof AdditionalCharge
+     */
+    'name': string;
+    /**
+     * Status of additional charge
+     * @type {boolean}
+     * @memberof AdditionalCharge
+     */
+    'active': boolean;
+    /**
+     * Additional charge Type
+     * @type {string}
+     * @memberof AdditionalCharge
+     */
+    'type': AdditionalChargeTypeEnum;
+    /**
+     * This number can be by percent or amount determined by type field to compute the additional charge required by the store , example (total_amount + 100)
+     * @type {number}
+     * @memberof AdditionalCharge
+     */
+    'factor': number;
+}
+
+export const AdditionalChargeTypeEnum = {
+    AmountCharge: 'amount_charge',
+    PercentCharge: 'percent_charge'
+} as const;
+
+export type AdditionalChargeTypeEnum = typeof AdditionalChargeTypeEnum[keyof typeof AdditionalChargeTypeEnum];
+
+/**
+ * 
+ * @export
  * @interface AttachedReservationPaymentEntity
  */
 export interface AttachedReservationPaymentEntity {
@@ -1629,6 +1668,45 @@ export interface MenuItemClass {
 /**
  * 
  * @export
+ * @interface OrderAdditionalCharge
+ */
+export interface OrderAdditionalCharge {
+    /**
+     * Computed additional charge amount
+     * @type {number}
+     * @memberof OrderAdditionalCharge
+     */
+    'amount': number;
+    /**
+     * Additional charge classification
+     * @type {string}
+     * @memberof OrderAdditionalCharge
+     */
+    'name': string;
+    /**
+     * Additional charge Type
+     * @type {string}
+     * @memberof OrderAdditionalCharge
+     */
+    'type': OrderAdditionalChargeTypeEnum;
+    /**
+     * This number can be by percent or amount determined by type field to compute the additional charge required by the store , example (total_amount + 100)
+     * @type {number}
+     * @memberof OrderAdditionalCharge
+     */
+    'factor': number;
+}
+
+export const OrderAdditionalChargeTypeEnum = {
+    AmountCharge: 'amount_charge',
+    PercentCharge: 'percent_charge'
+} as const;
+
+export type OrderAdditionalChargeTypeEnum = typeof OrderAdditionalChargeTypeEnum[keyof typeof OrderAdditionalChargeTypeEnum];
+
+/**
+ * 
+ * @export
  * @interface OrderDetailsClass
  */
 export interface OrderDetailsClass {
@@ -2011,10 +2089,10 @@ export interface OrderPartialClass {
     'store_notes': string;
     /**
      * Additional Charges included on the order
-     * @type {Array<object>}
+     * @type {Array<OrderAdditionalCharge>}
      * @memberof OrderPartialClass
      */
-    'additional_charges': Array<object>;
+    'additional_charges': Array<OrderAdditionalCharge>;
 }
 
 export const OrderPartialClassPromoBaseEnum = {
@@ -3761,10 +3839,10 @@ export interface StoreClass {
     'free_delivery_amount': number;
     /**
      * Additional Charges set by the store
-     * @type {Array<object>}
+     * @type {Array<AdditionalCharge>}
      * @memberof StoreClass
      */
-    'additional_charges': Array<object>;
+    'additional_charges': Array<AdditionalCharge>;
     /**
      * Available delivery payment method
      * @type {Array<string>}
