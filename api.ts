@@ -3842,7 +3842,7 @@ export interface StoreClass {
      * @type {Array<AdditionalCharge>}
      * @memberof StoreClass
      */
-    'additional_charges': Array<AdditionalCharge>;
+    'additional_charges'?: Array<AdditionalCharge>;
     /**
      * Available delivery payment method
      * @type {Array<string>}
