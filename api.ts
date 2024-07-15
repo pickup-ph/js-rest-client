@@ -40,7 +40,7 @@ export interface AdditionalCharge {
      */
     'active': boolean;
     /**
-     * Additional charge Type
+     * Additional charge type values can be amount_charge , percent_charge
      * @type {string}
      * @memberof AdditionalCharge
      */
@@ -133,6 +133,64 @@ export interface AvailableReservationEntity {
      * @memberof AvailableReservationEntity
      */
     'page': number;
+}
+/**
+ * 
+ * @export
+ * @interface CartAdditionalCharge
+ */
+export interface CartAdditionalCharge {
+    /**
+     * Additional charge classification
+     * @type {string}
+     * @memberof CartAdditionalCharge
+     */
+    'name': string;
+    /**
+     * Additional charge type values can be amount_charge , percent_charge
+     * @type {string}
+     * @memberof CartAdditionalCharge
+     */
+    'type': CartAdditionalChargeTypeEnum;
+    /**
+     * Computed additional charge amount
+     * @type {number}
+     * @memberof CartAdditionalCharge
+     */
+    'amount': number;
+}
+
+export const CartAdditionalChargeTypeEnum = {
+    AmountCharge: 'amount_charge',
+    PercentCharge: 'percent_charge'
+} as const;
+
+export type CartAdditionalChargeTypeEnum = typeof CartAdditionalChargeTypeEnum[keyof typeof CartAdditionalChargeTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface CartAdditionalChargesEntity
+ */
+export interface CartAdditionalChargesEntity {
+    /**
+     * Computed total additional charges
+     * @type {number}
+     * @memberof CartAdditionalChargesEntity
+     */
+    'total_additional_charges': number;
+    /**
+     * Computed total cart amount after additional charges
+     * @type {number}
+     * @memberof CartAdditionalChargesEntity
+     */
+    'total_after_charges': number;
+    /**
+     * Additional charges breakdown used to calculate total_additional_charges
+     * @type {Array<CartAdditionalCharge>}
+     * @memberof CartAdditionalChargesEntity
+     */
+    'charges_breakdown': Array<CartAdditionalCharge>;
 }
 /**
  * 
@@ -443,6 +501,35 @@ export interface CategoryClass {
      */
     'stock': number;
 }
+/**
+ * 
+ * @export
+ * @interface ComputeAddtionalChargeDTO
+ */
+export interface ComputeAddtionalChargeDTO {
+    /**
+     * 
+     * @type {Array<CartItemDTO>}
+     * @memberof ComputeAddtionalChargeDTO
+     */
+    'items': Array<CartItemDTO>;
+    /**
+     * PickupPH supported order types, meal plan will be automatically changed to delivery (if not selected)
+     * @type {string}
+     * @memberof ComputeAddtionalChargeDTO
+     */
+    'order_type': ComputeAddtionalChargeDTOOrderTypeEnum;
+}
+
+export const ComputeAddtionalChargeDTOOrderTypeEnum = {
+    Delivery: 'delivery',
+    Pickup: 'pickup',
+    ThirdPartyPickup: 'third_party_pickup',
+    CurbsidePickup: 'curbside_pickup'
+} as const;
+
+export type ComputeAddtionalChargeDTOOrderTypeEnum = typeof ComputeAddtionalChargeDTOOrderTypeEnum[keyof typeof ComputeAddtionalChargeDTOOrderTypeEnum];
+
 /**
  * 
  * @export
@@ -1684,7 +1771,7 @@ export interface OrderAdditionalCharge {
      */
     'name': string;
     /**
-     * Additional charge Type
+     * Additional charge type values can be amount_charge , percent_charge
      * @type {string}
      * @memberof OrderAdditionalCharge
      */
@@ -3842,7 +3929,7 @@ export interface StoreClass {
      * @type {Array<AdditionalCharge>}
      * @memberof StoreClass
      */
-    'additional_charges'?: Array<AdditionalCharge>;
+    'additional_charges': Array<AdditionalCharge>;
     /**
      * Available delivery payment method
      * @type {Array<string>}
@@ -4905,6 +4992,45 @@ export const CartApiAxiosParamCreator = function (configuration?: Configuration)
     return {
         /**
          * 
+         * @summary Compute cart service charge
+         * @param {ComputeAddtionalChargeDTO} computeAddtionalChargeDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cartControllerComputeAdditionalCharge: async (computeAddtionalChargeDTO: ComputeAddtionalChargeDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'computeAddtionalChargeDTO' is not null or undefined
+            assertParamExists('cartControllerComputeAdditionalCharge', 'computeAddtionalChargeDTO', computeAddtionalChargeDTO)
+            const localVarPath = `/v1/cart/additional-charge`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(computeAddtionalChargeDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Create cart
          * @param {CartDTO} cartDTO 
          * @param {*} [options] Override http request option.
@@ -4954,6 +5080,17 @@ export const CartApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Compute cart service charge
+         * @param {ComputeAddtionalChargeDTO} computeAddtionalChargeDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cartControllerComputeAdditionalCharge(computeAddtionalChargeDTO: ComputeAddtionalChargeDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CartAdditionalChargesEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cartControllerComputeAdditionalCharge(computeAddtionalChargeDTO, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Create cart
          * @param {CartDTO} cartDTO 
          * @param {*} [options] Override http request option.
@@ -4975,6 +5112,16 @@ export const CartApiFactory = function (configuration?: Configuration, basePath?
     return {
         /**
          * 
+         * @summary Compute cart service charge
+         * @param {ComputeAddtionalChargeDTO} computeAddtionalChargeDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cartControllerComputeAdditionalCharge(computeAddtionalChargeDTO: ComputeAddtionalChargeDTO, options?: any): AxiosPromise<CartAdditionalChargesEntity> {
+            return localVarFp.cartControllerComputeAdditionalCharge(computeAddtionalChargeDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Create cart
          * @param {CartDTO} cartDTO 
          * @param {*} [options] Override http request option.
@@ -4985,6 +5132,20 @@ export const CartApiFactory = function (configuration?: Configuration, basePath?
         },
     };
 };
+
+/**
+ * Request parameters for cartControllerComputeAdditionalCharge operation in CartApi.
+ * @export
+ * @interface CartApiCartControllerComputeAdditionalChargeRequest
+ */
+export interface CartApiCartControllerComputeAdditionalChargeRequest {
+    /**
+     * 
+     * @type {ComputeAddtionalChargeDTO}
+     * @memberof CartApiCartControllerComputeAdditionalCharge
+     */
+    readonly computeAddtionalChargeDTO: ComputeAddtionalChargeDTO
+}
 
 /**
  * Request parameters for cartControllerCreate operation in CartApi.
@@ -5007,6 +5168,18 @@ export interface CartApiCartControllerCreateRequest {
  * @extends {BaseAPI}
  */
 export class CartApi extends BaseAPI {
+    /**
+     * 
+     * @summary Compute cart service charge
+     * @param {CartApiCartControllerComputeAdditionalChargeRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CartApi
+     */
+    public cartControllerComputeAdditionalCharge(requestParameters: CartApiCartControllerComputeAdditionalChargeRequest, options?: AxiosRequestConfig) {
+        return CartApiFp(this.configuration).cartControllerComputeAdditionalCharge(requestParameters.computeAddtionalChargeDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Create cart
