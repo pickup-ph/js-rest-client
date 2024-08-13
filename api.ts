@@ -2393,6 +2393,18 @@ export interface OrderPartialClassStoreDetails {
      * @memberof OrderPartialClassStoreDetails
      */
     'store_bg': string;
+    /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof OrderPartialClassStoreDetails
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof OrderPartialClassStoreDetails
+     */
+    'partner_banner': string;
 }
 /**
  * 
@@ -4069,6 +4081,18 @@ export interface StoreDetailsClass {
      * @memberof StoreDetailsClass
      */
     'store_bg': string;
+    /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof StoreDetailsClass
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof StoreDetailsClass
+     */
+    'partner_banner': string;
 }
 /**
  * 
