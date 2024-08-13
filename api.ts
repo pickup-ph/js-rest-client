@@ -3271,6 +3271,18 @@ export interface ReservationInfoEntityStore {
      */
     'store_logo': string;
     /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof ReservationInfoEntityStore
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof ReservationInfoEntityStore
+     */
+    'partner_banner': string;
+    /**
      * Store description
      * @type {string}
      * @memberof ReservationInfoEntityStore
@@ -3955,6 +3967,18 @@ export interface StoreClass {
      */
     'store_logo': string;
     /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof StoreClass
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof StoreClass
+     */
+    'partner_banner': string;
+    /**
      * Store description
      * @type {string}
      * @memberof StoreClass
@@ -4220,6 +4244,18 @@ export interface StorePartialClass {
      */
     'store_logo': string;
     /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof StorePartialClass
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof StorePartialClass
+     */
+    'partner_banner': string;
+    /**
      * Store description
      * @type {string}
      * @memberof StorePartialClass
@@ -4447,6 +4483,18 @@ export interface StoreReservationClassStore {
      */
     'store_logo': string;
     /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof StoreReservationClassStore
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof StoreReservationClassStore
+     */
+    'partner_banner': string;
+    /**
      * Store description
      * @type {string}
      * @memberof StoreReservationClassStore
@@ -4593,6 +4641,18 @@ export interface StoreReservationSearchClass {
      */
     'store_logo': string;
     /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof StoreReservationSearchClass
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof StoreReservationSearchClass
+     */
+    'partner_banner': string;
+    /**
      * Store description
      * @type {string}
      * @memberof StoreReservationSearchClass
@@ -4737,6 +4797,18 @@ export interface StoreSearchClass {
      * @memberof StoreSearchClass
      */
     'store_logo': string;
+    /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof StoreSearchClass
+     */
+    'partner_banner': string;
     /**
      * Store description
      * @type {string}
