@@ -2370,29 +2370,29 @@ export type OrderPartialClassPromoTypeEnum = typeof OrderPartialClassPromoTypeEn
  */
 export interface OrderPartialClassStoreDetails {
     /**
-     * Store ID where order was made
+     * Id that will be used on searching store
      * @type {string}
      * @memberof OrderPartialClassStoreDetails
      */
     'id': string;
     /**
-     * Store name
+     * Store background image
+     * @type {string}
+     * @memberof OrderPartialClassStoreDetails
+     */
+    'banner': string;
+    /**
+     * Store display name
      * @type {string}
      * @memberof OrderPartialClassStoreDetails
      */
     'name': string;
     /**
-     * Store image URL
+     * Store display logo
      * @type {string}
      * @memberof OrderPartialClassStoreDetails
      */
-    'image': string;
-    /**
-     * Store nominated header image URL
-     * @type {string}
-     * @memberof OrderPartialClassStoreDetails
-     */
-    'store_bg': string;
+    'store_logo': string;
     /**
      * Store custom partner logo
      * @type {string}
@@ -3251,7 +3251,7 @@ export interface ReservationInfoEntityStore {
      * @type {string}
      * @memberof ReservationInfoEntityStore
      */
-    'store_bg': string;
+    'banner': string;
     /**
      * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
@@ -3875,7 +3875,7 @@ export interface StoreClass {
      * @type {string}
      * @memberof StoreClass
      */
-    'store_bg': string;
+    'banner': string;
     /**
      * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
@@ -4058,29 +4058,29 @@ export interface StoreClass {
  */
 export interface StoreDetailsClass {
     /**
-     * Store ID where order was made
+     * Id that will be used on searching store
      * @type {string}
      * @memberof StoreDetailsClass
      */
     'id': string;
     /**
-     * Store name
+     * Store background image
+     * @type {string}
+     * @memberof StoreDetailsClass
+     */
+    'banner': string;
+    /**
+     * Store display name
      * @type {string}
      * @memberof StoreDetailsClass
      */
     'name': string;
     /**
-     * Store image URL
+     * Store display logo
      * @type {string}
      * @memberof StoreDetailsClass
      */
-    'image': string;
-    /**
-     * Store nominated header image URL
-     * @type {string}
-     * @memberof StoreDetailsClass
-     */
-    'store_bg': string;
+    'store_logo': string;
     /**
      * Store custom partner logo
      * @type {string}
@@ -4236,7 +4236,7 @@ export interface StorePartialClass {
      * @type {string}
      * @memberof StorePartialClass
      */
-    'store_bg': string;
+    'banner': string;
     /**
      * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
@@ -4475,7 +4475,7 @@ export interface StoreReservationClassStore {
      * @type {string}
      * @memberof StoreReservationClassStore
      */
-    'store_bg': string;
+    'banner': string;
     /**
      * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
@@ -4633,7 +4633,7 @@ export interface StoreReservationSearchClass {
      * @type {string}
      * @memberof StoreReservationSearchClass
      */
-    'store_bg': string;
+    'banner': string;
     /**
      * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
@@ -4760,7 +4760,7 @@ export interface StoreSearchClass {
      * @type {string}
      * @memberof StoreSearchClass
      */
-    'store_bg': string;
+    'banner': string;
     /**
      * Store order opening buffer, this indicates if the store accepts order even before opening hour, defaults to 0 if is_accepting_in_advanced_orders is true e.g. If store opening hour is 09:00 and opening_hour_buffer = 30 then you can start accepting order at 08:30 for both ASAP (time assigned will still be 09:00) and pre orders
      * @type {number}
