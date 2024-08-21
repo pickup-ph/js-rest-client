@@ -25,3 +25,4 @@
 tsconfig.json
 .gitignore
 package.json
+release.config.js
