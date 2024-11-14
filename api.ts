@@ -694,6 +694,19 @@ export interface CreateReservationEntity {
 /**
  * 
  * @export
+ * @interface CurbsideArrivalResponse
+ */
+export interface CurbsideArrivalResponse {
+    /**
+     * api response for successfull customer arrival request
+     * @type {boolean}
+     * @memberof CurbsideArrivalResponse
+     */
+    'success'?: boolean;
+}
+/**
+ * 
+ * @export
  * @interface CursbsidePickupDTO
  */
 export interface CursbsidePickupDTO {
@@ -6096,7 +6109,7 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async ordersControllerCurbsideArrived(orderId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async ordersControllerCurbsideArrived(orderId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CurbsideArrivalResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerCurbsideArrived(orderId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -6157,7 +6170,7 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ordersControllerCurbsideArrived(orderId: string, options?: any): AxiosPromise<void> {
+        ordersControllerCurbsideArrived(orderId: string, options?: any): AxiosPromise<CurbsideArrivalResponse> {
             return localVarFp.ordersControllerCurbsideArrived(orderId, options).then((request) => request(axios, basePath));
         },
         /**
