@@ -5895,6 +5895,43 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
     return {
         /**
          * 
+         * @summary Update curbside customer arrival status
+         * @param {string} orderId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersControllerCurbsideArrived: async (orderId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'orderId' is not null or undefined
+            assertParamExists('ordersControllerCurbsideArrived', 'orderId', orderId)
+            const localVarPath = `/v1/orders/curbside/{order_id}/arrived`
+                .replace(`{${"order_id"}}`, encodeURIComponent(String(orderId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get order status update
          * @param {string} transactionNumber 
          * @param {*} [options] Override http request option.
@@ -6054,6 +6091,17 @@ export const OrdersApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Update curbside customer arrival status
+         * @param {string} orderId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersControllerCurbsideArrived(orderId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerCurbsideArrived(orderId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get order status update
          * @param {string} transactionNumber 
          * @param {*} [options] Override http request option.
@@ -6104,6 +6152,16 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
     return {
         /**
          * 
+         * @summary Update curbside customer arrival status
+         * @param {string} orderId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersControllerCurbsideArrived(orderId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.ordersControllerCurbsideArrived(orderId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get order status update
          * @param {string} transactionNumber 
          * @param {*} [options] Override http request option.
@@ -6141,6 +6199,20 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
         },
     };
 };
+
+/**
+ * Request parameters for ordersControllerCurbsideArrived operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersControllerCurbsideArrivedRequest
+ */
+export interface OrdersApiOrdersControllerCurbsideArrivedRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof OrdersApiOrdersControllerCurbsideArrived
+     */
+    readonly orderId: string
+}
 
 /**
  * Request parameters for ordersControllerFetchStatus operation in OrdersApi.
@@ -6240,6 +6312,18 @@ export interface OrdersApiOrdersControllerReorderRequest {
  * @extends {BaseAPI}
  */
 export class OrdersApi extends BaseAPI {
+    /**
+     * 
+     * @summary Update curbside customer arrival status
+     * @param {OrdersApiOrdersControllerCurbsideArrivedRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersControllerCurbsideArrived(requestParameters: OrdersApiOrdersControllerCurbsideArrivedRequest, options?: AxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersControllerCurbsideArrived(requestParameters.orderId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Get order status update
