@@ -707,6 +707,43 @@ export interface CurbsideArrivalResponse {
 /**
  * 
  * @export
+ * @interface CurbsidePickupDetail
+ */
+export interface CurbsidePickupDetail {
+    /**
+     * Indicates customer\'s arrival notice
+     * @type {boolean}
+     * @memberof CurbsidePickupDetail
+     */
+    'has_arrived': boolean;
+    /**
+     * Make of the customer\'s vehicle
+     * @type {string}
+     * @memberof CurbsidePickupDetail
+     */
+    'vehicle_make': string;
+    /**
+     * Color of the customer\'s vehicle
+     * @type {string}
+     * @memberof CurbsidePickupDetail
+     */
+    'vehicle_color': string;
+    /**
+     * Plate number of the customer\'s vehicle
+     * @type {string}
+     * @memberof CurbsidePickupDetail
+     */
+    'vehicle_plate': string;
+    /**
+     * Indicates merchant\'s confirmation of customer\'s arrival notice
+     * @type {boolean}
+     * @memberof CurbsidePickupDetail
+     */
+    'seen': boolean;
+}
+/**
+ * 
+ * @export
  * @interface CursbsidePickupDTO
  */
 export interface CursbsidePickupDTO {
@@ -2170,6 +2207,12 @@ export interface OrderPartialClass {
      */
     'pickup_details': OrderPartialClassPickupDetails;
     /**
+     * 
+     * @type {OrderPartialClassCurbsidePickupDetails}
+     * @memberof OrderPartialClass
+     */
+    'curbside_pickup_details'?: OrderPartialClassCurbsidePickupDetails;
+    /**
      * Tracking page for this particular order
      * @type {string}
      * @memberof OrderPartialClass
@@ -2233,6 +2276,43 @@ export const OrderPartialClassStatusEnum = {
 
 export type OrderPartialClassStatusEnum = typeof OrderPartialClassStatusEnum[keyof typeof OrderPartialClassStatusEnum];
 
+/**
+ * Curbside pickup information
+ * @export
+ * @interface OrderPartialClassCurbsidePickupDetails
+ */
+export interface OrderPartialClassCurbsidePickupDetails {
+    /**
+     * Indicates customer\'s arrival notice
+     * @type {boolean}
+     * @memberof OrderPartialClassCurbsidePickupDetails
+     */
+    'has_arrived': boolean;
+    /**
+     * Make of the customer\'s vehicle
+     * @type {string}
+     * @memberof OrderPartialClassCurbsidePickupDetails
+     */
+    'vehicle_make': string;
+    /**
+     * Color of the customer\'s vehicle
+     * @type {string}
+     * @memberof OrderPartialClassCurbsidePickupDetails
+     */
+    'vehicle_color': string;
+    /**
+     * Plate number of the customer\'s vehicle
+     * @type {string}
+     * @memberof OrderPartialClassCurbsidePickupDetails
+     */
+    'vehicle_plate': string;
+    /**
+     * Indicates merchant\'s confirmation of customer\'s arrival notice
+     * @type {boolean}
+     * @memberof OrderPartialClassCurbsidePickupDetails
+     */
+    'seen': boolean;
+}
 /**
  * Guest customer information
  * @export
