@@ -264,7 +264,8 @@ export const CartDTOOrderTypeEnum = {
     Delivery: 'delivery',
     Pickup: 'pickup',
     ThirdPartyPickup: 'third_party_pickup',
-    CurbsidePickup: 'curbside_pickup'
+    CurbsidePickup: 'curbside_pickup',
+    Digital: 'digital'
 } as const;
 
 export type CartDTOOrderTypeEnum = typeof CartDTOOrderTypeEnum[keyof typeof CartDTOOrderTypeEnum];
@@ -342,7 +343,7 @@ export interface CartDTOCustomer {
      * @type {string}
      * @memberof CartDTOCustomer
      */
-    'id'?: string;
+    'id': string;
 }
 /**
  * Optional variable for delivery order type
@@ -525,7 +526,8 @@ export const ComputeAddtionalChargeDTOOrderTypeEnum = {
     Delivery: 'delivery',
     Pickup: 'pickup',
     ThirdPartyPickup: 'third_party_pickup',
-    CurbsidePickup: 'curbside_pickup'
+    CurbsidePickup: 'curbside_pickup',
+    Digital: 'digital'
 } as const;
 
 export type ComputeAddtionalChargeDTOOrderTypeEnum = typeof ComputeAddtionalChargeDTOOrderTypeEnum[keyof typeof ComputeAddtionalChargeDTOOrderTypeEnum];
@@ -857,7 +859,7 @@ export interface CustomerDetailDTO {
      * @type {string}
      * @memberof CustomerDetailDTO
      */
-    'id'?: string;
+    'id': string;
 }
 /**
  * The customer\'s address information
@@ -2248,7 +2250,8 @@ export const OrderPartialClassOrderTypeEnum = {
     Delivery: 'delivery',
     Pickup: 'pickup',
     ThirdPartyPickup: 'third_party_pickup',
-    CurbsidePickup: 'curbside_pickup'
+    CurbsidePickup: 'curbside_pickup',
+    Digital: 'digital'
 } as const;
 
 export type OrderPartialClassOrderTypeEnum = typeof OrderPartialClassOrderTypeEnum[keyof typeof OrderPartialClassOrderTypeEnum];
@@ -2541,7 +2544,8 @@ export const PromoDTOOrderTypeEnum = {
     Delivery: 'delivery',
     Pickup: 'pickup',
     ThirdPartyPickup: 'third_party_pickup',
-    CurbsidePickup: 'curbside_pickup'
+    CurbsidePickup: 'curbside_pickup',
+    Digital: 'digital'
 } as const;
 
 export type PromoDTOOrderTypeEnum = typeof PromoDTOOrderTypeEnum[keyof typeof PromoDTOOrderTypeEnum];
@@ -3007,7 +3011,8 @@ export const ReorderEntityPlanOrderTypeEnum = {
     Delivery: 'delivery',
     Pickup: 'pickup',
     ThirdPartyPickup: 'third_party_pickup',
-    CurbsidePickup: 'curbside_pickup'
+    CurbsidePickup: 'curbside_pickup',
+    Digital: 'digital'
 } as const;
 
 export type ReorderEntityPlanOrderTypeEnum = typeof ReorderEntityPlanOrderTypeEnum[keyof typeof ReorderEntityPlanOrderTypeEnum];
@@ -3910,7 +3915,8 @@ export const SearchStoreDTOOrderTypeEnum = {
     Delivery: 'delivery',
     Pickup: 'pickup',
     ThirdPartyPickup: 'third_party_pickup',
-    CurbsidePickup: 'curbside_pickup'
+    CurbsidePickup: 'curbside_pickup',
+    Digital: 'digital'
 } as const;
 
 export type SearchStoreDTOOrderTypeEnum = typeof SearchStoreDTOOrderTypeEnum[keyof typeof SearchStoreDTOOrderTypeEnum];
@@ -6067,14 +6073,14 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
          * @param {string} [minOrderDate] ISO8601 compliant order date string
          * @param {'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending'} [status] Order status filter
-         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'digital'} [orderType] Order type
          * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan ONLY if set to true Defaults to false
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ordersControllerFind: async (id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        ordersControllerFind: async (id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'digital', mealPlan?: boolean, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('ordersControllerFind', 'id', id)
             const localVarPath = `/v1/orders`;
@@ -6211,14 +6217,14 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
          * @param {string} [minOrderDate] ISO8601 compliant order date string
          * @param {'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending'} [status] Order status filter
-         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'digital'} [orderType] Order type
          * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan ONLY if set to true Defaults to false
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderEntity>> {
+        async ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'digital', mealPlan?: boolean, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderEntity>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, mealPlan, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -6270,14 +6276,14 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
          * @param {string} [maxOrderDate] ISO8601 compliant order date string
          * @param {string} [minOrderDate] ISO8601 compliant order date string
          * @param {'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending'} [status] Order status filter
-         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'} [orderType] Order type
+         * @param {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'digital'} [orderType] Order type
          * @param {boolean} [mealPlan] Toggle meal plan filter, returns orders that are part of a meal plan ONLY if set to true Defaults to false
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup', mealPlan?: boolean, limit?: number, offset?: number, options?: any): AxiosPromise<OrderEntity> {
+        ordersControllerFind(id: string, maxOrderDate?: string, minOrderDate?: string, status?: 'new' | 'out_for_delivery' | 'accepted' | 'ready' | 'cancelled' | 'completed' | 'refunded' | 'expired' | 'payment_failed' | 'payment_pending', orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'digital', mealPlan?: boolean, limit?: number, offset?: number, options?: any): AxiosPromise<OrderEntity> {
             return localVarFp.ordersControllerFind(id, maxOrderDate, minOrderDate, status, orderType, mealPlan, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
@@ -6357,10 +6363,10 @@ export interface OrdersApiOrdersControllerFindRequest {
 
     /**
      * Order type
-     * @type {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'}
+     * @type {'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'digital'}
      * @memberof OrdersApiOrdersControllerFind
      */
-    readonly orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup'
+    readonly orderType?: 'delivery' | 'pickup' | 'third_party_pickup' | 'curbside_pickup' | 'digital'
 
     /**
      * Toggle meal plan filter, returns orders that are part of a meal plan ONLY if set to true Defaults to false
