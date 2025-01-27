@@ -1034,6 +1034,275 @@ export interface DeliveryQuotationResultEntitySelected {
 /**
  * 
  * @export
+ * @interface EventClass
+ */
+export interface EventClass {
+    /**
+     * Event id
+     * @type {string}
+     * @memberof EventClass
+     */
+    'id': string;
+    /**
+     * Event promotion image url
+     * @type {string}
+     * @memberof EventClass
+     */
+    'image': string;
+    /**
+     * 
+     * @type {StoreEventClassItem}
+     * @memberof EventClass
+     */
+    'item': StoreEventClassItem;
+    /**
+     * 
+     * @type {EventClassStore}
+     * @memberof EventClass
+     */
+    'store': EventClassStore;
+    /**
+     * Event name
+     * @type {string}
+     * @memberof EventClass
+     */
+    'name': string;
+    /**
+     * Event description
+     * @type {string}
+     * @memberof EventClass
+     */
+    'description': string;
+    /**
+     * Event human readable address
+     * @type {string}
+     * @memberof EventClass
+     */
+    'location_address': string;
+    /**
+     * Event geo location - lng,lat
+     * @type {string}
+     * @memberof EventClass
+     */
+    'location': string;
+    /**
+     * Event start date
+     * @type {string}
+     * @memberof EventClass
+     */
+    'start_date': string;
+    /**
+     * Event end date
+     * @type {string}
+     * @memberof EventClass
+     */
+    'end_date': string;
+    /**
+     * Event seating capacity
+     * @type {number}
+     * @memberof EventClass
+     */
+    'capacity': number;
+    /**
+     * Event available seats
+     * @type {number}
+     * @memberof EventClass
+     */
+    'available': number;
+}
+/**
+ * Store information
+ * @export
+ * @interface EventClassStore
+ */
+export interface EventClassStore {
+    /**
+     * Id that will be used on searching store
+     * @type {string}
+     * @memberof EventClassStore
+     */
+    'id': string;
+    /**
+     * Store background image
+     * @type {string}
+     * @memberof EventClassStore
+     */
+    'banner': string;
+    /**
+     * Store display name
+     * @type {string}
+     * @memberof EventClassStore
+     */
+    'name': string;
+    /**
+     * Store display logo
+     * @type {string}
+     * @memberof EventClassStore
+     */
+    'store_logo': string;
+    /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof EventClassStore
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof EventClassStore
+     */
+    'partner_banner': string;
+    /**
+     * Store description
+     * @type {string}
+     * @memberof EventClassStore
+     */
+    'store_description': string;
+    /**
+     * Merchant displayed contact number
+     * @type {string}
+     * @memberof EventClassStore
+     */
+    'contact_number': string;
+}
+/**
+ * 
+ * @export
+ * @interface EventEntity
+ */
+export interface EventEntity {
+    /**
+     * Indicates if there is a page after the current one
+     * @type {boolean}
+     * @memberof EventEntity
+     */
+    'has_next_page': boolean;
+    /**
+     * Indicates if there is a page before the current one
+     * @type {boolean}
+     * @memberof EventEntity
+     */
+    'has_prev_page': boolean;
+    /**
+     * Total number of pages according to limit and result
+     * @type {number}
+     * @memberof EventEntity
+     */
+    'total_pages': number;
+    /**
+     * Total number of records found against the query
+     * @type {number}
+     * @memberof EventEntity
+     */
+    'total_records': number;
+    /**
+     * 
+     * @type {Array<EventClass>}
+     * @memberof EventEntity
+     */
+    'result': Array<EventClass>;
+    /**
+     * Indicates current page
+     * @type {number}
+     * @memberof EventEntity
+     */
+    'page': number;
+}
+/**
+ * 
+ * @export
+ * @interface EventItem
+ */
+export interface EventItem {
+    /**
+     * Event item id, use for buying seats
+     * @type {string}
+     * @memberof EventItem
+     */
+    'id': string;
+    /**
+     * Event item image url
+     * @type {string}
+     * @memberof EventItem
+     */
+    'image': string;
+    /**
+     * Event item code
+     * @type {string}
+     * @memberof EventItem
+     */
+    'code': string;
+    /**
+     * Event item name
+     * @type {string}
+     * @memberof EventItem
+     */
+    'name': string;
+    /**
+     * Event item price
+     * @type {number}
+     * @memberof EventItem
+     */
+    'price': number;
+}
+/**
+ * 
+ * @export
+ * @interface EventStoreDetailsClass
+ */
+export interface EventStoreDetailsClass {
+    /**
+     * Id that will be used on searching store
+     * @type {string}
+     * @memberof EventStoreDetailsClass
+     */
+    'id': string;
+    /**
+     * Store background image
+     * @type {string}
+     * @memberof EventStoreDetailsClass
+     */
+    'banner': string;
+    /**
+     * Store display name
+     * @type {string}
+     * @memberof EventStoreDetailsClass
+     */
+    'name': string;
+    /**
+     * Store display logo
+     * @type {string}
+     * @memberof EventStoreDetailsClass
+     */
+    'store_logo': string;
+    /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof EventStoreDetailsClass
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof EventStoreDetailsClass
+     */
+    'partner_banner': string;
+    /**
+     * Store description
+     * @type {string}
+     * @memberof EventStoreDetailsClass
+     */
+    'store_description': string;
+    /**
+     * Merchant displayed contact number
+     * @type {string}
+     * @memberof EventStoreDetailsClass
+     */
+    'contact_number': string;
+}
+/**
+ * 
+ * @export
  * @interface ExtraGroupClass
  */
 export interface ExtraGroupClass {
@@ -2446,7 +2715,8 @@ export const OrderPartialClassPromoAppliesToEnum = {
     ThirdPartyPickup: 'third_party_pickup',
     CurbsidePickup: 'curbside_pickup',
     DineIn: 'dine_in',
-    MealPlan: 'meal_plan'
+    MealPlan: 'meal_plan',
+    Digital: 'digital'
 } as const;
 
 export type OrderPartialClassPromoAppliesToEnum = typeof OrderPartialClassPromoAppliesToEnum[keyof typeof OrderPartialClassPromoAppliesToEnum];
@@ -2655,7 +2925,8 @@ export const PromoEntityAppliesToEnum = {
     ThirdPartyPickup: 'third_party_pickup',
     CurbsidePickup: 'curbside_pickup',
     DineIn: 'dine_in',
-    MealPlan: 'meal_plan'
+    MealPlan: 'meal_plan',
+    Digital: 'digital'
 } as const;
 
 export type PromoEntityAppliesToEnum = typeof PromoEntityAppliesToEnum[keyof typeof PromoEntityAppliesToEnum];
@@ -4196,6 +4467,159 @@ export interface StoreDetailsClass {
 /**
  * 
  * @export
+ * @interface StoreEventClass
+ */
+export interface StoreEventClass {
+    /**
+     * Event id
+     * @type {string}
+     * @memberof StoreEventClass
+     */
+    'id': string;
+    /**
+     * Event promotion image url
+     * @type {string}
+     * @memberof StoreEventClass
+     */
+    'image': string;
+    /**
+     * 
+     * @type {StoreEventClassItem}
+     * @memberof StoreEventClass
+     */
+    'item': StoreEventClassItem;
+    /**
+     * Event name
+     * @type {string}
+     * @memberof StoreEventClass
+     */
+    'name': string;
+    /**
+     * Event description
+     * @type {string}
+     * @memberof StoreEventClass
+     */
+    'description': string;
+    /**
+     * Event human readable address
+     * @type {string}
+     * @memberof StoreEventClass
+     */
+    'location_address': string;
+    /**
+     * Event geo location - lng,lat
+     * @type {string}
+     * @memberof StoreEventClass
+     */
+    'location': string;
+    /**
+     * Event start date
+     * @type {string}
+     * @memberof StoreEventClass
+     */
+    'start_date': string;
+    /**
+     * Event end date
+     * @type {string}
+     * @memberof StoreEventClass
+     */
+    'end_date': string;
+    /**
+     * Event seating capacity
+     * @type {number}
+     * @memberof StoreEventClass
+     */
+    'capacity': number;
+    /**
+     * Event available seats
+     * @type {number}
+     * @memberof StoreEventClass
+     */
+    'available': number;
+}
+/**
+ * Event item information
+ * @export
+ * @interface StoreEventClassItem
+ */
+export interface StoreEventClassItem {
+    /**
+     * Event item id, use for buying seats
+     * @type {string}
+     * @memberof StoreEventClassItem
+     */
+    'id': string;
+    /**
+     * Event item image url
+     * @type {string}
+     * @memberof StoreEventClassItem
+     */
+    'image': string;
+    /**
+     * Event item code
+     * @type {string}
+     * @memberof StoreEventClassItem
+     */
+    'code': string;
+    /**
+     * Event item name
+     * @type {string}
+     * @memberof StoreEventClassItem
+     */
+    'name': string;
+    /**
+     * Event item price
+     * @type {number}
+     * @memberof StoreEventClassItem
+     */
+    'price': number;
+}
+/**
+ * 
+ * @export
+ * @interface StoreEventsEntity
+ */
+export interface StoreEventsEntity {
+    /**
+     * Indicates if there is a page after the current one
+     * @type {boolean}
+     * @memberof StoreEventsEntity
+     */
+    'has_next_page': boolean;
+    /**
+     * Indicates if there is a page before the current one
+     * @type {boolean}
+     * @memberof StoreEventsEntity
+     */
+    'has_prev_page': boolean;
+    /**
+     * Total number of pages according to limit and result
+     * @type {number}
+     * @memberof StoreEventsEntity
+     */
+    'total_pages': number;
+    /**
+     * Total number of records found against the query
+     * @type {number}
+     * @memberof StoreEventsEntity
+     */
+    'total_records': number;
+    /**
+     * 
+     * @type {Array<StoreEventClass>}
+     * @memberof StoreEventsEntity
+     */
+    'result': Array<StoreEventClass>;
+    /**
+     * Indicates current page
+     * @type {number}
+     * @memberof StoreEventsEntity
+     */
+    'page': number;
+}
+/**
+ * 
+ * @export
  * @interface StoreHoursClass
  */
 export interface StoreHoursClass {
@@ -5607,6 +6031,283 @@ export class DeliveryApi extends BaseAPI {
      */
     public deliveryControllerGetQuotation(requestParameters: DeliveryApiDeliveryControllerGetQuotationRequest, options?: AxiosRequestConfig) {
         return DeliveryApiFp(this.configuration).deliveryControllerGetQuotation(requestParameters.quotationRequestDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * EventApi - axios parameter creator
+ * @export
+ */
+export const EventApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Search for events
+         * @param {string} [price] Minimum event price filter
+         * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
+         * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        eventsControllerFetchEvents: async (price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/events/search`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+            if (price !== undefined) {
+                localVarQueryParameter['price'] = price;
+            }
+
+            if (location !== undefined) {
+                localVarQueryParameter['location'] = location;
+            }
+
+            if (eventDate !== undefined) {
+                localVarQueryParameter['event_date'] = eventDate;
+            }
+
+            if (keyword !== undefined) {
+                localVarQueryParameter['keyword'] = keyword;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get event information
+         * @param {string} id ID of the event
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        eventsControllerGetEventInformation: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('eventsControllerGetEventInformation', 'id', id)
+            const localVarPath = `/v1/events/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * EventApi - functional programming interface
+ * @export
+ */
+export const EventApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = EventApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Search for events
+         * @param {string} [price] Minimum event price filter
+         * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
+         * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async eventsControllerFetchEvents(price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EventEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.eventsControllerFetchEvents(price, location, eventDate, keyword, limit, offset, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get event information
+         * @param {string} id ID of the event
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async eventsControllerGetEventInformation(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EventClass>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.eventsControllerGetEventInformation(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * EventApi - factory interface
+ * @export
+ */
+export const EventApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = EventApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Search for events
+         * @param {string} [price] Minimum event price filter
+         * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
+         * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        eventsControllerFetchEvents(price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options?: any): AxiosPromise<EventEntity> {
+            return localVarFp.eventsControllerFetchEvents(price, location, eventDate, keyword, limit, offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get event information
+         * @param {string} id ID of the event
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        eventsControllerGetEventInformation(id: string, options?: any): AxiosPromise<EventClass> {
+            return localVarFp.eventsControllerGetEventInformation(id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for eventsControllerFetchEvents operation in EventApi.
+ * @export
+ * @interface EventApiEventsControllerFetchEventsRequest
+ */
+export interface EventApiEventsControllerFetchEventsRequest {
+    /**
+     * Minimum event price filter
+     * @type {string}
+     * @memberof EventApiEventsControllerFetchEvents
+     */
+    readonly price?: string
+
+    /**
+     * Event distance search center, this will be use to filter events base on your user location
+     * @type {string}
+     * @memberof EventApiEventsControllerFetchEvents
+     */
+    readonly location?: string
+
+    /**
+     * ISO8601 compliant date string, defaults to current server date
+     * @type {string}
+     * @memberof EventApiEventsControllerFetchEvents
+     */
+    readonly eventDate?: string
+
+    /**
+     * General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+     * @type {string}
+     * @memberof EventApiEventsControllerFetchEvents
+     */
+    readonly keyword?: string
+
+    /**
+     * The number of record to return, 0 means all will be returned
+     * @type {number}
+     * @memberof EventApiEventsControllerFetchEvents
+     */
+    readonly limit?: number
+
+    /**
+     * The number of records to skip
+     * @type {number}
+     * @memberof EventApiEventsControllerFetchEvents
+     */
+    readonly offset?: number
+}
+
+/**
+ * Request parameters for eventsControllerGetEventInformation operation in EventApi.
+ * @export
+ * @interface EventApiEventsControllerGetEventInformationRequest
+ */
+export interface EventApiEventsControllerGetEventInformationRequest {
+    /**
+     * ID of the event
+     * @type {string}
+     * @memberof EventApiEventsControllerGetEventInformation
+     */
+    readonly id: string
+}
+
+/**
+ * EventApi - object-oriented interface
+ * @export
+ * @class EventApi
+ * @extends {BaseAPI}
+ */
+export class EventApi extends BaseAPI {
+    /**
+     * 
+     * @summary Search for events
+     * @param {EventApiEventsControllerFetchEventsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EventApi
+     */
+    public eventsControllerFetchEvents(requestParameters: EventApiEventsControllerFetchEventsRequest = {}, options?: AxiosRequestConfig) {
+        return EventApiFp(this.configuration).eventsControllerFetchEvents(requestParameters.price, requestParameters.location, requestParameters.eventDate, requestParameters.keyword, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get event information
+     * @param {EventApiEventsControllerGetEventInformationRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EventApi
+     */
+    public eventsControllerGetEventInformation(requestParameters: EventApiEventsControllerGetEventInformationRequest, options?: AxiosRequestConfig) {
+        return EventApiFp(this.configuration).eventsControllerGetEventInformation(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -7456,6 +8157,73 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * 
+         * @summary Get store events
+         * @param {string} id ID of store
+         * @param {string} [price] Minimum event price filter
+         * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
+         * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        storeControllerFetchEvents: async (id: string, price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('storeControllerFetchEvents', 'id', id)
+            const localVarPath = `/v1/store/{id}/events`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+            if (price !== undefined) {
+                localVarQueryParameter['price'] = price;
+            }
+
+            if (location !== undefined) {
+                localVarQueryParameter['location'] = location;
+            }
+
+            if (eventDate !== undefined) {
+                localVarQueryParameter['event_date'] = eventDate;
+            }
+
+            if (keyword !== undefined) {
+                localVarQueryParameter['keyword'] = keyword;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get store menu
          * @param {string} id ID of store
          * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
@@ -7626,6 +8394,23 @@ export const StoreApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Get store events
+         * @param {string} id ID of store
+         * @param {string} [price] Minimum event price filter
+         * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
+         * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async storeControllerFetchEvents(id: string, price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoreEventsEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFetchEvents(id, price, location, eventDate, keyword, limit, offset, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get store menu
          * @param {string} id ID of store
          * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
@@ -7682,6 +8467,22 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
+         * @summary Get store events
+         * @param {string} id ID of store
+         * @param {string} [price] Minimum event price filter
+         * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
+         * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        storeControllerFetchEvents(id: string, price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options?: any): AxiosPromise<StoreEventsEntity> {
+            return localVarFp.storeControllerFetchEvents(id, price, location, eventDate, keyword, limit, offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get store menu
          * @param {string} id ID of store
          * @param {string} [orderDate] ISO8601 compliant date string, defaults to current server date
@@ -7724,6 +8525,62 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
         },
     };
 };
+
+/**
+ * Request parameters for storeControllerFetchEvents operation in StoreApi.
+ * @export
+ * @interface StoreApiStoreControllerFetchEventsRequest
+ */
+export interface StoreApiStoreControllerFetchEventsRequest {
+    /**
+     * ID of store
+     * @type {string}
+     * @memberof StoreApiStoreControllerFetchEvents
+     */
+    readonly id: string
+
+    /**
+     * Minimum event price filter
+     * @type {string}
+     * @memberof StoreApiStoreControllerFetchEvents
+     */
+    readonly price?: string
+
+    /**
+     * Event distance search center, this will be use to filter events base on your user location
+     * @type {string}
+     * @memberof StoreApiStoreControllerFetchEvents
+     */
+    readonly location?: string
+
+    /**
+     * ISO8601 compliant date string, defaults to current server date
+     * @type {string}
+     * @memberof StoreApiStoreControllerFetchEvents
+     */
+    readonly eventDate?: string
+
+    /**
+     * General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+     * @type {string}
+     * @memberof StoreApiStoreControllerFetchEvents
+     */
+    readonly keyword?: string
+
+    /**
+     * The number of record to return, 0 means all will be returned
+     * @type {number}
+     * @memberof StoreApiStoreControllerFetchEvents
+     */
+    readonly limit?: number
+
+    /**
+     * The number of records to skip
+     * @type {number}
+     * @memberof StoreApiStoreControllerFetchEvents
+     */
+    readonly offset?: number
+}
 
 /**
  * Request parameters for storeControllerFetchMenu operation in StoreApi.
@@ -7802,6 +8659,18 @@ export interface StoreApiStoreControllerGetStoreDateOptionsRequest {
  * @extends {BaseAPI}
  */
 export class StoreApi extends BaseAPI {
+    /**
+     * 
+     * @summary Get store events
+     * @param {StoreApiStoreControllerFetchEventsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof StoreApi
+     */
+    public storeControllerFetchEvents(requestParameters: StoreApiStoreControllerFetchEventsRequest, options?: AxiosRequestConfig) {
+        return StoreApiFp(this.configuration).storeControllerFetchEvents(requestParameters.id, requestParameters.price, requestParameters.location, requestParameters.eventDate, requestParameters.keyword, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Get store menu
