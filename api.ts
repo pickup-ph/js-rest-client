@@ -6048,12 +6048,13 @@ export const EventApiAxiosParamCreator = function (configuration?: Configuration
          * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
          * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
          * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {Array<string>} [sort] Sort result with key,strategy pattern
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        eventsControllerFetchEvents: async (price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        eventsControllerFetchEvents: async (price?: string, location?: string, eventDate?: string, keyword?: string, sort?: Array<string>, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/events/search`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6083,6 +6084,10 @@ export const EventApiAxiosParamCreator = function (configuration?: Configuration
 
             if (keyword !== undefined) {
                 localVarQueryParameter['keyword'] = keyword;
+            }
+
+            if (sort) {
+                localVarQueryParameter['sort'] = sort;
             }
 
             if (limit !== undefined) {
@@ -6158,13 +6163,14 @@ export const EventApiFp = function(configuration?: Configuration) {
          * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
          * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
          * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {Array<string>} [sort] Sort result with key,strategy pattern
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async eventsControllerFetchEvents(price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EventEntity>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.eventsControllerFetchEvents(price, location, eventDate, keyword, limit, offset, options);
+        async eventsControllerFetchEvents(price?: string, location?: string, eventDate?: string, keyword?: string, sort?: Array<string>, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EventEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.eventsControllerFetchEvents(price, location, eventDate, keyword, sort, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -6195,13 +6201,14 @@ export const EventApiFactory = function (configuration?: Configuration, basePath
          * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
          * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
          * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {Array<string>} [sort] Sort result with key,strategy pattern
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        eventsControllerFetchEvents(price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options?: any): AxiosPromise<EventEntity> {
-            return localVarFp.eventsControllerFetchEvents(price, location, eventDate, keyword, limit, offset, options).then((request) => request(axios, basePath));
+        eventsControllerFetchEvents(price?: string, location?: string, eventDate?: string, keyword?: string, sort?: Array<string>, limit?: number, offset?: number, options?: any): AxiosPromise<EventEntity> {
+            return localVarFp.eventsControllerFetchEvents(price, location, eventDate, keyword, sort, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6251,6 +6258,13 @@ export interface EventApiEventsControllerFetchEventsRequest {
     readonly keyword?: string
 
     /**
+     * Sort result with key,strategy pattern
+     * @type {Array<string>}
+     * @memberof EventApiEventsControllerFetchEvents
+     */
+    readonly sort?: Array<string>
+
+    /**
      * The number of record to return, 0 means all will be returned
      * @type {number}
      * @memberof EventApiEventsControllerFetchEvents
@@ -6295,7 +6309,7 @@ export class EventApi extends BaseAPI {
      * @memberof EventApi
      */
     public eventsControllerFetchEvents(requestParameters: EventApiEventsControllerFetchEventsRequest = {}, options?: AxiosRequestConfig) {
-        return EventApiFp(this.configuration).eventsControllerFetchEvents(requestParameters.price, requestParameters.location, requestParameters.eventDate, requestParameters.keyword, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+        return EventApiFp(this.configuration).eventsControllerFetchEvents(requestParameters.price, requestParameters.location, requestParameters.eventDate, requestParameters.keyword, requestParameters.sort, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -8163,12 +8177,13 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
          * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
          * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
          * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {Array<string>} [sort] Sort result with key,strategy pattern
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFetchEvents: async (id: string, price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        storeControllerFetchEvents: async (id: string, price?: string, location?: string, eventDate?: string, keyword?: string, sort?: Array<string>, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('storeControllerFetchEvents', 'id', id)
             const localVarPath = `/v1/store/{id}/events`
@@ -8201,6 +8216,10 @@ export const StoreApiAxiosParamCreator = function (configuration?: Configuration
 
             if (keyword !== undefined) {
                 localVarQueryParameter['keyword'] = keyword;
+            }
+
+            if (sort) {
+                localVarQueryParameter['sort'] = sort;
             }
 
             if (limit !== undefined) {
@@ -8400,13 +8419,14 @@ export const StoreApiFp = function(configuration?: Configuration) {
          * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
          * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
          * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {Array<string>} [sort] Sort result with key,strategy pattern
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async storeControllerFetchEvents(id: string, price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoreEventsEntity>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFetchEvents(id, price, location, eventDate, keyword, limit, offset, options);
+        async storeControllerFetchEvents(id: string, price?: string, location?: string, eventDate?: string, keyword?: string, sort?: Array<string>, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoreEventsEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.storeControllerFetchEvents(id, price, location, eventDate, keyword, sort, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -8473,13 +8493,14 @@ export const StoreApiFactory = function (configuration?: Configuration, basePath
          * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
          * @param {string} [eventDate] ISO8601 compliant date string, defaults to current server date
          * @param {string} [keyword] General search key name for \&quot;event name\&quot; and \&quot;event location\&quot;
+         * @param {Array<string>} [sort] Sort result with key,strategy pattern
          * @param {number} [limit] The number of record to return, 0 means all will be returned
          * @param {number} [offset] The number of records to skip
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        storeControllerFetchEvents(id: string, price?: string, location?: string, eventDate?: string, keyword?: string, limit?: number, offset?: number, options?: any): AxiosPromise<StoreEventsEntity> {
-            return localVarFp.storeControllerFetchEvents(id, price, location, eventDate, keyword, limit, offset, options).then((request) => request(axios, basePath));
+        storeControllerFetchEvents(id: string, price?: string, location?: string, eventDate?: string, keyword?: string, sort?: Array<string>, limit?: number, offset?: number, options?: any): AxiosPromise<StoreEventsEntity> {
+            return localVarFp.storeControllerFetchEvents(id, price, location, eventDate, keyword, sort, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -8566,6 +8587,13 @@ export interface StoreApiStoreControllerFetchEventsRequest {
      * @memberof StoreApiStoreControllerFetchEvents
      */
     readonly keyword?: string
+
+    /**
+     * Sort result with key,strategy pattern
+     * @type {Array<string>}
+     * @memberof StoreApiStoreControllerFetchEvents
+     */
+    readonly sort?: Array<string>
 
     /**
      * The number of record to return, 0 means all will be returned
@@ -8668,7 +8696,7 @@ export class StoreApi extends BaseAPI {
      * @memberof StoreApi
      */
     public storeControllerFetchEvents(requestParameters: StoreApiStoreControllerFetchEventsRequest, options?: AxiosRequestConfig) {
-        return StoreApiFp(this.configuration).storeControllerFetchEvents(requestParameters.id, requestParameters.price, requestParameters.location, requestParameters.eventDate, requestParameters.keyword, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+        return StoreApiFp(this.configuration).storeControllerFetchEvents(requestParameters.id, requestParameters.price, requestParameters.location, requestParameters.eventDate, requestParameters.keyword, requestParameters.sort, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
