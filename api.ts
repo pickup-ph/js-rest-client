@@ -1542,7 +1542,22 @@ export interface ItemClass {
      * @memberof ItemClass
      */
     'visible'?: boolean;
+    /**
+     * Indicates item type
+     * @type {string}
+     * @memberof ItemClass
+     */
+    'type': ItemClassTypeEnum;
 }
+
+export const ItemClassTypeEnum = {
+    Promo: 'promo',
+    Default: 'default',
+    Event: 'event'
+} as const;
+
+export type ItemClassTypeEnum = typeof ItemClassTypeEnum[keyof typeof ItemClassTypeEnum];
+
 /**
  * 
  * @export
@@ -1688,7 +1703,22 @@ export interface ItemPartialClass {
      * @memberof ItemPartialClass
      */
     'visible'?: boolean;
+    /**
+     * Indicates item type
+     * @type {string}
+     * @memberof ItemPartialClass
+     */
+    'type': ItemPartialClassTypeEnum;
 }
+
+export const ItemPartialClassTypeEnum = {
+    Promo: 'promo',
+    Default: 'default',
+    Event: 'event'
+} as const;
+
+export type ItemPartialClassTypeEnum = typeof ItemPartialClassTypeEnum[keyof typeof ItemPartialClassTypeEnum];
+
 /**
  * 
  * @export
@@ -1928,6 +1958,12 @@ export interface MenuClassItem {
      */
     'extras'?: boolean;
     /**
+     * Indicates item type
+     * @type {string}
+     * @memberof MenuClassItem
+     */
+    'type': MenuClassItemTypeEnum;
+    /**
      * Random unique item code
      * @type {string}
      * @memberof MenuClassItem
@@ -1952,6 +1988,15 @@ export interface MenuClassItem {
      */
     'off_dates'?: Array<string>;
 }
+
+export const MenuClassItemTypeEnum = {
+    Promo: 'promo',
+    Default: 'default',
+    Event: 'event'
+} as const;
+
+export type MenuClassItemTypeEnum = typeof MenuClassItemTypeEnum[keyof typeof MenuClassItemTypeEnum];
+
 /**
  * 
  * @export
@@ -2049,6 +2094,12 @@ export interface MenuItemClass {
      */
     'extras'?: boolean;
     /**
+     * Indicates item type
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'type': MenuItemClassTypeEnum;
+    /**
      * Random unique item code
      * @type {string}
      * @memberof MenuItemClass
@@ -2073,6 +2124,15 @@ export interface MenuItemClass {
      */
     'off_dates'?: Array<string>;
 }
+
+export const MenuItemClassTypeEnum = {
+    Promo: 'promo',
+    Default: 'default',
+    Event: 'event'
+} as const;
+
+export type MenuItemClassTypeEnum = typeof MenuItemClassTypeEnum[keyof typeof MenuItemClassTypeEnum];
+
 /**
  * 
  * @export
@@ -3167,6 +3227,12 @@ export interface ReorderDetailsClass {
      */
     'category'?: string;
     /**
+     * Indicates item type
+     * @type {string}
+     * @memberof ReorderDetailsClass
+     */
+    'type': ReorderDetailsClassTypeEnum;
+    /**
      * Random unique item code
      * @type {string}
      * @memberof ReorderDetailsClass
@@ -3191,6 +3257,15 @@ export interface ReorderDetailsClass {
      */
     'item_limit_per_day'?: number;
 }
+
+export const ReorderDetailsClassTypeEnum = {
+    Promo: 'promo',
+    Default: 'default',
+    Event: 'event'
+} as const;
+
+export type ReorderDetailsClassTypeEnum = typeof ReorderDetailsClassTypeEnum[keyof typeof ReorderDetailsClassTypeEnum];
+
 /**
  * 
  * @export
