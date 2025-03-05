@@ -1342,6 +1342,12 @@ export interface ExtraGroupClass {
      * @memberof ExtraGroupClass
      */
     'maximum_number': number;
+    /**
+     * Nominated position of the extra group in a list
+     * @type {number}
+     * @memberof ExtraGroupClass
+     */
+    'position'?: number;
 }
 /**
  * 
@@ -1379,6 +1385,12 @@ export interface GroupSelectionClass {
      * @memberof GroupSelectionClass
      */
     'name': string;
+    /**
+     * Extra item is available for order
+     * @type {boolean}
+     * @memberof GroupSelectionClass
+     */
+    'available'?: boolean;
 }
 /**
  * 
