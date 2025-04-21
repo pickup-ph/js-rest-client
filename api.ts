@@ -1164,6 +1164,12 @@ export interface EventClassStore {
      * @memberof EventClassStore
      */
     'contact_number': string;
+    /**
+     * Store tags
+     * @type {Array<string>}
+     * @memberof EventClassStore
+     */
+    'store_tags'?: Array<string>;
 }
 /**
  * 
@@ -1299,6 +1305,12 @@ export interface EventStoreDetailsClass {
      * @memberof EventStoreDetailsClass
      */
     'contact_number': string;
+    /**
+     * Store tags
+     * @type {Array<string>}
+     * @memberof EventStoreDetailsClass
+     */
+    'store_tags'?: Array<string>;
 }
 /**
  * 
@@ -1417,18 +1429,6 @@ export interface ItemClass {
      */
     'extra_group'?: Array<ExtraGroupClass>;
     /**
-     * Maximum number of allowed purchase of the item across all platform per time slot
-     * @type {Array<ItemTimeSlotClass>}
-     * @memberof ItemClass
-     */
-    'item_limit_per_time_slot'?: Array<ItemTimeSlotClass>;
-    /**
-     * Random unique item code
-     * @type {string}
-     * @memberof ItemClass
-     */
-    'item_code': string;
-    /**
      * Indicates the item is bulky and will automatically select car on checkout if order type is delivery
      * @type {boolean}
      * @memberof ItemClass
@@ -1440,6 +1440,18 @@ export interface ItemClass {
      * @memberof ItemClass
      */
     'is_meal_plan'?: boolean;
+    /**
+     * Maximum number of allowed purchase of the item across all platform per time slot
+     * @type {Array<ItemTimeSlotClass>}
+     * @memberof ItemClass
+     */
+    'item_limit_per_time_slot'?: Array<ItemTimeSlotClass>;
+    /**
+     * Random unique item code
+     * @type {string}
+     * @memberof ItemClass
+     */
+    'item_code': string;
     /**
      * Store off dates helper
      * @type {Array<string>}
@@ -1898,6 +1910,24 @@ export interface MenuClassItem {
      */
     'extra_group'?: Array<ExtraGroupClass>;
     /**
+     * Indicates the item is bulky and will automatically select car on checkout if order type is delivery
+     * @type {boolean}
+     * @memberof MenuClassItem
+     */
+    'is_bulk'?: boolean;
+    /**
+     * Indicates if item is part of meal plan order type
+     * @type {boolean}
+     * @memberof MenuClassItem
+     */
+    'is_meal_plan'?: boolean;
+    /**
+     * The nominated item display image in url form
+     * @type {string}
+     * @memberof MenuClassItem
+     */
+    'image_url': string;
+    /**
      * The name of the item
      * @type {string}
      * @memberof MenuClassItem
@@ -1909,12 +1939,6 @@ export interface MenuClassItem {
      * @memberof MenuClassItem
      */
     'description': string;
-    /**
-     * The nominated item display image in url form
-     * @type {string}
-     * @memberof MenuClassItem
-     */
-    'image_url': string;
     /**
      * The item discount description
      * @type {string}
@@ -1982,18 +2006,6 @@ export interface MenuClassItem {
      */
     'item_code': string;
     /**
-     * Indicates the item is bulky and will automatically select car on checkout if order type is delivery
-     * @type {boolean}
-     * @memberof MenuClassItem
-     */
-    'is_bulk'?: boolean;
-    /**
-     * Indicates if item is part of meal plan order type
-     * @type {boolean}
-     * @memberof MenuClassItem
-     */
-    'is_meal_plan'?: boolean;
-    /**
      * Store off dates helper
      * @type {Array<string>}
      * @memberof MenuClassItem
@@ -2034,6 +2046,24 @@ export interface MenuItemClass {
      */
     'extra_group'?: Array<ExtraGroupClass>;
     /**
+     * Indicates the item is bulky and will automatically select car on checkout if order type is delivery
+     * @type {boolean}
+     * @memberof MenuItemClass
+     */
+    'is_bulk'?: boolean;
+    /**
+     * Indicates if item is part of meal plan order type
+     * @type {boolean}
+     * @memberof MenuItemClass
+     */
+    'is_meal_plan'?: boolean;
+    /**
+     * The nominated item display image in url form
+     * @type {string}
+     * @memberof MenuItemClass
+     */
+    'image_url': string;
+    /**
      * The name of the item
      * @type {string}
      * @memberof MenuItemClass
@@ -2045,12 +2075,6 @@ export interface MenuItemClass {
      * @memberof MenuItemClass
      */
     'description': string;
-    /**
-     * The nominated item display image in url form
-     * @type {string}
-     * @memberof MenuItemClass
-     */
-    'image_url': string;
     /**
      * The item discount description
      * @type {string}
@@ -2117,18 +2141,6 @@ export interface MenuItemClass {
      * @memberof MenuItemClass
      */
     'item_code': string;
-    /**
-     * Indicates the item is bulky and will automatically select car on checkout if order type is delivery
-     * @type {boolean}
-     * @memberof MenuItemClass
-     */
-    'is_bulk'?: boolean;
-    /**
-     * Indicates if item is part of meal plan order type
-     * @type {boolean}
-     * @memberof MenuItemClass
-     */
-    'is_meal_plan'?: boolean;
     /**
      * Store off dates helper
      * @type {Array<string>}
@@ -3137,6 +3149,18 @@ export interface ReorderDetailsClass {
      */
     'extra_group'?: Array<ExtraGroupClass>;
     /**
+     * Indicates the item is bulky and will automatically select car on checkout if order type is delivery
+     * @type {boolean}
+     * @memberof ReorderDetailsClass
+     */
+    'is_bulk'?: boolean;
+    /**
+     * Indicates if item is part of meal plan order type
+     * @type {boolean}
+     * @memberof ReorderDetailsClass
+     */
+    'is_meal_plan'?: boolean;
+    /**
      * Maximum number of allowed purchase of the item across all platform per time slot
      * @type {Array<ItemTimeSlotClass>}
      * @memberof ReorderDetailsClass
@@ -3250,18 +3274,6 @@ export interface ReorderDetailsClass {
      * @memberof ReorderDetailsClass
      */
     'item_code': string;
-    /**
-     * Indicates the item is bulky and will automatically select car on checkout if order type is delivery
-     * @type {boolean}
-     * @memberof ReorderDetailsClass
-     */
-    'is_bulk'?: boolean;
-    /**
-     * Indicates if item is part of meal plan order type
-     * @type {boolean}
-     * @memberof ReorderDetailsClass
-     */
-    'is_meal_plan'?: boolean;
     /**
      * Maximum number of allowed purchase of the item across all platform per day
      * @type {number}
