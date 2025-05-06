@@ -94,6 +94,49 @@ export interface AttachedReservationPaymentEntity {
 /**
  * 
  * @export
+ * @interface AvailableListingEntity
+ */
+export interface AvailableListingEntity {
+    /**
+     * Indicates if there is a page after the current one
+     * @type {boolean}
+     * @memberof AvailableListingEntity
+     */
+    'has_next_page': boolean;
+    /**
+     * Indicates if there is a page before the current one
+     * @type {boolean}
+     * @memberof AvailableListingEntity
+     */
+    'has_prev_page': boolean;
+    /**
+     * Total number of pages according to limit and result
+     * @type {number}
+     * @memberof AvailableListingEntity
+     */
+    'total_pages': number;
+    /**
+     * Total number of records found against the query
+     * @type {number}
+     * @memberof AvailableListingEntity
+     */
+    'total_records': number;
+    /**
+     * 
+     * @type {ReservationListingClass}
+     * @memberof AvailableListingEntity
+     */
+    'result': ReservationListingClass;
+    /**
+     * Indicates current page
+     * @type {number}
+     * @memberof AvailableListingEntity
+     */
+    'page': number;
+}
+/**
+ * 
+ * @export
  * @interface AvailableReservationEntity
  */
 export interface AvailableReservationEntity {
@@ -1034,6 +1077,19 @@ export interface DeliveryQuotationResultEntitySelected {
 /**
  * 
  * @export
+ * @interface EventAvailabilityClass
+ */
+export interface EventAvailabilityClass {
+    /**
+     * Indicates event availability on the chosen date and time
+     * @type {boolean}
+     * @memberof EventAvailabilityClass
+     */
+    'available': boolean;
+}
+/**
+ * 
+ * @export
  * @interface EventClass
  */
 export interface EventClass {
@@ -1115,6 +1171,18 @@ export interface EventClass {
      * @memberof EventClass
      */
     'available': number;
+    /**
+     * Days of the week when the event is available 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
+     * @type {Array<number>}
+     * @memberof EventClass
+     */
+    'available_days': Array<number>;
+    /**
+     * Cutoff time for ordering the event in minutes 0 = no cutoff
+     * @type {number}
+     * @memberof EventClass
+     */
+    'ordering_cutoff': number;
 }
 /**
  * Store information
@@ -1176,6 +1244,55 @@ export interface EventClassStore {
      * @memberof EventClassStore
      */
     'store_tags'?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface EventDetail
+ */
+export interface EventDetail {
+    /**
+     * Event id
+     * @type {string}
+     * @memberof EventDetail
+     */
+    'id': string;
+    /**
+     * Event promotion image url
+     * @type {string}
+     * @memberof EventDetail
+     */
+    'image': string;
+    /**
+     * Event name
+     * @type {string}
+     * @memberof EventDetail
+     */
+    'name': string;
+    /**
+     * Event start date
+     * @type {string}
+     * @memberof EventDetail
+     */
+    'start_date': string;
+    /**
+     * Event end date
+     * @type {string}
+     * @memberof EventDetail
+     */
+    'end_date': string;
+    /**
+     * Event human readable address
+     * @type {string}
+     * @memberof EventDetail
+     */
+    'location_address': string;
+    /**
+     * Event description
+     * @type {string}
+     * @memberof EventDetail
+     */
+    'description': string;
 }
 /**
  * 
@@ -1583,7 +1700,8 @@ export interface ItemClass {
 export const ItemClassTypeEnum = {
     Promo: 'promo',
     Default: 'default',
-    Event: 'event'
+    Event: 'event',
+    Reservation: 'reservation'
 } as const;
 
 export type ItemClassTypeEnum = typeof ItemClassTypeEnum[keyof typeof ItemClassTypeEnum];
@@ -1744,7 +1862,8 @@ export interface ItemPartialClass {
 export const ItemPartialClassTypeEnum = {
     Promo: 'promo',
     Default: 'default',
-    Event: 'event'
+    Event: 'event',
+    Reservation: 'reservation'
 } as const;
 
 export type ItemPartialClassTypeEnum = typeof ItemPartialClassTypeEnum[keyof typeof ItemPartialClassTypeEnum];
@@ -1810,6 +1929,97 @@ export interface ItemsEntity {
      * @memberof ItemsEntity
      */
     'page': number;
+}
+/**
+ * 
+ * @export
+ * @interface ListingTypeClass
+ */
+export interface ListingTypeClass {
+    /**
+     * Event id
+     * @type {string}
+     * @memberof ListingTypeClass
+     */
+    'id': string;
+    /**
+     * Event promotion image url
+     * @type {string}
+     * @memberof ListingTypeClass
+     */
+    'image': string;
+    /**
+     * 
+     * @type {StoreEventClassItem}
+     * @memberof ListingTypeClass
+     */
+    'item': StoreEventClassItem;
+    /**
+     * Event name
+     * @type {string}
+     * @memberof ListingTypeClass
+     */
+    'name': string;
+    /**
+     * Event description
+     * @type {string}
+     * @memberof ListingTypeClass
+     */
+    'description': string;
+    /**
+     * Distance from location_point to Store Distance in meters
+     * @type {number}
+     * @memberof ListingTypeClass
+     */
+    'distance': number;
+    /**
+     * Event human readable address
+     * @type {string}
+     * @memberof ListingTypeClass
+     */
+    'location_address': string;
+    /**
+     * Event geo location - lng,lat
+     * @type {string}
+     * @memberof ListingTypeClass
+     */
+    'location': string;
+    /**
+     * Event start date
+     * @type {string}
+     * @memberof ListingTypeClass
+     */
+    'start_date': string;
+    /**
+     * Event end date
+     * @type {string}
+     * @memberof ListingTypeClass
+     */
+    'end_date': string;
+    /**
+     * Event seating capacity
+     * @type {number}
+     * @memberof ListingTypeClass
+     */
+    'capacity': number;
+    /**
+     * Event available seats
+     * @type {number}
+     * @memberof ListingTypeClass
+     */
+    'available': number;
+    /**
+     * Days of the week when the event is available 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
+     * @type {Array<number>}
+     * @memberof ListingTypeClass
+     */
+    'available_days': Array<number>;
+    /**
+     * Cutoff time for ordering the event in minutes 0 = no cutoff
+     * @type {number}
+     * @memberof ListingTypeClass
+     */
+    'ordering_cutoff': number;
 }
 /**
  * 
@@ -2022,7 +2232,8 @@ export interface MenuClassItem {
 export const MenuClassItemTypeEnum = {
     Promo: 'promo',
     Default: 'default',
-    Event: 'event'
+    Event: 'event',
+    Reservation: 'reservation'
 } as const;
 
 export type MenuClassItemTypeEnum = typeof MenuClassItemTypeEnum[keyof typeof MenuClassItemTypeEnum];
@@ -2158,7 +2369,8 @@ export interface MenuItemClass {
 export const MenuItemClassTypeEnum = {
     Promo: 'promo',
     Default: 'default',
-    Event: 'event'
+    Event: 'event',
+    Reservation: 'reservation'
 } as const;
 
 export type MenuItemClassTypeEnum = typeof MenuItemClassTypeEnum[keyof typeof MenuItemClassTypeEnum];
@@ -2574,6 +2786,12 @@ export interface OrderPartialClass {
      */
     'curbside_pickup_details'?: OrderPartialClassCurbsidePickupDetails;
     /**
+     * 
+     * @type {OrderPartialClassEventDetails}
+     * @memberof OrderPartialClass
+     */
+    'event_details'?: OrderPartialClassEventDetails;
+    /**
      * Tracking page for this particular order
      * @type {string}
      * @memberof OrderPartialClass
@@ -2705,6 +2923,55 @@ export interface OrderPartialClassCustomer {
      * @memberof OrderPartialClassCustomer
      */
     'contact_number': string;
+}
+/**
+ * Event details information
+ * @export
+ * @interface OrderPartialClassEventDetails
+ */
+export interface OrderPartialClassEventDetails {
+    /**
+     * Event id
+     * @type {string}
+     * @memberof OrderPartialClassEventDetails
+     */
+    'id': string;
+    /**
+     * Event promotion image url
+     * @type {string}
+     * @memberof OrderPartialClassEventDetails
+     */
+    'image': string;
+    /**
+     * Event name
+     * @type {string}
+     * @memberof OrderPartialClassEventDetails
+     */
+    'name': string;
+    /**
+     * Event start date
+     * @type {string}
+     * @memberof OrderPartialClassEventDetails
+     */
+    'start_date': string;
+    /**
+     * Event end date
+     * @type {string}
+     * @memberof OrderPartialClassEventDetails
+     */
+    'end_date': string;
+    /**
+     * Event human readable address
+     * @type {string}
+     * @memberof OrderPartialClassEventDetails
+     */
+    'location_address': string;
+    /**
+     * Event description
+     * @type {string}
+     * @memberof OrderPartialClassEventDetails
+     */
+    'description': string;
 }
 /**
  * Third party pickup information
@@ -3291,7 +3558,8 @@ export interface ReorderDetailsClass {
 export const ReorderDetailsClassTypeEnum = {
     Promo: 'promo',
     Default: 'default',
-    Event: 'event'
+    Event: 'event',
+    Reservation: 'reservation'
 } as const;
 
 export type ReorderDetailsClassTypeEnum = typeof ReorderDetailsClassTypeEnum[keyof typeof ReorderDetailsClassTypeEnum];
@@ -3883,6 +4151,92 @@ export interface ReservationInfoEntityType {
      * @memberof ReservationInfoEntityType
      */
     'start_date'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ReservationListingClass
+ */
+export interface ReservationListingClass {
+    /**
+     * 
+     * @type {ReservationListingClassStore}
+     * @memberof ReservationListingClass
+     */
+    'store': ReservationListingClassStore;
+    /**
+     * List of reservation types this a store offers
+     * @type {Array<ListingTypeClass>}
+     * @memberof ReservationListingClass
+     */
+    'listings': Array<ListingTypeClass>;
+}
+/**
+ * Store information
+ * @export
+ * @interface ReservationListingClassStore
+ */
+export interface ReservationListingClassStore {
+    /**
+     * Id that will be used on searching store
+     * @type {string}
+     * @memberof ReservationListingClassStore
+     */
+    'id': string;
+    /**
+     * Store background image
+     * @type {string}
+     * @memberof ReservationListingClassStore
+     */
+    'banner': string;
+    /**
+     * Distance from location_point to Store Distance in Kilometers
+     * @type {number}
+     * @memberof ReservationListingClassStore
+     */
+    'distance'?: number;
+    /**
+     * Store display name
+     * @type {string}
+     * @memberof ReservationListingClassStore
+     */
+    'name': string;
+    /**
+     * Store display logo
+     * @type {string}
+     * @memberof ReservationListingClassStore
+     */
+    'store_logo': string;
+    /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof ReservationListingClassStore
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof ReservationListingClassStore
+     */
+    'partner_banner': string;
+    /**
+     * Store description
+     * @type {string}
+     * @memberof ReservationListingClassStore
+     */
+    'store_description': string;
+    /**
+     * Merchant displayed contact number
+     * @type {string}
+     * @memberof ReservationListingClassStore
+     */
+    'contact_number': string;
+    /**
+     * Store tags
+     * @type {Array<string>}
+     * @memberof ReservationListingClassStore
+     */
+    'store_tags'?: Array<string>;
 }
 /**
  * 
@@ -4647,6 +5001,18 @@ export interface StoreEventClass {
      * @memberof StoreEventClass
      */
     'available': number;
+    /**
+     * Days of the week when the event is available 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
+     * @type {Array<number>}
+     * @memberof StoreEventClass
+     */
+    'available_days': Array<number>;
+    /**
+     * Cutoff time for ordering the event in minutes 0 = no cutoff
+     * @type {number}
+     * @memberof StoreEventClass
+     */
+    'ordering_cutoff': number;
 }
 /**
  * Event item information
@@ -4758,6 +5124,73 @@ export interface StoreHoursClass {
      * @memberof StoreHoursClass
      */
     'closing': string;
+}
+/**
+ * 
+ * @export
+ * @interface StoreListingSearchClass
+ */
+export interface StoreListingSearchClass {
+    /**
+     * Id that will be used on searching store
+     * @type {string}
+     * @memberof StoreListingSearchClass
+     */
+    'id': string;
+    /**
+     * Store background image
+     * @type {string}
+     * @memberof StoreListingSearchClass
+     */
+    'banner': string;
+    /**
+     * Distance from location_point to Store Distance in Kilometers
+     * @type {number}
+     * @memberof StoreListingSearchClass
+     */
+    'distance'?: number;
+    /**
+     * Store display name
+     * @type {string}
+     * @memberof StoreListingSearchClass
+     */
+    'name': string;
+    /**
+     * Store display logo
+     * @type {string}
+     * @memberof StoreListingSearchClass
+     */
+    'store_logo': string;
+    /**
+     * Store custom partner logo
+     * @type {string}
+     * @memberof StoreListingSearchClass
+     */
+    'partner_logo': string;
+    /**
+     * Store custom partner banner
+     * @type {string}
+     * @memberof StoreListingSearchClass
+     */
+    'partner_banner': string;
+    /**
+     * Store description
+     * @type {string}
+     * @memberof StoreListingSearchClass
+     */
+    'store_description': string;
+    /**
+     * Merchant displayed contact number
+     * @type {string}
+     * @memberof StoreListingSearchClass
+     */
+    'contact_number': string;
+    /**
+     * Store tags
+     * @type {Array<string>}
+     * @memberof StoreListingSearchClass
+     */
+    'store_tags'?: Array<string>;
 }
 /**
  * 
@@ -6237,6 +6670,62 @@ export const EventApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Get event availability
+         * @param {string} id ID of the event
+         * @param {string} date Date to be validated against the event
+         * @param {number} partySize Intended party to size to be validated against the event
+         * @param {string} [time] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        eventsControllerGetEventAvailability: async (id: string, date: string, partySize: number, time?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('eventsControllerGetEventAvailability', 'id', id)
+            // verify required parameter 'date' is not null or undefined
+            assertParamExists('eventsControllerGetEventAvailability', 'date', date)
+            // verify required parameter 'partySize' is not null or undefined
+            assertParamExists('eventsControllerGetEventAvailability', 'partySize', partySize)
+            const localVarPath = `/v1/events/{id}/available`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+            if (date !== undefined) {
+                localVarQueryParameter['date'] = date;
+            }
+
+            if (time !== undefined) {
+                localVarQueryParameter['time'] = time;
+            }
+
+            if (partySize !== undefined) {
+                localVarQueryParameter['party_size'] = partySize;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get event information
          * @param {string} id ID of the event
          * @param {*} [options] Override http request option.
@@ -6304,6 +6793,20 @@ export const EventApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get event availability
+         * @param {string} id ID of the event
+         * @param {string} date Date to be validated against the event
+         * @param {number} partySize Intended party to size to be validated against the event
+         * @param {string} [time] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async eventsControllerGetEventAvailability(id: string, date: string, partySize: number, time?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EventAvailabilityClass>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.eventsControllerGetEventAvailability(id, date, partySize, time, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get event information
          * @param {string} id ID of the event
          * @param {*} [options] Override http request option.
@@ -6341,6 +6844,19 @@ export const EventApiFactory = function (configuration?: Configuration, basePath
          */
         eventsControllerFetchEvents(store?: string, price?: string, location?: string, eventDate?: string, time?: string, partySize?: number, keyword?: string, sort?: Array<string>, limit?: number, offset?: number, options?: any): AxiosPromise<EventEntity> {
             return localVarFp.eventsControllerFetchEvents(store, price, location, eventDate, time, partySize, keyword, sort, limit, offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get event availability
+         * @param {string} id ID of the event
+         * @param {string} date Date to be validated against the event
+         * @param {number} partySize Intended party to size to be validated against the event
+         * @param {string} [time] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        eventsControllerGetEventAvailability(id: string, date: string, partySize: number, time?: string, options?: any): AxiosPromise<EventAvailabilityClass> {
+            return localVarFp.eventsControllerGetEventAvailability(id, date, partySize, time, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6433,6 +6949,41 @@ export interface EventApiEventsControllerFetchEventsRequest {
 }
 
 /**
+ * Request parameters for eventsControllerGetEventAvailability operation in EventApi.
+ * @export
+ * @interface EventApiEventsControllerGetEventAvailabilityRequest
+ */
+export interface EventApiEventsControllerGetEventAvailabilityRequest {
+    /**
+     * ID of the event
+     * @type {string}
+     * @memberof EventApiEventsControllerGetEventAvailability
+     */
+    readonly id: string
+
+    /**
+     * Date to be validated against the event
+     * @type {string}
+     * @memberof EventApiEventsControllerGetEventAvailability
+     */
+    readonly date: string
+
+    /**
+     * Intended party to size to be validated against the event
+     * @type {number}
+     * @memberof EventApiEventsControllerGetEventAvailability
+     */
+    readonly partySize: number
+
+    /**
+     * 
+     * @type {string}
+     * @memberof EventApiEventsControllerGetEventAvailability
+     */
+    readonly time?: string
+}
+
+/**
  * Request parameters for eventsControllerGetEventInformation operation in EventApi.
  * @export
  * @interface EventApiEventsControllerGetEventInformationRequest
@@ -6463,6 +7014,18 @@ export class EventApi extends BaseAPI {
      */
     public eventsControllerFetchEvents(requestParameters: EventApiEventsControllerFetchEventsRequest = {}, options?: AxiosRequestConfig) {
         return EventApiFp(this.configuration).eventsControllerFetchEvents(requestParameters.store, requestParameters.price, requestParameters.location, requestParameters.eventDate, requestParameters.time, requestParameters.partySize, requestParameters.keyword, requestParameters.sort, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get event availability
+     * @param {EventApiEventsControllerGetEventAvailabilityRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EventApi
+     */
+    public eventsControllerGetEventAvailability(requestParameters: EventApiEventsControllerGetEventAvailabilityRequest, options?: AxiosRequestConfig) {
+        return EventApiFp(this.configuration).eventsControllerGetEventAvailability(requestParameters.id, requestParameters.date, requestParameters.partySize, requestParameters.time, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7835,6 +8398,89 @@ export const ReservationBetaApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
+         * @summary Get store list the offers reservation and with available listings
+         * @param {'dining' | 'event' | 'all'} [type] Intended time to reserve
+         * @param {string} [price] Minimum event price filter
+         * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
+         * @param {string} [date] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [time] 
+         * @param {number} [partySize] 
+         * @param {string} [keyword] General search key name for \&quot;listing name\&quot; and \&quot;listing location\&quot;
+         * @param {Array<string>} [sort] Sort result with key,strategy pattern
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerGetStoresWithListings: async (type?: 'dining' | 'event' | 'all', price?: string, location?: string, date?: string, time?: string, partySize?: number, keyword?: string, sort?: Array<string>, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/reservation/store-listings/search`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api-key required
+            await setApiKeyToObject(localVarHeaderParameter, "X-API-KEY", configuration)
+
+            if (type !== undefined) {
+                localVarQueryParameter['type'] = type;
+            }
+
+            if (price !== undefined) {
+                localVarQueryParameter['price'] = price;
+            }
+
+            if (location !== undefined) {
+                localVarQueryParameter['location'] = location;
+            }
+
+            if (date !== undefined) {
+                localVarQueryParameter['date'] = date;
+            }
+
+            if (time !== undefined) {
+                localVarQueryParameter['time'] = time;
+            }
+
+            if (partySize !== undefined) {
+                localVarQueryParameter['party_size'] = partySize;
+            }
+
+            if (keyword !== undefined) {
+                localVarQueryParameter['keyword'] = keyword;
+            }
+
+            if (sort) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get store list that offers reservations
          * @param {SearchAvailableStoresForReservationDTO} searchAvailableStoresForReservationDTO 
          * @param {*} [options] Override http request option.
@@ -7965,6 +8611,26 @@ export const ReservationBetaApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get store list the offers reservation and with available listings
+         * @param {'dining' | 'event' | 'all'} [type] Intended time to reserve
+         * @param {string} [price] Minimum event price filter
+         * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
+         * @param {string} [date] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [time] 
+         * @param {number} [partySize] 
+         * @param {string} [keyword] General search key name for \&quot;listing name\&quot; and \&quot;listing location\&quot;
+         * @param {Array<string>} [sort] Sort result with key,strategy pattern
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async reservationControllerGetStoresWithListings(type?: 'dining' | 'event' | 'all', price?: string, location?: string, date?: string, time?: string, partySize?: number, keyword?: string, sort?: Array<string>, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AvailableListingEntity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reservationControllerGetStoresWithListings(type, price, location, date, time, partySize, keyword, sort, limit, offset, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get store list that offers reservations
          * @param {SearchAvailableStoresForReservationDTO} searchAvailableStoresForReservationDTO 
          * @param {*} [options] Override http request option.
@@ -8057,6 +8723,25 @@ export const ReservationBetaApiFactory = function (configuration?: Configuration
          */
         reservationControllerGetReservationTypeInfo(id: string, date: string, options?: any): AxiosPromise<ReservationTypeClass> {
             return localVarFp.reservationControllerGetReservationTypeInfo(id, date, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get store list the offers reservation and with available listings
+         * @param {'dining' | 'event' | 'all'} [type] Intended time to reserve
+         * @param {string} [price] Minimum event price filter
+         * @param {string} [location] Event distance search center, this will be use to filter events base on your user location
+         * @param {string} [date] ISO8601 compliant date string, defaults to current server date
+         * @param {string} [time] 
+         * @param {number} [partySize] 
+         * @param {string} [keyword] General search key name for \&quot;listing name\&quot; and \&quot;listing location\&quot;
+         * @param {Array<string>} [sort] Sort result with key,strategy pattern
+         * @param {number} [limit] The number of record to return, 0 means all will be returned
+         * @param {number} [offset] The number of records to skip
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reservationControllerGetStoresWithListings(type?: 'dining' | 'event' | 'all', price?: string, location?: string, date?: string, time?: string, partySize?: number, keyword?: string, sort?: Array<string>, limit?: number, offset?: number, options?: any): AxiosPromise<AvailableListingEntity> {
+            return localVarFp.reservationControllerGetStoresWithListings(type, price, location, date, time, partySize, keyword, sort, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -8198,6 +8883,83 @@ export interface ReservationBetaApiReservationControllerGetReservationTypeInfoRe
 }
 
 /**
+ * Request parameters for reservationControllerGetStoresWithListings operation in ReservationBetaApi.
+ * @export
+ * @interface ReservationBetaApiReservationControllerGetStoresWithListingsRequest
+ */
+export interface ReservationBetaApiReservationControllerGetStoresWithListingsRequest {
+    /**
+     * Intended time to reserve
+     * @type {'dining' | 'event' | 'all'}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithListings
+     */
+    readonly type?: 'dining' | 'event' | 'all'
+
+    /**
+     * Minimum event price filter
+     * @type {string}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithListings
+     */
+    readonly price?: string
+
+    /**
+     * Event distance search center, this will be use to filter events base on your user location
+     * @type {string}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithListings
+     */
+    readonly location?: string
+
+    /**
+     * ISO8601 compliant date string, defaults to current server date
+     * @type {string}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithListings
+     */
+    readonly date?: string
+
+    /**
+     * 
+     * @type {string}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithListings
+     */
+    readonly time?: string
+
+    /**
+     * 
+     * @type {number}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithListings
+     */
+    readonly partySize?: number
+
+    /**
+     * General search key name for \&quot;listing name\&quot; and \&quot;listing location\&quot;
+     * @type {string}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithListings
+     */
+    readonly keyword?: string
+
+    /**
+     * Sort result with key,strategy pattern
+     * @type {Array<string>}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithListings
+     */
+    readonly sort?: Array<string>
+
+    /**
+     * The number of record to return, 0 means all will be returned
+     * @type {number}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithListings
+     */
+    readonly limit?: number
+
+    /**
+     * The number of records to skip
+     * @type {number}
+     * @memberof ReservationBetaApiReservationControllerGetStoresWithListings
+     */
+    readonly offset?: number
+}
+
+/**
  * Request parameters for reservationControllerGetStoresWithReservations operation in ReservationBetaApi.
  * @export
  * @interface ReservationBetaApiReservationControllerGetStoresWithReservationsRequest
@@ -8300,6 +9062,18 @@ export class ReservationBetaApi extends BaseAPI {
      */
     public reservationControllerGetReservationTypeInfo(requestParameters: ReservationBetaApiReservationControllerGetReservationTypeInfoRequest, options?: AxiosRequestConfig) {
         return ReservationBetaApiFp(this.configuration).reservationControllerGetReservationTypeInfo(requestParameters.id, requestParameters.date, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get store list the offers reservation and with available listings
+     * @param {ReservationBetaApiReservationControllerGetStoresWithListingsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReservationBetaApi
+     */
+    public reservationControllerGetStoresWithListings(requestParameters: ReservationBetaApiReservationControllerGetStoresWithListingsRequest = {}, options?: AxiosRequestConfig) {
+        return ReservationBetaApiFp(this.configuration).reservationControllerGetStoresWithListings(requestParameters.type, requestParameters.price, requestParameters.location, requestParameters.date, requestParameters.time, requestParameters.partySize, requestParameters.keyword, requestParameters.sort, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
