@@ -1012,10 +1012,10 @@ export interface EventClass {
     'image': string;
     /**
      * 
-     * @type {StoreEventClassItem}
+     * @type {StoreEventClassTickets}
      * @memberof EventClass
      */
-    'item': StoreEventClassItem;
+    'tickets': StoreEventClassTickets;
     /**
      * 
      * @type {EventClassStore}
@@ -1064,18 +1064,6 @@ export interface EventClass {
      * @memberof EventClass
      */
     'end_date': string;
-    /**
-     * Event seating capacity
-     * @type {number}
-     * @memberof EventClass
-     */
-    'capacity': number;
-    /**
-     * Event available seats
-     * @type {number}
-     * @memberof EventClass
-     */
-    'available': number;
     /**
      * Days of the week when the event is available 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
      * @type {Array<number>}
@@ -1267,6 +1255,12 @@ export interface EventItem {
      */
     'code': string;
     /**
+     * List of grouped extras of an item
+     * @type {Array<ExtraGroupClass>}
+     * @memberof EventItem
+     */
+    'extra_group'?: Array<ExtraGroupClass>;
+    /**
      * Event item name
      * @type {string}
      * @memberof EventItem
@@ -1358,6 +1352,80 @@ export interface EventStoreDetailsClass {
      * @memberof EventStoreDetailsClass
      */
     'store_tags'?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface EventTicketClass
+ */
+export interface EventTicketClass {
+    /**
+     * 
+     * @type {EventTicketClassItem}
+     * @memberof EventTicketClass
+     */
+    'item': EventTicketClassItem;
+    /**
+     * Event seating capacity
+     * @type {number}
+     * @memberof EventTicketClass
+     */
+    'capacity': number;
+    /**
+     * Event time slot start
+     * @type {string}
+     * @memberof EventTicketClass
+     */
+    'start_time': string;
+    /**
+     * Event time slot end
+     * @type {string}
+     * @memberof EventTicketClass
+     */
+    'end_time': string;
+}
+/**
+ * Event ticket data
+ * @export
+ * @interface EventTicketClassItem
+ */
+export interface EventTicketClassItem {
+    /**
+     * Event item id, use for buying seats
+     * @type {string}
+     * @memberof EventTicketClassItem
+     */
+    'id': string;
+    /**
+     * Event item image url
+     * @type {string}
+     * @memberof EventTicketClassItem
+     */
+    'image': string;
+    /**
+     * Event item code
+     * @type {string}
+     * @memberof EventTicketClassItem
+     */
+    'code': string;
+    /**
+     * List of grouped extras of an item
+     * @type {Array<ExtraGroupClass>}
+     * @memberof EventTicketClassItem
+     */
+    'extra_group'?: Array<ExtraGroupClass>;
+    /**
+     * Event item name
+     * @type {string}
+     * @memberof EventTicketClassItem
+     */
+    'name': string;
+    /**
+     * Event item price
+     * @type {number}
+     * @memberof EventTicketClassItem
+     */
+    'price': number;
 }
 /**
  * 
@@ -4124,10 +4192,10 @@ export interface StoreEventClass {
     'image': string;
     /**
      * 
-     * @type {StoreEventClassItem}
+     * @type {StoreEventClassTickets}
      * @memberof StoreEventClass
      */
-    'item': StoreEventClassItem;
+    'tickets': StoreEventClassTickets;
     /**
      * Event name
      * @type {string}
@@ -4171,18 +4239,6 @@ export interface StoreEventClass {
      */
     'end_date': string;
     /**
-     * Event seating capacity
-     * @type {number}
-     * @memberof StoreEventClass
-     */
-    'capacity': number;
-    /**
-     * Event available seats
-     * @type {number}
-     * @memberof StoreEventClass
-     */
-    'available': number;
-    /**
      * Days of the week when the event is available 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
      * @type {Array<number>}
      * @memberof StoreEventClass
@@ -4198,39 +4254,33 @@ export interface StoreEventClass {
 /**
  * Event item information
  * @export
- * @interface StoreEventClassItem
+ * @interface StoreEventClassTickets
  */
-export interface StoreEventClassItem {
+export interface StoreEventClassTickets {
     /**
-     * Event item id, use for buying seats
-     * @type {string}
-     * @memberof StoreEventClassItem
+     * 
+     * @type {EventTicketClassItem}
+     * @memberof StoreEventClassTickets
      */
-    'id': string;
+    'item': EventTicketClassItem;
     /**
-     * Event item image url
-     * @type {string}
-     * @memberof StoreEventClassItem
-     */
-    'image': string;
-    /**
-     * Event item code
-     * @type {string}
-     * @memberof StoreEventClassItem
-     */
-    'code': string;
-    /**
-     * Event item name
-     * @type {string}
-     * @memberof StoreEventClassItem
-     */
-    'name': string;
-    /**
-     * Event item price
+     * Event seating capacity
      * @type {number}
-     * @memberof StoreEventClassItem
+     * @memberof StoreEventClassTickets
      */
-    'price': number;
+    'capacity': number;
+    /**
+     * Event time slot start
+     * @type {string}
+     * @memberof StoreEventClassTickets
+     */
+    'start_time': string;
+    /**
+     * Event time slot end
+     * @type {string}
+     * @memberof StoreEventClassTickets
+     */
+    'end_time': string;
 }
 /**
  * 
@@ -5273,7 +5323,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async appControllerGetServerInfo(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async appControllerGetServerInfo(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.appControllerGetServerInfo(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -5293,7 +5343,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        appControllerGetServerInfo(options?: any): AxiosPromise<object> {
+        appControllerGetServerInfo(options?: any): AxiosPromise<void> {
             return localVarFp.appControllerGetServerInfo(options).then((request) => request(axios, basePath));
         },
     };
