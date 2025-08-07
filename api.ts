@@ -949,11 +949,11 @@ export interface DeliveryQuotationResultEntitySelected {
  */
 export interface EventAvailabilityClass {
     /**
-     * Indicates event availability on the chosen date and time
-     * @type {boolean}
+     * List of tickets and its availability
+     * @type {Array<EventTicketAvailabilityClass>}
      * @memberof EventAvailabilityClass
      */
-    'available': boolean;
+    'tickets': Array<EventTicketAvailabilityClass>;
 }
 /**
  * 
@@ -981,6 +981,12 @@ export interface EventClass {
     'tickets': StoreEventClassTickets;
     /**
      * 
+     * @type {StoreEventClassTimeSlots}
+     * @memberof EventClass
+     */
+    'time_slots': StoreEventClassTimeSlots;
+    /**
+     * 
      * @type {EventClassStore}
      * @memberof EventClass
      */
@@ -991,6 +997,12 @@ export interface EventClass {
      * @memberof EventClass
      */
     'name': string;
+    /**
+     * Indicates event exclusivity
+     * @type {string}
+     * @memberof EventClass
+     */
+    'status': string;
     /**
      * Event description
      * @type {string}
@@ -1112,6 +1124,24 @@ export interface EventClassStore {
      * @memberof EventClassStore
      */
     'store_tags'?: Array<string>;
+    /**
+     * Store opening and closing time
+     * @type {Array<StoreHoursClass>}
+     * @memberof EventClassStore
+     */
+    'store_hours': Array<StoreHoursClass>;
+    /**
+     * Store address string used in delivery order type
+     * @type {string}
+     * @memberof EventClassStore
+     */
+    'location'?: string;
+    /**
+     * Store JSON geocoded address
+     * @type {string}
+     * @memberof EventClassStore
+     */
+    'geocode_location'?: string;
 }
 /**
  * 
@@ -1236,11 +1266,17 @@ export interface EventItem {
      */
     'extra_group'?: Array<ExtraGroupClass>;
     /**
-     * Event item name
+     * Event ticket name
      * @type {string}
      * @memberof EventItem
      */
     'name': string;
+    /**
+     * Event ticket description
+     * @type {string}
+     * @memberof EventItem
+     */
+    'description': string;
     /**
      * Event item price
      * @type {number}
@@ -1308,6 +1344,43 @@ export interface EventStoreDetailsClass {
      * @memberof EventStoreDetailsClass
      */
     'store_tags'?: Array<string>;
+    /**
+     * Store opening and closing time
+     * @type {Array<StoreHoursClass>}
+     * @memberof EventStoreDetailsClass
+     */
+    'store_hours': Array<StoreHoursClass>;
+    /**
+     * Store address string used in delivery order type
+     * @type {string}
+     * @memberof EventStoreDetailsClass
+     */
+    'location'?: string;
+    /**
+     * Store JSON geocoded address
+     * @type {string}
+     * @memberof EventStoreDetailsClass
+     */
+    'geocode_location'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface EventTicketAvailabilityClass
+ */
+export interface EventTicketAvailabilityClass {
+    /**
+     * Indicates ticket availability
+     * @type {boolean}
+     * @memberof EventTicketAvailabilityClass
+     */
+    'available': boolean;
+    /**
+     * Ticket id
+     * @type {string}
+     * @memberof EventTicketAvailabilityClass
+     */
+    'id': string;
 }
 /**
  * 
@@ -1328,17 +1401,11 @@ export interface EventTicketClass {
      */
     'capacity': number;
     /**
-     * Event time slot start
-     * @type {string}
+     * 
+     * @type {Array<string>}
      * @memberof EventTicketClass
      */
-    'start_time': string;
-    /**
-     * Event time slot end
-     * @type {string}
-     * @memberof EventTicketClass
-     */
-    'end_time': string;
+    'time_slots': Array<string>;
 }
 /**
  * Event ticket data
@@ -1371,17 +1438,48 @@ export interface EventTicketClassItem {
      */
     'extra_group'?: Array<ExtraGroupClass>;
     /**
-     * Event item name
+     * Event ticket name
      * @type {string}
      * @memberof EventTicketClassItem
      */
     'name': string;
+    /**
+     * Event ticket description
+     * @type {string}
+     * @memberof EventTicketClassItem
+     */
+    'description': string;
     /**
      * Event item price
      * @type {number}
      * @memberof EventTicketClassItem
      */
     'price': number;
+}
+/**
+ * 
+ * @export
+ * @interface EventTimeSlots
+ */
+export interface EventTimeSlots {
+    /**
+     * Time slot id
+     * @type {string}
+     * @memberof EventTimeSlots
+     */
+    'id': string;
+    /**
+     * Indicates possible event ticket time inclusion scope
+     * @type {string}
+     * @memberof EventTimeSlots
+     */
+    'start_time': string;
+    /**
+     * Indicates possible event ticket time inclusion scope
+     * @type {string}
+     * @memberof EventTimeSlots
+     */
+    'end_time': string;
 }
 /**
  * 
@@ -4159,11 +4257,23 @@ export interface StoreEventClass {
      */
     'tickets': StoreEventClassTickets;
     /**
+     * 
+     * @type {StoreEventClassTimeSlots}
+     * @memberof StoreEventClass
+     */
+    'time_slots': StoreEventClassTimeSlots;
+    /**
      * Event name
      * @type {string}
      * @memberof StoreEventClass
      */
     'name': string;
+    /**
+     * Indicates event exclusivity
+     * @type {string}
+     * @memberof StoreEventClass
+     */
+    'status': string;
     /**
      * Event description
      * @type {string}
@@ -4244,15 +4354,34 @@ export interface StoreEventClassTickets {
      */
     'capacity': number;
     /**
-     * Event time slot start
-     * @type {string}
+     * 
+     * @type {Array<string>}
      * @memberof StoreEventClassTickets
+     */
+    'time_slots': Array<string>;
+}
+/**
+ * Event time slots
+ * @export
+ * @interface StoreEventClassTimeSlots
+ */
+export interface StoreEventClassTimeSlots {
+    /**
+     * Time slot id
+     * @type {string}
+     * @memberof StoreEventClassTimeSlots
+     */
+    'id': string;
+    /**
+     * Indicates possible event ticket time inclusion scope
+     * @type {string}
+     * @memberof StoreEventClassTimeSlots
      */
     'start_time': string;
     /**
-     * Event time slot end
+     * Indicates possible event ticket time inclusion scope
      * @type {string}
-     * @memberof StoreEventClassTickets
+     * @memberof StoreEventClassTimeSlots
      */
     'end_time': string;
 }
@@ -5558,7 +5687,7 @@ export const EventApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Get event availability
+         * @summary Get list of available tickets in an event according to time slot
          * @param {string} id ID of the event
          * @param {string} date Date to be validated against the event
          * @param {number} partySize Intended party to size to be validated against the event
@@ -5681,7 +5810,7 @@ export const EventApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Get event availability
+         * @summary Get list of available tickets in an event according to time slot
          * @param {string} id ID of the event
          * @param {string} date Date to be validated against the event
          * @param {number} partySize Intended party to size to be validated against the event
@@ -5735,7 +5864,7 @@ export const EventApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
-         * @summary Get event availability
+         * @summary Get list of available tickets in an event according to time slot
          * @param {string} id ID of the event
          * @param {string} date Date to be validated against the event
          * @param {number} partySize Intended party to size to be validated against the event
@@ -5906,7 +6035,7 @@ export class EventApi extends BaseAPI {
 
     /**
      * 
-     * @summary Get event availability
+     * @summary Get list of available tickets in an event according to time slot
      * @param {EventApiEventsControllerGetEventAvailabilityRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
